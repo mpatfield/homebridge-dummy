@@ -1,8 +1,22 @@
-# Ignore compiled code
-dist
+# Ignore source code
+src/**/*.ts
 
 # ------------- Defaults ------------- #
-.DS_Store
+
+# gitHub actions
+.github
+
+# eslint
+eslint.config.js
+
+# typescript
+tsconfig.json
+
+# vscode
+.vscode
+
+# nodemon
+nodemon.json
 
 # Logs
 logs
@@ -87,7 +101,6 @@ web_modules/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -120,7 +133,4 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
-# Webstorm
-.idea
-
-/test/hbConfig
+test/
