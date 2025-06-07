@@ -8,7 +8,7 @@
   "description": "Dummy switches for Homebridge",
   "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/homebridge/index.js",
   "keywords": [
     "homebridge",
     "homebridge-plugin",
@@ -42,9 +42,11 @@
   "dependencies": {
     "@homebridge/plugin-ui-utils": "^2.0.2",
     "homebridge-lib": "^7.1.4",
+    "lodash.merge": "^4.6.2",
     "node-persist": "^2.1.0"
   },
   "devDependencies": {
+    "@types/lodash.merge": "^4.6.9",
     "@types/node-persist": "^3.1.8",
     "esbuild": "^0.25.5",
     "eslint": "^9.27.0",

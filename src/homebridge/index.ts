@@ -6,7 +6,7 @@ import {
 
 import storage from 'node-persist';
 
-import getVersion from './tools/version.js';
+import getVersion from '../tools/version.js';
 
 const init = (api: API) => {
   api.registerAccessory('homebridge-dummy', 'DummySwitch', DummySwitch);
