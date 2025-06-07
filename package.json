@@ -1,23 +1,55 @@
 {
   "name": "homebridge-dummy",
+  "displayName": "Homebridge Dummy",
   "version": "0.9.0",
-  "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
-  "license": "ISC",
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nfarina/homebridge-dummy.git"
+  "author": {
+    "name": "mpatfield"
   },
-  "bugs": {
-    "url": "http://github.com/nfarina/homebridge-dummy/issues"
+  "description": "Dummy switches for Homebridge",
+  "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
+  "keywords": [
+    "homebridge",
+    "homebridge-plugin",
+    "homebridge-dummy",
+    "hoobs",
+    "hoobs-plugin",
+    "homekit"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && tsc && npm run build:html && npm run build:ui",
+    "build:html": "mkdir ./dist/homebridge-ui/public && cp -r ./src/homebridge-ui/public/* ./dist/homebridge-ui/public/",
+    "build:ui": "esbuild src/homebridge-ui/ui.ts --bundle --outfile=dist/homebridge-ui/public/ui.js --minify",
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "npm run lint && npm run build"
   },
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0",
+    "node": "^18.20.4 || ^20.15.1 || ^22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpatfield/homebridge-dummy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mpatfield/homebridge-dummy/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/mpatfield"
   },
   "dependencies": {
+    "@homebridge/plugin-ui-utils": "^2.0.2",
+    "homebridge-lib": "^7.1.4",
     "node-persist": "^2.1.0"
-  }
+  },
+  "devDependencies": {
+    "eslint": "^9.27.0",
+    "esbuild": "^0.25.5",
+    "homebridge": "^2.0.0-beta.0",
+    "jiti": "^2.4.2",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript-eslint": "^8.24.1" 
+  },
+  "license": "Apache-2.0"
 }
