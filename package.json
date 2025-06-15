@@ -43,7 +43,7 @@
     "@homebridge/plugin-ui-utils": "^2.0.2",
     "homebridge-lib": "^7.1.4",
     "lodash.merge": "^4.6.2",
-    "node-persist": "^2.1.0"
+    "node-persist": "^4.0.4"
   },
   "devDependencies": {
     "@types/lodash.merge": "^4.6.9",
