@@ -1,7 +1,7 @@
 {
   "name": "homebridge-dummy",
   "displayName": "Homebridge Dummy",
-  "version": "0.9.1-beta.1",
+  "version": "0.9.1-beta.2",
   "author": {
     "name": "mpatfield"
   },
@@ -18,7 +18,7 @@
     "homekit"
   ],
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc && npm run build:html && npm run build:ui",
     "build:html": "mkdir ./dist/homebridge-ui/public && cp -r ./src/homebridge-ui/public/* ./dist/homebridge-ui/public/",
     "build:ui": "esbuild src/homebridge-ui/ui.ts --bundle --outfile=dist/homebridge-ui/public/ui.js --minify",
     "lint": "eslint . --max-warnings=0",

@@ -1,8 +1,10 @@
-import { AccessoryConfig, AccessoryPlugin, API, CharacteristicValue, Logging, Service } from 'homebridge';
+import { AccessoryConfig, AccessoryPlugin, API, Characteristic, CharacteristicValue, Logging, Service } from 'homebridge';
 
 import { PLUGIN_ALIAS, PLUGIN_NAME } from './settings.js';
 
-import { STORAGE_KEY_SUFFIX_BRIGHTNESS, STORAGE_KEY_SUFFIX_STATE, storageGet, storageSet } from '../tools/storage.js';
+import { strings } from '../i18n/i18n.js';
+
+import { storageGet, storageSet } from '../tools/storage.js';
 import getVersion from '../tools/version.js';
 
 const init = (api: API) => {
@@ -11,94 +13,106 @@ const init = (api: API) => {
 
 export default init;
 
+export const SUFFIX_BRIGHTNESS = '_brightness';
+export const SUFFIX_STATE = '_state';
+
 class DummySwitch implements AccessoryPlugin {
-  private log: Logging | undefined;
+  private readonly log: Logging | undefined;
 
-  private service: Service;
-  private infoService: Service;
+  private readonly Service: typeof Service;
+  private readonly Characteristic: typeof Characteristic;
 
-  private persistPath: string;
+  private readonly service: Service;
+  private readonly infoService: Service;
 
-  private name: string;
+  private readonly persistPath: string;
 
-  private isDimmer: boolean | undefined;
-  private isStateful: boolean | undefined;
-  private isReverse: boolean | undefined;
-  private brightness: CharacteristicValue | undefined;
-  private isRandom: boolean | undefined;
-  private isResettable: boolean | undefined;
-  private timeout: number | undefined;
-  
+  private readonly name: string;
+
+  private readonly isDimmer: boolean;
+  private readonly isStateful: boolean;
+  private readonly isReverse: boolean;
+  private readonly isRandom: boolean;
+  private readonly isResettable: boolean;
+
+  private brightness: CharacteristicValue;
+
+  private readonly timeout: number | undefined;
   private timer: NodeJS.Timeout | undefined = undefined;
 
-  constructor(log: Logging, config: AccessoryConfig, private readonly api: API) {
+  constructor(log: Logging, config: AccessoryConfig, api: API) {
+    this.log = config.disableLogging ? undefined : log;
+
+    this.Service = api.hap.Service;
+    this.Characteristic = api.hap.Characteristic;
 
     this.persistPath = api.user.persistPath();
 
     this.name = config.name;
-    this.isDimmer = config.dimmer;
-    this.isReverse = config.reverse;
-    this.isStateful = config.stateful;
-    this.brightness = config.brightness;
-    this.isRandom = config.random;
-    this.isResettable = config.resettable;
+    this.isDimmer = config.dimmer ?? false;
+    this.isReverse = config.reverse ?? false;
+    this.isStateful = config.stateful ?? false;
+    this.isRandom = config.random ?? false;
+    this.isResettable = config.resettable ?? false;
     this.timeout = config.time;
 
-    this.log = config.disableLogging ? undefined : log;
+    this.brightness = config.brightness ?? 0;
 
-    let modelString;
+    let model;
     if (this.isDimmer) {
-      this.service = new api.hap.Service.Lightbulb(this.name);
-      modelString = 'Dummy Dimmer';
+      this.service = new this.Service.Lightbulb(this.name);
+      model = strings.info.dimmer;
     } else {
-      this.service = new api.hap.Service.Switch(this.name);
-      modelString = 'Dummy Switch';
+      this.service = new this.Service.Switch(this.name);
+      model = strings.info.switch;
     }
 
-    this.infoService = new api.hap.Service.AccessoryInformation();
+    this.infoService = new this.Service.AccessoryInformation();
     this.infoService
-      .setCharacteristic(api.hap.Characteristic.Manufacturer, 'Homebridge')
-      .setCharacteristic(api.hap.Characteristic.Model, modelString)
-      .setCharacteristic(api.hap.Characteristic.FirmwareRevision, getVersion())
-      .setCharacteristic(api.hap.Characteristic.SerialNumber, 'Dummy-' + this.name.replace(/\s/g, '-'));
+      .setCharacteristic(this.Characteristic.Manufacturer, strings.info.homebridge)
+      .setCharacteristic(this.Characteristic.Model, model)
+      .setCharacteristic(this.Characteristic.FirmwareRevision, getVersion())
+      .setCharacteristic(this.Characteristic.SerialNumber, 'Dummy-' + this.name.replace(/\s/g, '-'));
 
-    this.service.getCharacteristic(this.api.hap.Characteristic.On)
-      .onSet(this._setOn.bind(this));
-    if (this.isDimmer) {
-      this.service.getCharacteristic(this.api.hap.Characteristic.Brightness)
-        .onGet(this._getBrightness.bind(this))
-        .onSet(this._setBrightness.bind(this));
-    }
-
-    if (this.isReverse) {
-      this.service.setCharacteristic(this.api.hap.Characteristic.On, true);
-    }
-
-    if (this.isStateful) {
-      storageGet(this.persistPath, this.storageKey(STORAGE_KEY_SUFFIX_STATE)).then( (cachedState) => {
-        if(!cachedState) {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, false);
-        } else {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, true);
-        }
-      });
-    }
-
-    if (this.isDimmer) {
-      storageGet(this.persistPath, this.storageKey(STORAGE_KEY_SUFFIX_BRIGHTNESS)).then((cachedBrightness) => {
-        if (!cachedBrightness) {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, false);
-          this.service.setCharacteristic(this.api.hap.Characteristic.Brightness, 0);
-        } else {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, true);
-          this.service.setCharacteristic(this.api.hap.Characteristic.Brightness, Number(cachedBrightness));
-        }
-      });
-    }
+    this.finishSetup();
   }
 
   getServices(): Service[] {
     return [this.infoService, this.service];
+  }
+
+  private async finishSetup() {
+
+    if (this.isReverse) {
+      this.service.setCharacteristic(this.Characteristic.On, true);
+    }
+
+    if (this.isStateful) {
+      const state = await storageGet(this.persistPath, this.storageKey(SUFFIX_STATE));
+      if(!state) {
+        this.service.setCharacteristic(this.Characteristic.On, false);
+      } else {
+        this.service.setCharacteristic(this.Characteristic.On, true);
+      }
+    }
+
+    if (this.isDimmer) {
+
+      const brightness = await storageGet(this.persistPath, this.storageKey(SUFFIX_BRIGHTNESS));
+      if (brightness) {
+        this.brightness = Number(brightness);
+        this.service.setCharacteristic(this.Characteristic.Brightness, Number(this.brightness));
+      } else {
+        this.service.setCharacteristic(this.Characteristic.Brightness, 0);
+      }
+
+      this.service.getCharacteristic(this.Characteristic.Brightness)
+        .onGet(this._getBrightness.bind(this))
+        .onSet(this._setBrightness.bind(this));
+    }
+
+    this.service.getCharacteristic(this.Characteristic.On)
+      .onSet(this._setOn.bind(this));
   }
 
   private storageKey(suffix: string): string {
@@ -106,63 +120,54 @@ class DummySwitch implements AccessoryPlugin {
   }
 
   private randomize(timeout: number | undefined): number | undefined {
-    if (!timeout) {
-      return;
-    }
-    
-    return Math.floor(Math.random() * (timeout + 1));
+    return timeout ? Math.floor(Math.random() * (timeout + 1)) : undefined;
   }
 
   private async _getBrightness(): Promise<CharacteristicValue> {
-    this.log?.('Getting ' + 'brightness: ' + this.brightness);
-    return this.brightness || 0;
+    return this.brightness;
   }
 
   private async _setBrightness(brightness: CharacteristicValue): Promise<void> {
-
-    const msg = 'Setting brightness: ' + brightness;
-    this.log?.(msg);
-
+    this.log?.(strings.brightness.set, brightness);
     this.brightness = brightness;
-    await storageSet(this.persistPath, this.storageKey(STORAGE_KEY_SUFFIX_BRIGHTNESS), brightness.toString());
+    await storageSet(this.persistPath, this.storageKey(SUFFIX_BRIGHTNESS), brightness.toString());
   };
 
   private async _setOn(value: CharacteristicValue): Promise<void> {
 
-    const delay = this.isRandom ? this.randomize(this.timeout) : this.timeout;
-    let msg = 'Setting switch to ' + value;
-    if (this.isRandom && !this.isStateful) {
-      if (value && !this.isReverse || !value && this.isReverse) {
-        msg = msg + ' (random delay ' + delay + 'ms)';
-      }
+    if (this.isDimmer) {
+      this.log?.('%s / %s', value ? strings.switch.on : strings.switch.off, this.brightness);
+    } else {
+      this.log?.(value ? strings.switch.on : strings.switch.off);
     }
 
-    this.log?.(msg);
-
-    if (value && !this.isReverse && !this.isStateful) {
-      if (this.isResettable && this.timer) {
-        clearTimeout(this.timer);
-        this.timer = undefined;
-      }
-      if (delay) {
-        this.timer = setTimeout(() => {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, false);
-        }, delay);
-      }
-    } else if (!value && this.isReverse && !this.isStateful) {
-      if (this.isResettable && this.timer) {
-        clearTimeout(this.timer);
-        this.timer = undefined;
-      }
-      if (delay) {
-        this.timer = setTimeout(() => {
-          this.service.setCharacteristic(this.api.hap.Characteristic.On, true);
-        }, delay);
-      }
-    }
-  
     if (this.isStateful) {
-      storageSet(this.persistPath, this.storageKey(STORAGE_KEY_SUFFIX_STATE), value.toString());
+      await storageSet(this.persistPath, this.storageKey(SUFFIX_STATE), value.toString());
+      return;
     }
+
+    if (value === this.isReverse) {
+      return;
+    }
+
+    if (this.isResettable) {
+      clearTimeout(this.timer);
+      this.timer = undefined;
+    }
+
+    const delay = this.isRandom ? this.randomize(this.timeout) : this.timeout;
+    if (!delay) {
+      return;
+    }
+
+    if (delay % 1000 === 0) {
+      this.log?.(strings.switch.delay_s, delay / 1000);
+    } else {
+      this.log?.(strings.switch.delay_ms, delay);
+    }
+
+    this.timer = setTimeout(() => {
+      this.service.setCharacteristic(this.Characteristic.On, this.isReverse as CharacteristicValue);
+    }, delay);
   };
 }

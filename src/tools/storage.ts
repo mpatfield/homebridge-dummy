@@ -2,9 +2,6 @@ import storage from 'node-persist';
 
 import { PLUGIN_NAME } from '../homebridge/settings.js';
 
-export const STORAGE_KEY_SUFFIX_BRIGHTNESS = '_brightness';
-export const STORAGE_KEY_SUFFIX_STATE = '_state';
-
 async function init(dir: string) {
   await storage.init({ dir: dir, forgiveParseErrors: true });
 }
