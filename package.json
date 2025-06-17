@@ -1,7 +1,7 @@
 {
   "name": "homebridge-dummy",
   "displayName": "Homebridge Dummy",
-  "version": "0.9.1-beta.0",
+  "version": "0.9.1-beta.1",
   "author": {
     "name": "mpatfield"
   },
