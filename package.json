@@ -18,9 +18,7 @@
     "homekit"
   ],
   "scripts": {
-    "build": "rimraf ./dist && tsc && npm run build:html && npm run build:ui",
-    "build:html": "mkdir ./dist/homebridge-ui/public && cp -r ./src/homebridge-ui/public/* ./dist/homebridge-ui/public/",
-    "build:ui": "esbuild src/homebridge-ui/ui.ts --bundle --outfile=dist/homebridge-ui/public/ui.js --minify",
+    "build": "rimraf ./dist && tsc",
     "lint": "eslint . --max-warnings=0",
     "prepublishOnly": "npm run lint && npm run build"
   },
@@ -40,7 +38,6 @@
     "url": "https://github.com/sponsors/mpatfield"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "^2.0.2",
     "homebridge-lib": "^7.1.4",
     "lodash.merge": "^4.6.2",
     "node-persist": "^4.0.4"
@@ -48,10 +45,8 @@
   "devDependencies": {
     "@types/lodash.merge": "^4.6.9",
     "@types/node-persist": "^3.1.8",
-    "esbuild": "^0.25.5",
     "eslint": "^9.27.0",
     "homebridge": "^2.0.0-beta.0",
-    "jiti": "^2.4.2",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript-eslint": "^8.24.1"
