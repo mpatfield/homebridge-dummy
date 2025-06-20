@@ -1,14 +1,30 @@
 {
   "name": "homebridge-dummy",
+  "platform": "HomebridgeDummy",
   "displayName": "Homebridge Dummy",
-  "version": "0.9.1-beta.2",
-  "author": {
-    "name": "mpatfield"
-  },
-  "description": "Dummy switches for Homebridge",
-  "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
+  "description": "Dummy devices for Homebridge",
   "type": "module",
+  "version": "1.0.0-beta.0",
+  "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpatfield/homebridge-dummy.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/mpatfield"
+  },
+  "bugs": {
+    "url": "https://github.com/mpatfield/homebridge-dummy/issues"
+  },
   "main": "dist/homebridge/index.js",
+  "scripts": {
+    "build": "rimraf ./dist && tsc && npm run build:html && npm run build:ui",
+    "build:html": "mkdir ./dist/homebridge-ui/public && cp -r ./src/homebridge-ui/public/* ./dist/homebridge-ui/public/",
+    "build:ui": "esbuild src/homebridge-ui/ui.ts --bundle --outfile=dist/homebridge-ui/public/ui.js --minify",
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
   "keywords": [
     "homebridge",
     "homebridge-plugin",
@@ -17,27 +33,12 @@
     "hoobs-plugin",
     "homekit"
   ],
-  "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "lint": "eslint . --max-warnings=0",
-    "prepublishOnly": "npm run lint && npm run build"
-  },
   "engines": {
     "homebridge": "^1.8.0 || ^2.0.0-beta.0",
-    "node": "^18.20.4 || ^20.15.1 || ^22"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mpatfield/homebridge-dummy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mpatfield/homebridge-dummy/issues"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/mpatfield"
+    "node": "^18.20.4 || ^20.18.0 || ^22.10.0"
   },
   "dependencies": {
+    "@homebridge/plugin-ui-utils": "^2.0.2",
     "homebridge-lib": "^7.1.4",
     "lodash.merge": "^4.6.2",
     "node-persist": "^4.0.4"
@@ -45,11 +46,19 @@
   "devDependencies": {
     "@types/lodash.merge": "^4.6.9",
     "@types/node-persist": "^3.1.8",
+    "esbuild": "^0.25.5",
     "eslint": "^9.27.0",
     "homebridge": "^2.0.0-beta.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript-eslint": "^8.24.1"
+  },
+  "homebridge": {
+    "platform": "HomebridgeDummy",
+    "name": "homebridge-dummy"
+  },
+  "author": {
+    "name": "mpatfield"
   },
   "license": "Apache-2.0"
 }

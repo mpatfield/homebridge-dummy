@@ -1,66 +1,131 @@
 {
-    "pluginAlias": "DummySwitch",
-    "pluginType": "accessory",
-    "singular": false,
-    "schema": {
-        "type": "object",
-        "properties": {
+  "pluginAlias": "HomebridgeDummy",
+  "pluginType": "platform",
+  "singular": true,
+  "customUi": true,
+  "customUiPath": "./dist/homebridge-ui",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "default": "Homebridge Dummy"
+      },
+      "legacyAccessories": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
             "name": {
-                "title": "Name",
+                "title": "${config.title.name}",
                 "type": "string",
                 "required": true
             },
             "stateful": {
-                "title": "Stateful",
+                "title": "${config.title.stateful}",
                 "type": "boolean",
                 "default": false,
-                "description": "The switch remains on instead of being automatically turned off."
+                "description": "${config.description.stateful}"
             },
             "dimmer": {
-                "title": "Dimmer",
+                "title": "${config.title.dimmer}",
                 "type": "boolean",
                 "default": false,
-                "description": "Make the switch a dimmer instead of a toggle (on/off) switch"
+                "description": "${config.description.dimmer}"
             },
             "reverse": {
-                "title": "Reverse",
+                "title": "${config.title.reverse}",
                 "type": "boolean",
                 "default": false,
-                "description": "The switch's default state is on."
+                "description": "${config.description.reverse}"
             },
             "time": {
-                "title": "Time",
+                "title": "${config.title.time}",
                 "type": "number",
                 "default": 1000,
-                "description": "The switch will turn off after this number of milliseconds. Not used if the switch is stateful."
+                "description": "${config.description.time}"
             },
             "random": {
-                "title": "Random",
+                "title": "${config.title.random}",
                 "type": "boolean",
                 "default": false,
-                "description": "Randomize the time until a switch turns off. Not used if the switch is stateful."
+                "description": "${config.description.random}"
             },
             "resettable": {
-                "title": "Resettable",
+                "title": "${config.title.resettable}",
                 "type": "boolean",
                 "default": false,
-                "description": "The timer will reset each time the switch is turned on. "
+                "description": "${config.description.resettable}"
             },
             "brightness": {
-                "title": "Brightness",
+                "title": "${config.title.brightness}",
                 "type": "integer",
                 "default": 0,
                 "placeholder": 0,
                 "maximum": 100,
-                "description": "Starting brightness (dimmer only)"
+                "description": "${config.description.brightness}"
             },
             "disableLogging": {
-                "title": "DisableLogging",
+                "title": "${config.title.disableLogging}",
                 "type": "boolean",
                 "default": false,
-                "description": "No state change information (On/Off) will be logged. "
+                "description": "${config.description.resettable}"
             }
-
+          }
         }
+      }
     }
+  },
+  "layout": [
+    {
+      "key": "legacyAccessories",
+      "expandable": true,
+      "title": "${config.title.legacyAccessories}",
+      "description": "${config.description.legacyAccessories}",
+      "type": "array",
+      "items": [
+        {
+          "type": "fieldset",
+          "items": [
+            {
+              "expandable": true,
+              "title": "Legacy Accessory",
+              "type": "fieldset",
+              "items": [
+                "legacyAccessories[].name",
+                "legacyAccessories[].dimmer",
+                {
+                  "key": "legacyAccessories[].brightness",
+                  "condition": {
+                    "functionBody": "const index = arguments[1]; return model.legacyAccessories[index].dimmer === true;"
+                  }
+                },
+                "legacyAccessories[].reverse",
+                "legacyAccessories[].stateful",
+                {
+                  "key": "legacyAccessories[].time",
+                  "condition": {
+                    "functionBody": "const index = arguments[1]; return model.legacyAccessories[index].stateful !== true;"
+                  }
+                },
+                {
+                  "key": "legacyAccessories[].resettable",
+                  "condition": {
+                    "functionBody": "const index = arguments[1]; return model.legacyAccessories[index].stateful !== true;"
+                  }
+                },
+                {
+                  "key": "legacyAccessories[].random",
+                  "condition": {
+                    "functionBody": "const index = arguments[1]; return model.legacyAccessories[index].stateful !== true;"
+                  }
+                },
+                "legacyAccessories[].disableLogging"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
