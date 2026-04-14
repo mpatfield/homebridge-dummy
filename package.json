@@ -74,7 +74,7 @@
     "cron": "^4.3.2",
     "express": "^5.1.0",
     "fakegato-history": "file:./lib/fakegato-history",
-    "homebridge-lib": "^7.1.8",
+    "homebridge-lib": "^8.0.0",
     "lodash.merge": "^4.6.2",
     "node-persist": "^4.0.4",
     "ping": "^1.0.0",
