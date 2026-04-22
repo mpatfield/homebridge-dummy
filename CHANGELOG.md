@@ -2,18 +2,23 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.7.2 (2026-03-30)
+## 1.7.3-beta.0 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
 
 ### Changed
-- Cleanup unnecessary dependencies
-- Cleanup deprecated code older than 6 months
+- Updated dependencies
 
 ### Notes
 Would you like to see Homebridge Dummy in your language? Please consider [getting involved](https://github.com/mpatfield/homebridge-dummy/issues/105). No coding experience required!
+
+## 1.7.2 (2026-03-30)
+
+### Changed
+- Cleanup unnecessary dependencies
+- Cleanup deprecated code older than 6 months
 
 ## 1.7.1 (2026-03-18)
 
