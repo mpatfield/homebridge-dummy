@@ -37,6 +37,7 @@
     "i18n:merge": "node --import tsx ./scripts/i18n-merge.ts",
     "i18n:missing": "node --import tsx ./scripts/i18n-missing.ts",
     "lint": "eslint . --fix --max-warnings=0",
+    "postinstall": "patch-package",
     "prepublishOnly": "npm run lint && npm run build"
   },
   "keywords": [
@@ -99,6 +100,7 @@
     "@types/suncalc": "^1.9.2",
     "homebridge": "^2.0.0-beta.30",
     "jiti": "^2.5.1",
+    "patch-package": "^8.0.1",
     "rimraf": "^6.0.1",
     "tsx": "^4.21.0",
     "typescript-eslint": "^8.46.4"

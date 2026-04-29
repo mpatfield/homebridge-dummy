@@ -1,0 +1,109 @@
+diff --git a/node_modules/arpping/.DS_Store b/node_modules/arpping/.DS_Store
+new file mode 100644
+index 0000000..78b190e
+Binary files /dev/null and b/node_modules/arpping/.DS_Store differ
+diff --git a/node_modules/arpping/dist/index.d.ts b/node_modules/arpping/dist/index.d.ts
+index 614c309..fa6812a 100644
+--- a/node_modules/arpping/dist/index.d.ts
++++ b/node_modules/arpping/dist/index.d.ts
+@@ -8,7 +8,7 @@ declare type Connection = {
+     netmask?: number | string;
+ };
+ declare type Device = {
+-    os: 'Windows_NT' | 'Linux' | 'Darwin';
++    os: 'Windows_NT' | 'Linux' | 'Darwin' | 'FreeBSD' | 'OpenBSD' | 'NetBSD' | 'SunOS' | 'AIX';
+     connection?: Connection | null;
+     type?: string | null;
+ };
+diff --git a/node_modules/arpping/dist/index.js b/node_modules/arpping/dist/index.js
+index 1165ab5..d1ae6bd 100644
+--- a/node_modules/arpping/dist/index.js
++++ b/node_modules/arpping/dist/index.js
+@@ -69,13 +69,20 @@ var arpFlag = osType === 'Windows_NT' ? ['-a'] : [];
+ switch (osType) {
+     case 'Windows_NT':
+     case 'Linux':
++    case 'OpenBSD':
++    case 'NetBSD':
++    case 'AIX':
+         flag = '-w';
+         break;
+     case 'Darwin':
++    case 'FreeBSD':
+         flag = '-t';
+         break;
++    case 'SunOS':
++        flag = '-W';
++        break;
+     default:
+-        throw new Error("Unsupported OS: ".concat(osType));
++        console.warn("Unexpected OS: ".concat(osType, ". Default timeout will be used for ping."));
+ }
+ var Arpping = /** @class */ (function () {
+     /**
+@@ -196,7 +203,7 @@ var Arpping = /** @class */ (function () {
+     */
+     Arpping.prototype.ping = function (range) {
+         return __awaiter(this, void 0, void 0, function () {
+-            var pings, results;
++            var timeout, pings, results;
+             var _this = this;
+             return __generator(this, function (_a) {
+                 switch (_a.label) {
+@@ -208,8 +215,9 @@ var Arpping = /** @class */ (function () {
+                             if (!range.length)
+                                 throw new Error('No connection!');
+                         }
++                        timeout = flag ? [flag, _this.timeout] : [];
+                         pings = range.map(function (ip) { return new Promise(function (resolve, reject) {
+-                            execFile('ping', [flag, _this.timeout, ip], function (err, stdout) {
++                            execFile('ping', [...timout, ip], function (err, stdout) {
+                                 if (err || stdout.match(/100(\.0)?% packet loss/g))
+                                     return reject(ip);
+                                 return resolve(ip);
+diff --git a/node_modules/arpping/src/index.ts b/node_modules/arpping/src/index.ts
+index 066bfc1..2c00e54 100644
+--- a/node_modules/arpping/src/index.ts
++++ b/node_modules/arpping/src/index.ts
+@@ -10,13 +10,20 @@ const arpFlag = osType === 'Windows_NT' ? [ '-a' ]: [];
+ switch (osType) {
+ 	case 'Windows_NT':
+ 	case 'Linux':
++	case 'OpenBSD':
++	case 'NetBSD':
++	case 'AIX':
+ 		flag = '-w';
+ 		break;
+ 	case 'Darwin':
++	case 'FreeBSD':
+ 		flag = '-t';
+ 		break;
++	case 'SunOS':
++		flag = '-W';
++		break;
+ 	default:
+-		throw new Error(`Unsupported OS: ${osType}`);
++		console.warn(`Unexpected OS: ${osType}. Default timeout will be used for ping.`);
+ }
+ 
+ type ValueAllSettled<T> = {
+@@ -36,7 +43,7 @@ type Connection = {
+ }
+ 
+ type Device = {
+-	os: 'Windows_NT' | 'Linux' | 'Darwin',
++	os: 'Windows_NT' | 'Linux' | 'Darwin' | 'FreeBSD' | 'OpenBSD' | 'NetBSD' | 'SunOS' | 'AIX',
+ 	connection?: Connection | null,
+ 	type?: string | null
+ }
+@@ -225,8 +232,9 @@ class Arpping {
+ 			if (!range.length) throw new Error('No connection!');
+ 		}
+ 
++		const timeout = flag ? [ flag, this.timeout ] : []
+ 		const pings: Promise<string>[] = range.map(ip => new Promise((resolve, reject) => {
+-			execFile('ping', [ flag, this.timeout, ip ], (err: string, stdout: string) => {
++			execFile('ping', [ ...timeout, ip ], (err: string, stdout: string) => {
+ 				if (err || stdout.match(/100(\.0)?% packet loss/g)) return reject(ip);
+ 				return resolve(ip);
+ 			});
