@@ -2,14 +2,14 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.7.3-beta.2 ()
+## 1.7.3 (2026-05-04)
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
 
 ### Fixed
-- Crash on launch caused by arpping dependency ([#406](https://github.com/mpatfield/homebridge-dummy/issues/406))
+- Crash on launch caused by [arpping](https://github.com/haf-decent/arpping) dependency used for [Reachability](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions#reachabilitypresence) ([#406](https://github.com/mpatfield/homebridge-dummy/issues/406))
 
 ### Changed
 - Updated dependencies
