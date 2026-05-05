@@ -45,7 +45,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     this.webhookManager = new WebhookManager(this.log, this.api.user.configPath(), { port: config.webhookPort, ...config.webhookConfig });
     this.conditionManager = new ConditionManager(this.log, api.user.storagePath());
 
-    this.log.always(
+    this.log.ifVerbose(
       'v%s | System %s | Node %s | HB v%s | HAPNodeJS v%s',
       getVersion(),
       process.platform,
@@ -66,7 +66,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
   }
 
   configureAccessory(platformAccessory: PlatformAccessory): void {
-    this.log.always(strings.startup.restoringAccessory, platformAccessory.displayName);
+    this.log.ifVerbose(strings.startup.restoringAccessory, platformAccessory.displayName);
     this.platformAccessories.set(platformAccessory.context.identifier, platformAccessory);
   }
 
