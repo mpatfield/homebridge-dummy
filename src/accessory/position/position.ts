@@ -146,7 +146,8 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
 
     const targetPosition = value === this.positionClosed ? this.positionClosed : this.positionOpen;
 
-    if (this.targetPosition !== targetPosition) {
+    const stateChanged = this.targetPosition !== targetPosition;
+    if (stateChanged) {
       this.logPosition(targetPosition);
 
       this.setProperty(this.stateStorageKey, targetPosition);
@@ -169,7 +170,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     this.targetPosition = targetPosition;
 
     if (this.targetPosition !== this.defaultPosition) {
-      this.onTriggered();
+      this.onTriggered(stateChanged);
     } else {
       this.onReset();
     }

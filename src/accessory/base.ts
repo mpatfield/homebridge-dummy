@@ -192,14 +192,16 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._autoReset?.setTimeout(rawTime, units);
   }
 
-  protected onTriggered() {
+  protected onTriggered(stateChanged: boolean = true) {
 
     const delay = this._autoReset?.startTimeout();
     if (delay !== undefined) {
       this.onTimerStarted(delay);
     }
 
-    this._notification?.notify();
+    if (stateChanged) {
+      this._notification?.notify();
+    }
 
     this._limiter?.start(this.reset.bind(this));
   }

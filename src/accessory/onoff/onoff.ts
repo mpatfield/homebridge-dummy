@@ -82,7 +82,8 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
 
   protected async setOn(value: CharacteristicValue, syncOnly: boolean = false): Promise<void> {
 
-    if (this.on !== value) {
+    const stateChanged = this.on !== value;
+    if (stateChanged) {
       this.logIfDesired(this.logMessageForOnState(value));
 
       this.setProperty(HKCharacteristicKey.On, value);
@@ -101,7 +102,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     this.on = value;
 
     if (this.on !== this.defaultState) {
-      this.onTriggered();
+      this.onTriggered(stateChanged);
     } else {
       this.onReset();
     }

@@ -164,7 +164,8 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
 
   private async setState(value: CharacteristicValue, syncOnly: boolean = false) {
 
-    if (this.state !== value) {
+    const stateChanged = this.state !== value;
+    if (stateChanged) {
       this.logIfDesired(this.logMessageForState(value));
 
       this.setProperty(HKCharacteristicKey.On, value);
@@ -181,7 +182,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     this.state = value;
 
     if (this.state !== this.defaultState) {
-      this.onTriggered();
+      this.onTriggered(stateChanged);
     } else {
       this.onReset();
     }

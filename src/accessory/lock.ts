@@ -83,7 +83,8 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
 
   protected async setState(value: CharacteristicValue, syncOnly: boolean = false): Promise<void> {
 
-    if (this.state !== value) {
+    const stateChanged = this.state !== value;
+    if (stateChanged) {
       this.logLockState(value);
 
       this.setProperty(HKCharacteristicKey.LockTargetState, value);
@@ -100,7 +101,7 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     this.state = value;
 
     if (this.state !== this.defaultLockState) {
-      this.onTriggered();
+      this.onTriggered(stateChanged);
     } else {
       this.onReset();
     }

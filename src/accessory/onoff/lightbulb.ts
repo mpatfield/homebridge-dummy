@@ -134,7 +134,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
 
     this.brightness = value;
     if (this.fader?.isFading === true) {
-      this.onTriggered();
+      this.onTriggered(false);
     }
 
     this.logIfDesired(strings.lightbulb.brightness, this.brightness.toString());
@@ -144,8 +144,8 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
   }
 
-  override onTriggered() {
-    super.onTriggered();
+  override onTriggered(stateChanged: boolean) {
+    super.onTriggered(stateChanged);
 
     if (this.config.fadeOut === undefined) {
       return;
