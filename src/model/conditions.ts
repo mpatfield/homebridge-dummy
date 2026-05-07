@@ -115,7 +115,13 @@ export class ConditionManager {
       return;
     }
 
+    const isInit = !this.accessoryStates.has(triggerId);
+
     this.accessoryStates.set(triggerId, state);
+
+    if (isInit) {
+      return;
+    }
 
     for (const targetId of targetIds) {
 

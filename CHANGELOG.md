@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.7.4-beta.2 ()
+## 1.7.4-beta.3 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
@@ -14,6 +14,7 @@ All notable changes to homebridge-dummy will be documented in this file.
 ### Changed
 - Notification only fires when accessory state changes
     - ⚠️ Make sure to define an [`Auto-Reset`](https://github.com/mpatfield/homebridge-dummy/wiki/Auto%E2%80%90Reset) if you want it to fire every time
+- Don't evaluate [Trigger Conditions](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions) until after initialization
 - Removed `beta` tag from `homebridge` dependency
 - Reduced noisy startup logging
 - Updated dependencies
