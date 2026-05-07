@@ -3,7 +3,10 @@ import storage from 'node-persist';
 
 import { PLATFORM_NAME } from '../homebridge/settings.js';
 
+import { Mutex } from './mutex.js';
+
 const STORAGE = new Map<string, Map<string, Storable>>();
+const MUTEX = new Mutex();
 
 type Storable = PrimitiveTypes | PrimitiveTypes[] | { [key: string]: PrimitiveTypes };
 
@@ -40,7 +43,12 @@ export class Storage {
   }
 
   public static async set(identifier: string, key: string, item: Storable | undefined) {
+    await MUTEX.lock(async () => {
+      await Storage._set(identifier, key, item);
+    });
+  }
 
+  private static async _set(identifier: string, key: string, item: Storable | undefined) {
     const items = STORAGE.get(identifier) || new Map();
 
     if (item !== undefined) {

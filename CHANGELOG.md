@@ -8,6 +8,9 @@ All notable changes to homebridge-dummy will be documented in this file.
 
 -----
 
+### Fixed
+- Potential race condition in persistent storage
+
 ### Changed
 - Notification only fires when accessory state changes
     - ⚠️ Make sure to define an [`Auto-Reset`](https://github.com/mpatfield/homebridge-dummy/wiki/Auto%E2%80%90Reset) if you want it to fire every time
