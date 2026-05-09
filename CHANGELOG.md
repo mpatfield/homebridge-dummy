@@ -2,13 +2,14 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.7.4-beta.3 ()
+## 1.7.4-beta.4 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
 
 ### Fixed
+- Crash caused by a bug in the translation system ([#416](https://github.com/mpatfield/homebridge-dummy/issues/416))
 - Potential race condition in persistent storage
 
 ### Changed

@@ -26,11 +26,17 @@ const Translations = {
   [Language.VI]: vi,
 };
 
-let currentLanguage = Language.EN;
+type Translation = typeof en;
 
-export function getLanguage() {
-  return currentLanguage;
+export function getTranslation(language: Language): Record<string, string | object> {
+  return Translations[language] ?? {};
 }
+
+export function getStrings(language: Language): Translation {
+  return merge({}, en, getTranslation(language));
+}
+
+export let strings: Translation = en;
 
 export function setLanguage(configPath: string) {
 
@@ -46,23 +52,9 @@ export function setLanguage(configPath: string) {
     isoLang = Intl.DateTimeFormat().resolvedOptions().locale.split('-')[0];
   }
 
-  currentLanguage = isoLang in Translations ? isoLang as Language : Language.EN;
+  const currentLanguage = isoLang in Translations ? isoLang as Language : Language.EN;
+
+  if (currentLanguage !== Language.EN) {
+    strings = getStrings(currentLanguage);
+  }
 }
-
-type Translation = typeof en;
-
-export function getTranslation(language: Language): Record<string, string | object> {
-  return Translations[language] ?? {};
-}
-
-export function getStrings(language: Language): Translation {
-  return merge({}, en, getTranslation(language));
-}
-
-const translations = new Proxy({} as Translation, {
-  get(_target, prop: keyof Translation) {
-    return getTranslation(currentLanguage)[prop] ?? en[prop];
-  },
-});
-
-export { translations as strings };
