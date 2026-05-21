@@ -150,8 +150,14 @@ export class WebhookManager {
   }
 
   public teardown() {
+
+    if (this.server === undefined) {
+      return;
+    }
+
     this.log.ifVerbose(strings.webhook.stopping);
-    this.server?.close(() => {
+
+    this.server.close(() => {
       this.log.ifVerbose(strings.webhook.stopped);
     });
   };
