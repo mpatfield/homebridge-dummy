@@ -53,10 +53,6 @@ export type ScheduleConfig = Assertable & {
   offset?: number,
   latitude?: number,
   longitude?: number,
-  /**
-   * @deprecated
-   */
-  interval?: number
 }
 
 /**

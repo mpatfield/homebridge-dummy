@@ -47,7 +47,7 @@ export class Schedule extends Timeout {
     case ScheduleType.TIMEOUT:
     case ScheduleType.INTERVAL:
 
-      if (config.time === undefined && config.interval === undefined) {
+      if (config.time === undefined) {
         dependency.log.error(i18n.accessory.missingRequired, dependency.caller, 'delay');
         return;
       }
@@ -155,7 +155,7 @@ export class Schedule extends Timeout {
     case ScheduleType.TIMEOUT:
       return this.getTimeoutDelay();
     case ScheduleType.INTERVAL:
-      return this.getDelay(this.config.time ?? this.config.interval!, this.config.units!, this.config.random, DelayLogStrings(
+      return this.getDelay(this.config.time!, this.config.units!, this.config.random, DelayLogStrings(
         this.strings.timeMilliseconds,
         this.strings.timeSeconds,
         this.strings.timeMinutes,

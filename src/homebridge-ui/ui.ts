@@ -321,13 +321,6 @@ async function migrateDeprecatedFields(configs: DummyPlatformConfig[]) {
         changed = true;
       }
 
-      const schedule = accessoryConfig.schedule;
-      if (schedule?.interval !== undefined) {
-        schedule.time = schedule?.interval;
-        schedule.interval = undefined;
-        changed = true;
-      }
-
       const timer = accessoryConfig.timer;
       if (timer !== undefined) {
         accessoryConfig.autoReset = {
