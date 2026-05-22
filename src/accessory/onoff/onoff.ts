@@ -64,12 +64,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
   }
 
   private get defaultState(): CharacteristicValue {
-
-    if (this.config.defaultState) {
-      return this.config.defaultState === OnState.ON ? true : false;
-    }
-
-    return this.config.defaultOn ? true : false;
+    return this.config.defaultState === OnState.ON ? true : false;
   }
 
   private async registerStateChange() {

@@ -150,10 +150,6 @@ export type OnOffConfig = DummyConfig & {
   defaultState?: OnState,
   commandOn?: string,
   commandOff?: string,
-  /**
-   * @deprecated
-   */
-  defaultOn?: CharacteristicValue,
 }
 
 export type OutletConfig = OnOffConfig & {
