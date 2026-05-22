@@ -55,15 +55,6 @@ export type ScheduleConfig = Assertable & {
   longitude?: number,
 }
 
-/**
- * @deprecated
- */
-export type TimerConfig = Assertable & {
-  delay: number,
-  units: TimeUnits,
-  random?: boolean,
-}
-
 export type SensorConfig = Assertable & {
   type: SensorType,
   /**
@@ -151,10 +142,6 @@ export type DummyConfig = {
   enableWebhook?: boolean,
   enableHistory?: boolean,
   disableLogging?: boolean,
-  /**
-   * @deprecated
-   */
-  timer?: TimerConfig,
   commandSync?: string,
   syncSchedule?: ScheduleConfig,
 }

@@ -8,7 +8,7 @@ import { DelayLogStrings, SECOND, Timeout } from './timeout.js';
 import { strings as i18n } from '../i18n/i18n.js';
 
 import { ScheduleType, TimeUnits }  from '../model/enums.js';
-import { ScheduleConfig, TimerConfig } from '../model/types.js';
+import { ScheduleConfig } from '../model/types.js';
 
 import { Storage } from '../tools/storage.js';
 import { assert, isValid, printableValues } from '../tools/validation.js';
@@ -19,7 +19,7 @@ export class Schedule extends Timeout {
 
   static new(
     dependency: DummyAddonDependency,
-    config: ScheduleConfig | TimerConfig | undefined,
+    config: ScheduleConfig | undefined,
     strings: typeof i18n.schedule,
     timeoutKey: string,
     callback:  () => Promise<void>): Schedule | undefined {

@@ -321,18 +321,6 @@ async function migrateDeprecatedFields(configs: DummyPlatformConfig[]) {
         changed = true;
       }
 
-      const timer = accessoryConfig.timer;
-      if (timer !== undefined) {
-        accessoryConfig.autoReset = {
-          type: ScheduleType.TIMEOUT,
-          time: timer.delay,
-          units: timer.units,
-          random: timer.random,
-        };
-        accessoryConfig.timer = undefined;
-        changed = true;
-      }
-
       if (accessoryConfig.enableWebook !== undefined) {
         accessoryConfig.enableWebhook = accessoryConfig.enableWebook;
         accessoryConfig.enableWebook = undefined;

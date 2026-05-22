@@ -75,8 +75,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
     this._schedule = Schedule.new(this.addonDependency, dependency.config.schedule, strings.schedule, 'Schedule', this.trigger.bind(this));
 
-    this._autoReset = Schedule.new(this.addonDependency, dependency.config.autoReset ?? dependency.config.timer,
-      strings.autoReset, 'AutoReset', this.reset.bind(this));
+    this._autoReset = Schedule.new(this.addonDependency, dependency.config.autoReset, strings.autoReset, 'AutoReset', this.reset.bind(this));
 
     this._notification = NotificationManager.new(this.addonDependency, dependency.config.notification);
 
