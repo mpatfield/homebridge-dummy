@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.8.0-beta.0 ()
+## 1.8.0-beta.2 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
@@ -12,6 +12,8 @@ All notable changes to homebridge-dummy will be documented in this file.
 - [Sync Command & Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Commands#sync-command-and-schedule) to keep an accessory synchronized with some external entity
 
 ### Changed
+- Cleanup old deprecated code
+    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure and Schedules or Auto-Resets
 - Updated dependencies
 
 ### Notes
