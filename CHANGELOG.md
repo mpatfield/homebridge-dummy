@@ -2,11 +2,22 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.7.4 (2026-05-12)
+## 1.8.0-beta.0 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
+
+### Added
+- [Sync Command & Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Commands#sync-command-and-schedule) to keep an accessory synchronized with some external entity
+
+### Changed
+- Updated dependencies
+
+### Notes
+Would you like to see Homebridge Dummy in your language? Please consider [getting involved](https://github.com/mpatfield/homebridge-dummy/issues/105). No coding experience required!
+
+## 1.7.4 (2026-05-12)
 
 ### Fixed
 - Crash caused by a bug in the translation system ([#416](https://github.com/mpatfield/homebridge-dummy/issues/416))
@@ -19,9 +30,6 @@ All notable changes to homebridge-dummy will be documented in this file.
 - Removed `beta` tag from `homebridge` dependency
 - Reduced noisy startup logging
 - Updated dependencies
-
-### Notes
-Would you like to see Homebridge Dummy in your language? Please consider [getting involved](https://github.com/mpatfield/homebridge-dummy/issues/105). No coding experience required!
 
 ## 1.7.3 (2026-05-04)
 

@@ -393,8 +393,6 @@ const vi = {
     unregisteredCharacteristic: 'Không có phụ kiện nào đăng ký cho %s. Bạn đã bật `Enable Webhook` cho phụ kiện này chưa?',
     unregisteredId: 'Không có phụ kiện nào đăng ký webhook với id %s. Bạn có thể tìm id đúng trong cấu hình JSON.',
     unsupportedCharacteristic: 'Lệnh webhook %s không được hỗ trợ',
-    validRange: 'Lệnh webhook %s yêu cầu giá trị số từ %s đến %s',
-    validValues: 'Các giá trị hợp lệ cho lệnh webhook %s là:',
     values: 'Giá trị',
   },
 };

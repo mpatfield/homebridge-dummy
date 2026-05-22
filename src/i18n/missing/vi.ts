@@ -1,4 +1,4 @@
-const el = {
+const vi = {
 
   command: {
     badSyncCommand: '%s sync command must produce valid JSON`', // accessory name
@@ -7,22 +7,10 @@ const el = {
 
   config: {
 
-    enumNames: {
-      sensorMirror: 'Mirror Accessory',
-      sensorTimer: 'Timer Controlled',
-    },
-
     title: {
       commandSync: 'Sync Command',
-      sensorBehavior: 'Sensor Behavior',
       syncSchedule: 'Sync Schedule',
     },
-
-  },
-
-  sensor: {
-
-    badBehavior: '%s has invalid sensor behavior %s. Must be one of: %s', // accessory name, input, list of type names
 
   },
 
@@ -47,4 +35,4 @@ const el = {
   },
 };
 
-export default el;
+export default vi;

@@ -20,6 +20,7 @@ import { Schedule } from '../timeout/schedule.js';
 
 import { Log } from '../tools/log.js';
 import { Storage } from '../tools/storage.js';
+import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';
 
 export type DummyAccessoryDependency<C extends DummyConfig> = {
@@ -60,6 +61,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
   private readonly _autoReset?: Schedule;
   private readonly _notification?: NotificationManager;
   private readonly _limiter?: Limiter;
+  private readonly _syncSchedule?: Schedule;
 
   private readonly execAsync = promisify(exec);
 
@@ -79,6 +81,10 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._notification = NotificationManager.new(this.addonDependency, dependency.config.notification);
 
     this._limiter = Limiter.new(this.addonDependency, dependency.config.limiter);
+
+    if (dependency.config.commandSync !== undefined && assert(dependency.log, dependency.config.name, dependency.config, 'syncSchedule')) {
+      this._syncSchedule = Schedule.new(this.addonDependency, dependency.config.syncSchedule, strings.syncSchedule, 'SyncSchedule', this.onSync.bind(this));
+    }
 
     dependency.conditionManager.register(name, this.identifier, dependency.config.conditions,
       this.trigger.bind(this), this._autoReset ? undefined : this.reset.bind(this), dependency.config.disableLogging === true);
@@ -131,6 +137,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._schedule?.teardown();
     this._autoReset?.teardown();
     this._limiter?.teardown();
+    this._syncSchedule?.teardown();
   }
 
   public abstract get webhooks(): Webhook[];
@@ -215,7 +222,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._limiter?.cancel();
   }
 
-  protected async executeCommand(command: string) {
+  protected async executeCommand(command: string): Promise<string | undefined> {
 
     const propertiesEnv = Storage.copy().reduce((accumulator, [identifier, values]) => {
       values.forEach(([key, value]) => {
@@ -239,9 +246,11 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       const { stdout } = await this.execAsync(command, execOptions);
       const output = stdout.trim();
 
-      if (output) {
+      if (output !== undefined) {
         this.logIfDesired(`${strings.command.executed}: %s\n%s`, command, output);
       }
+
+      return output;
 
     } catch (err) {
 
@@ -263,6 +272,47 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       } else {
         this.log.error(`${strings.command.error}: %s (%s)`, this.name, command, exitCode, error ? `\n${error}` : undefined);
       }
+    }
+  }
+
+  private async onSync(): Promise<void> {
+
+    if (this.config.commandSync === undefined) {
+      throw new Error(`Trying to run ${this.onSync.name} without a sync command`);
+    }
+
+    const result = await this.executeCommand(this.config.commandSync);
+    if (!result) {
+      this.log.error(strings.command.badSyncCommand, this.name);
+      return;
+    }
+
+    try {
+
+      const data = JSON.parse(result);
+
+      Object.keys(data).forEach(key => {
+
+        const webhook = this.webhooks.find(webhook => webhook.characteristic === key);
+        if (webhook === undefined) {
+          this.log.warning(strings.command.unsupportedCharacteristic, this.name, `'${key}'`);
+          return;
+        }
+
+        const value = data[key];
+
+        const result = webhook.validateValue(value);
+        if (result instanceof Error) {
+          this.log.error(`${this.name} - ${result.message}`);
+          return;
+        }
+
+        const log = webhook.setter(value, true);
+        this.logIfDesired(log);
+      });
+
+    } catch {
+      this.log.error(strings.command.badSyncCommand, this.name);
     }
   }
 

@@ -29,8 +29,10 @@ const en = {
   },
 
   command: {
+    badSyncCommand: '%s sync command must produce valid JSON`', // accessory name
     error: '%s failed to execute command', // accessory name
     executed: '%s executed command', // accessory name
+    unsupportedCharacteristic: '%s trying to sync unsupported characteristic %s', // accessory name, variable name
   },
 
   conditions: {
@@ -168,6 +170,7 @@ const en = {
       commandOpen: 'Open Command',
       commandLock: 'Lock Command',
       commands: 'Commands',
+      commandSync: 'Sync Command',
       commandTemperature: 'Temperature Changed Command',
       commandUnlock: 'Unlock Command',
       condition: 'Condition',
@@ -211,6 +214,7 @@ const en = {
       sensor: 'Attach Sensor',
       sensorBehavior: 'Sensor Behavior',
       simulateOpenClose: 'Simulate Open/Close',
+      syncSchedule: 'Sync Schedule',
       temperatureUnits: 'Temperature Units',
       time: 'Time',
       type: 'Type',
@@ -361,6 +365,21 @@ const en = {
     ],
   },
 
+  syncSchedule: {
+    badType: '%s has invalid sync schedule type %s. Must be one of: %s', // accessory name, input, list of type names
+    badUnits: '%s sync schedule has invalid time units %s. Must be one of: %s', // accessory name, input, list of unit names
+    cancel: 'Cancelled sync schedule timer for %s', // accessory name
+    cron: '%s starting sync schedule cronjob', // accessory name
+    expired: '%s sync schedule timer expired while restarting. Synchronizing now…', // accessory name
+    invalidCron: '%s sync schedule has an invalid cron expression %s', // accessory name, cron string
+    resume: '%s resuming sync schedule timer', // accessory name
+    sunTime: '%s will synchronize at %s', // accessory name, time
+    timeHours: '% will synchronize in %s hours', // accessory name, number
+    timeMilliseconds: '%s will synchronize in %s milliseconds', // accessory name, number
+    timeMinutes: '%s will synchronize in %s minutes', // accessory name, number
+    timeSeconds: '%s will synchronize in %s seconds', // accessory name, number
+  },
+
   thermostat: {
     auto: '%s set to Auto', // accessory name
     badDefault: '%s has invalid default state %s. Must be one of: %s', // accessory name, input, list of state names
@@ -396,8 +415,8 @@ const en = {
     stopped: 'Webhook server stopped',
     stopping: 'Shutting down webhook server…',
     title: 'Available Webhooks',
-    validRange: 'The %s webhook command expects a number value between %s and %s', // command name, number, number
-    validValues: 'Valid values for the %s webhook command are:', // command name
+    validRange: 'The %s characteristic expects a number value between %s and %s', // command name, number, number
+    validValues: 'Valid values for the %s characteristic command are:', // command name
     values: 'Values',
     unregisteredCharacteristic: 'There are no accessories registered for %s. Did you `Enable Webhook` for this accessory?', // command name
     unregisteredId: 'There is no accessory registered for webhooks with the id %s. You can find the correct id in the JSON config.', // id

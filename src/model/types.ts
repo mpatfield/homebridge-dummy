@@ -159,6 +159,8 @@ export type DummyConfig = {
    * @deprecated
    */
   timer?: TimerConfig,
+  commandSync?: string,
+  syncSchedule?: ScheduleConfig,
 }
 
 export type OnOffConfig = DummyConfig & {

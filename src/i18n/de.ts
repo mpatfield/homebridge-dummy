@@ -214,8 +214,6 @@ const de = {
     unregisteredCharacteristic: 'Es sind keine Geräte für den Webhook-Befehl %s registriert. Haben Sie \'Webhook aktivieren\' für dieses Gerät eingeschaltet?',
     unregisteredId: 'Es ist kein Gerät für Webhooks mit der ID %s registriert. Die korrekte ID finden Sie in der JSON-Konfiguration.',
     unsupportedCharacteristic: 'Der Webhook-Befehl %s wird nicht unterstützt',
-    validRange: 'Der %s Webhook-Befehl erwartet einen Zahlenwert zwischen %s und %s',
-    validValues: 'Gültige Werte für den %s Webhook-Befehl sind:',
   },
 };
 

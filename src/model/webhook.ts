@@ -39,6 +39,25 @@ export class Webhook {
     public readonly setter: WebhookSetter,
     public readonly disableLogging: boolean | undefined,
   ){}
+
+  public validateValue(value: CharacteristicValue): true | Error {
+
+    if (this.validValues instanceof Range) {
+
+      const min = this.validValues.min;
+      const max = this.validValues.max;
+      if (typeof value !== 'number' || value < min || value > max) {
+        const message = strings.webhook.validRange.replace('%s', this.characteristic).replace('%s', `${min}`).replace('%s', `${max}`);
+        return new Error(message);
+      }
+
+    } else if ( (typeof value !== 'boolean' && typeof value !== 'number') || !this.validValues.values.includes(value)) {
+      const message = `${strings.webhook.validValues.replace('%s', this.characteristic)} ${this.validValues.asString}`;
+      return new Error(message);
+    }
+
+    return true;
+  }
 }
 
 export class WebhookManager {
@@ -224,19 +243,9 @@ export class WebhookManager {
       return;
     }
 
-    if (webhook.validValues instanceof Range) {
-
-      const min = webhook.validValues.min;
-      const max = webhook.validValues.max;
-      if (typeof value !== 'number' || value < min || value > max) {
-        const message = strings.webhook.validRange.replace('%s', characteristic).replace('%s', `${min}`).replace('%s', `${max}`);
-        this.onBadRequest(response, message);
-        return;
-      }
-
-    } else if ( (typeof value !== 'boolean' && typeof value !== 'number') || !webhook.validValues.values.includes(value)) {
-      const message = `${strings.webhook.validValues.replace('%s', characteristic)} ${webhook.validValues.asString}`;
-      this.onBadRequest(response, message);
+    const result = webhook.validateValue(value);
+    if (result instanceof Error) {
+      this.onBadRequest(response, result.message);
       return;
     }
 

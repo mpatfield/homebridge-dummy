@@ -388,8 +388,6 @@ const el = {
     unregisteredCharacteristic: 'Δεν υπάρχουν εγγεγραμμένα αξεσουάρ για το %s. Μήπως ξεχάσατε να κάνετε `Enable Webhook` για αυτό το αξεσουάρ;',
     unregisteredId: 'Δεν υπάρχει αξεσουάρ εγγεγραμμένο για webhooks με το id %s. Μπορείτε να βρείτε το σωστό id στη ρύθμιση JSON.',
     unsupportedCharacteristic: 'Η εντολή webhook %s δεν υποστηρίζεται',
-    validRange: 'Η εντολή webhook %s αναμένει μια αριθμητική τιμή μεταξύ %s και %s',
-    validValues: 'Οι έγκυρες τιμές για την εντολή webhook %s είναι:',
     values: 'Τιμές',
   },
 };

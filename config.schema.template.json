@@ -336,25 +336,25 @@
           },
           {
             "if": {
-                "properties": {
-                  "type": {
-                      "const": "LOG"
-                  }
-                },
-                "required": ["type"]
+              "properties": {
+                "type": {
+                    "const": "LOG"
+                }
+              },
+              "required": ["type"]
             },
             "then": {
-                "required": ["pattern"]
+              "required": ["pattern"]
             }
           },
           {
             "if": {
-                "properties": {
-                  "type": {
-                      "const": "PING"
-                  }
-                },
-                "required": ["type"]
+              "properties": {
+                "type": {
+                    "const": "PING"
+                }
+              },
+              "required": ["type"]
             },
             "then": {
                 "required": ["pingHost", "pingAvailability", "pingInterval", "pingUnits"]
@@ -595,6 +595,11 @@
               "type": "string",
               "title": "${config.title.commandTemperature}"
             },
+            "commandSync": {
+              "type": "string",
+              "title": "${config.title.commandSync}"
+            },
+            "syncSchedule": { "$ref": "#/definitions/schedule" },
             "resetOnRestart": {
               "type": "boolean",
               "title": "${config.title.resetOnRestart}"
@@ -611,7 +616,21 @@
               "type": "boolean",
               "title": "${config.title.enableHistory}"
             }
-          }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "commandSync": {
+                  }
+                },
+                "required": ["commandSync"]
+              },
+              "then": {
+                "required": ["syncSchedule"]
+              }
+            }
+          ]
         }
       },
       "verbose": {
@@ -1331,6 +1350,77 @@
                   "condition": {
                     "functionBody": "return ['TemperatureSensor','Thermostat'].includes(model.accessories?.[arguments[1]]?.type);"
                   }
+                },
+                {
+                  "key": "accessories[].commandSync",
+                  "condition": {
+                    "functionBody": "return !['StatelessProgrammableSwitch'].includes(model.accessories?.[arguments[1]]?.type);"
+                  }
+                },
+                {
+                  "type": "div",
+                  "displayFlex": true,
+                  "flex-direction": "row",
+                  "notitle": true,
+                  "condition": {
+                    "functionBody": "return model.accessories?.[arguments[1]]?.commandSync !== undefined"
+                  },
+                  "items": [
+                    {
+                      "key": "accessories[].syncSchedule.type",
+                      "title": "${config.title.syncSchedule}",
+                      "flex": "0 0 auto"
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.time",
+                      "flex": "0 0 auto",
+                      "condition": {
+                          "functionBody": "return ['TIMEOUT', 'INTERVAL'].includes(model.accessories?.[arguments[1]]?.syncSchedule?.type);"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.units",
+                      "flex": "0 0 auto",
+                      "condition": {
+                          "functionBody": "return ['TIMEOUT', 'INTERVAL'].includes(model.accessories?.[arguments[1]]?.syncSchedule?.type);"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.cron",
+                      "flex": "0 0 auto",
+                      "condition": {
+                          "functionBody": "return model.accessories?.[arguments[1]]?.syncSchedule?.type === 'CRON';"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.cronCustom",
+                      "flex": "1 0 auto",
+                      "condition": {
+                          "functionBody": "return model.accessories?.[arguments[1]]?.syncSchedule?.cron === 'CRON_CUSTOM';"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.offset",
+                      "flex": "0 1 auto",
+                      "condition": {
+                          "functionBody": "return ['SUNRISE', 'SUNSET', 'DAWN', 'DUSK', 'GOLDEN_HOUR', 'NIGHT'].includes(model.accessories?.[arguments[1]]?.syncSchedule?.type);"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.latitude",
+                      "flex": "0 1 auto",
+                      "condition": {
+                          "functionBody": "return ['SUNRISE', 'SUNSET', 'DAWN', 'DUSK', 'GOLDEN_HOUR', 'NIGHT'].includes(model.accessories?.[arguments[1]]?.syncSchedule?.type);"
+                      }
+                    },
+                    {
+                      "key": "accessories[].syncSchedule.longitude",
+                      "flex": "0 1 auto",
+                      "condition": {
+                          "functionBody": "return ['SUNRISE', 'SUNSET', 'DAWN', 'DUSK', 'GOLDEN_HOUR', 'NIGHT'].includes(model.accessories?.[arguments[1]]?.syncSchedule?.type);"
+                      }
+                    }
+                  ]
                 }
               ]
             }

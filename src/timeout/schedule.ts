@@ -20,7 +20,7 @@ export class Schedule extends Timeout {
   static new(
     dependency: DummyAddonDependency,
     config: ScheduleConfig | TimerConfig | undefined,
-    strings: typeof i18n.schedule | typeof i18n.autoReset,
+    strings: typeof i18n.schedule,
     timeoutKey: string,
     callback:  () => Promise<void>): Schedule | undefined {
 

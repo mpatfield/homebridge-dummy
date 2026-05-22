@@ -214,8 +214,6 @@ const es = {
     unregisteredCharacteristic: 'No hay accesorios registrados para el comando del webhook %s. Hizo click en \'Activar Webhook\' para este accesorio?',
     unregisteredId: 'No hay ningún accesorio registrado para webhooks con el id %s. Puede encontrar el id correcto en la configuración JSON.',
     unsupportedCharacteristic: 'El comando webhook %s no está permitido',
-    validRange: 'El comando webhook %s espera un valor numérico entre %s y %s',
-    validValues: 'Los valores válidos para el comando webhook %s son:',
   },
 };
 
