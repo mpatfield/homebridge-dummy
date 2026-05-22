@@ -307,8 +307,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
           return;
         }
 
-        const log = webhook.setter(value, true);
-        this.logIfDesired(log);
+        webhook.setter(value, true);
       });
 
     } catch {
