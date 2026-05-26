@@ -1,5 +1,5 @@
 import { F_OK } from 'constants';
-import fakegato, { HistoryServiceProvider, HistoryService } from 'fakegato-history';
+import fakegato, { HistoryServiceProvider, HistoryService } from 'fakegato-history/fakegato-history.cjs';
 import { access, unlink } from 'fs/promises';
 import { API, CharacteristicValue, Nullable, PlatformAccessory } from 'homebridge';
 import path from 'path';

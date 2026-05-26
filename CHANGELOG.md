@@ -2,11 +2,14 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.8.0-beta.2 ()
+## 1.8.0-beta.3 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
+
+### Fixed
+- Fakegato runtime crash
 
 ### Added
 - [Sync Command & Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Commands#sync-command-and-schedule) to keep an accessory synchronized with some external entity

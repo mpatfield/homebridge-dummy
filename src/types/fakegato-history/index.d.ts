@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
- declare module 'fakegato-history' {
+ declare module 'fakegato-history/fakegato-history.cjs' {
 
   import { API, PlatformAccessory } from 'homebridge';
 
