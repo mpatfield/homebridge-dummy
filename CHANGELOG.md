@@ -2,25 +2,25 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.8.0-beta.3 ()
+## 1.8.0 (2026-05-30)
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
 -----
 
-### Fixed
-- Fakegato runtime crash
-
 ### Added
 - [Sync Command & Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Commands#sync-command-and-schedule) to keep an accessory synchronized with some external entity
 
+### Fixed
+- Crash on load for some users
+
 ### Changed
 - Cleanup old deprecated code
-    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure and Schedules or Auto-Resets
+    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure Schedules or Auto-Resets
 - Updated dependencies
 
 ### Notes
-Would you like to see Homebridge Dummy in your language? Please consider [getting involved](https://github.com/mpatfield/homebridge-dummy/issues/105). No coding experience required!
+Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
 
 ## 1.7.4 (2026-05-12)
 
@@ -35,6 +35,9 @@ Would you like to see Homebridge Dummy in your language? Please consider [gettin
 - Removed `beta` tag from `homebridge` dependency
 - Reduced noisy startup logging
 - Updated dependencies
+
+### Notes
+Would you like to see Homebridge Dummy in your language? Please consider [getting involved](https://github.com/mpatfield/homebridge-dummy/issues/105). No coding experience required!
 
 ## 1.7.3 (2026-05-04)
 
