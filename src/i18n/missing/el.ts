@@ -41,6 +41,13 @@ const el = {
     timeSeconds: '%s will synchronize in %s seconds', // accessory name, number
   },
 
+  thermostat: {
+    auto: '%s set to Auto', // accessory name
+    coolFuture: 'Settings %s to Cool…',
+    heatFuture: 'Settings %s to Heat…',
+    offFuture: 'Settings %s to Off…',
+  },
+
   webhook: {
     validRange: 'The %s characteristic expects a number value between %s and %s', // command name, number, number
     validValues: 'Valid values for the %s characteristic command are:', // command name

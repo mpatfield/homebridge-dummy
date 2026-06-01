@@ -213,8 +213,12 @@ const de = {
   },
 
   thermostat: {
+    auto: '%s set to Auto', // accessory name
     badValidStates: '%s has invalid value in %s. Must be one of: %s', // accessory name, variable name, list of state names
     badValidStatesType: '%s expects an array for %s', // accessory name, variable name
+    coolFuture: 'Settings %s to Cool…',
+    heatFuture: 'Settings %s to Heat…',
+    offFuture: 'Settings %s to Off…',
     targetC: '%s set to %d°C', // accessory name, number
     targetF: '%s set to %d°F', // accessory name, number
   },

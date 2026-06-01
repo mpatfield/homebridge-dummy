@@ -21,6 +21,7 @@ export type CharacteristicKey = HKCharacteristicKey | EveCharacteristicKey;
 
 export enum HKCharacteristicKey {
   Brightness = 'Brightness',
+  CurrentHeatingCoolingState = 'CurrentHeatingCoolingState',
   CurrentRelativeHumidity = 'CurrentRelativeHumidity',
   CurrentTemperature = 'CurrentTemperature',
   LockTargetState = 'LockTargetState',
