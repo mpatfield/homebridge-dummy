@@ -30,7 +30,7 @@ export class ButtonAccessory extends DummyAccessory<ButtonConfig> {
             this.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS,
             this.Characteristic.ProgrammableSwitchEvent.DOUBLE_PRESS,
             this.Characteristic.ProgrammableSwitchEvent.LONG_PRESS,
-          ], '0 (SINGLE_PRESS), 1 (DOUBLE_PRESS), 2 (LONG_PRESS)'),
+          ], `0 (${strings.button.singlePressTitle}), 1 (${strings.button.doublePressTitle}), 2 (${strings.button.longPressTitle})`),
         () => undefined,
         (value) => {
           this.onPress(value);

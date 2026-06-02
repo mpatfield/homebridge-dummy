@@ -24,8 +24,11 @@ const en = {
 
   button: {
     doublePress: '%s was double pressed', // accessory name
+    doublePressTitle: 'Double Press',
     longPress: '%s was long pressed', // accessory name
+    longPressTitle: 'Long Press',
     singlePress: '%s was single pressed', // accessory name
+    singlePressTitle: 'Single Press',
   },
 
   command: {
@@ -381,17 +384,17 @@ const en = {
   },
 
   thermostat: {
-    autoFuture: 'Settings %s to Auto…',
     auto: '%s set to Auto', // accessory name
+    autoFuture: 'Setting %s to Auto…', // accessory name
     badDefault: '%s has invalid default state %s. Must be one of: %s', // accessory name, input, list of state names
     badValidStates: '%s has invalid value in %s. Must be one of: %s', // accessory name, variable name, list of state names
     badValidStatesType: '%s expects an array for %s', // accessory name, variable name
     cool: '%s set to Cool', // accessory name
-    coolFuture: 'Settings %s to Cool…',
+    coolFuture: 'Setting %s to Cool…', // accessory name
     heat: '%s set to Heat', // accessory name
-    heatFuture: 'Settings %s to Heat…',
+    heatFuture: 'Setting %s to Heat…', // accessory name
     off: '%s set to Off', // accessory name
-    offFuture: 'Settings %s to Off…',
+    offFuture: 'Setting %s to Off…', // accessory name
     targetC: '%s set to %d°C', // accessory name, number
     targetF: '%s set to %d°F', // accessory name, number
   },

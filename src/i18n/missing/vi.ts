@@ -1,5 +1,11 @@
 const vi = {
 
+  button: {
+    doublePressTitle: 'Double Press',
+    longPressTitle: 'Long Press',
+    singlePressTitle: 'Single Press',
+  },
+
   command: {
     badSyncCommand: '%s sync command must produce valid JSON`', // accessory name
     unsupportedCharacteristic: '%s trying to sync unsupported characteristic %s', // accessory name, variable name
@@ -30,10 +36,10 @@ const vi = {
   },
 
   thermostat: {
-    auto: '%s set to Auto', // accessory name
-    coolFuture: 'Settings %s to Cool…',
-    heatFuture: 'Settings %s to Heat…',
-    offFuture: 'Settings %s to Off…',
+    autoFuture: 'Setting %s to Auto…', // accessory name
+    coolFuture: 'Setting %s to Cool…', // accessory name
+    heatFuture: 'Setting %s to Heat…', // accessory name
+    offFuture: 'Setting %s to Off…', // accessory name
   },
 
   webhook: {

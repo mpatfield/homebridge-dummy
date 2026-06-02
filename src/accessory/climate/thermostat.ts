@@ -23,6 +23,9 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
   private readonly STATE_HEAT: CharacteristicValue;
   private readonly STATE_OFF: CharacteristicValue;
 
+  private validCurrentStates: number[];
+  private validTargetStates: number[];
+
   private _currentState?: CharacteristicValue;
   private targetState: CharacteristicValue;
 
@@ -66,23 +69,25 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
               throw new Error();
             }
             return value as number;
-          });
+          }).sort();
         } catch {
           this.log.warning(strings.thermostat.badValidStates, this.name, '`validStates`', printableValues(ThermostatState));
         }
       }
     }
 
+    this.validCurrentStates = validStates.filter( value => value !== this.STATE_AUTO);
+    this.validTargetStates = validStates;
+
     this.service.getCharacteristic(dependency.Characteristic.CurrentHeatingCoolingState)
       .setProps({
-        validValues: validStates.filter( value => value !== this.STATE_AUTO),
+        validValues: this.validCurrentStates,
       })
       .onGet(this.getCurrentState.bind(this));
 
     this.service.getCharacteristic(dependency.Characteristic.TargetHeatingCoolingState)
       .setProps({
-        minStep: 1,
-        validValues: validStates,
+        validValues: this.validTargetStates,
       })
       .onGet(this.getTargetState.bind(this))
       .onSet(this.setTargetState.bind(this));
@@ -141,17 +146,17 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
 
   override get webhooks(): Webhook[] {
 
+    const stateStrings = new Map<number, string>([
+      [0, `0 (${strings.config.enumNames.off})`],
+      [1, `1 (${strings.config.enumNames.heat})`],
+      [2, `2 (${strings.config.enumNames.cool})`],
+      [3, `3 (${strings.config.enumNames.auto})`],
+    ]);
+
     return [
 
       new Webhook(this, HKCharacteristicKey.CurrentHeatingCoolingState,
-        new Values(
-          [
-            this.Characteristic.CurrentHeatingCoolingState.OFF,
-            this.Characteristic.CurrentHeatingCoolingState.HEAT,
-            this.Characteristic.CurrentHeatingCoolingState.COOL,
-          ],
-          '0 (OFF), 1 (HEAT), 2 (COOL)',
-        ),
+        new Values(this.validCurrentStates, this.validCurrentStates.map(state => stateStrings.get(state)).join(', ')),
         () => this.currentState,
         (value, syncOnly) => {
           this.setCurrentState(value, syncOnly);
@@ -160,15 +165,7 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
         this.config.disableLogging),
 
       new Webhook(this, HKCharacteristicKey.TargetHeatingCoolingState,
-        new Values(
-          [
-            this.Characteristic.TargetHeatingCoolingState.OFF,
-            this.Characteristic.TargetHeatingCoolingState.HEAT,
-            this.Characteristic.TargetHeatingCoolingState.COOL,
-            this.Characteristic.TargetHeatingCoolingState.AUTO,
-          ],
-          '0 (OFF), 1 (HEAT), 2 (COOL), 3 (AUTO)',
-        ),
+        new Values(this.validTargetStates, this.validTargetStates.map(state => stateStrings.get(state)).join(', ')),
         () => this.targetState,
         (value, syncOnly) => {
           this.setTargetState(value, syncOnly);
