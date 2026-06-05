@@ -92,7 +92,7 @@
     "ping": "^1.0.0",
     "suncalc": "^1.9.0",
     "tail-file": "^1.4.16"
-    },
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.3",
@@ -115,5 +115,9 @@
   "author": {
     "name": "mpatfield"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "allowScripts": {
+    "esbuild@0.28.0": true,
+    "fsevents@2.3.3": true
+  }
 }
