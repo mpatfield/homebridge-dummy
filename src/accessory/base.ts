@@ -1,5 +1,5 @@
 import { exec, ExecException } from 'child_process';
-import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+import { CharacteristicValue, EndpointType, MatterAccessory, MatterAPI, PlatformAccessory, Service, UnknownContext } from 'homebridge';
 import { promisify } from 'util';
 
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
@@ -19,7 +19,7 @@ import Limiter from '../timeout/limiter.js';
 import { Schedule } from '../timeout/schedule.js';
 
 import { Log } from '../tools/log.js';
-import { GetMatter } from '../tools/matter.js';
+import { GetMatter, MatterType, MatterUnsupportedDeviceType } from '../tools/matter.js';
 import { Storage } from '../tools/storage.js';
 import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';
@@ -49,7 +49,31 @@ export type DummyAddonDependency = {
 
 export type OnRecordHistory = (type: HistoryType, entry: HistoryEntry, updateLastActivation: boolean) => void
 
-export abstract class DummyAccessory<C extends DummyConfig> {
+export abstract class DummyAccessory<C extends DummyConfig> implements MatterAccessory {
+
+  private _UUID?: string;
+  public get UUID(): string {
+    if (!this._UUID) {
+      this._UUID = this.matter.uuid.generate(this.identifier);
+    }
+    return this._UUID;
+  }
+
+  public get deviceType(): EndpointType {
+
+    const type = this.getMatterType();
+    if (type !== undefined) {
+      return this.matter.deviceTypes[type];
+    }
+
+    return MatterUnsupportedDeviceType;
+  }
+
+  public readonly manufacturer = PLATFORM_NAME;
+  public readonly model: string;
+  public readonly serialNumber: string;
+  public readonly softwareVersion: string = getVersion();
+  public readonly context: UnknownContext;
 
   protected sensor?: SensorAccessory;
 
@@ -72,6 +96,16 @@ export abstract class DummyAccessory<C extends DummyConfig> {
   ) {
 
     const name = dependency.config.name;
+
+    this.model = dependency.config.type;
+    this.serialNumber = this.identifier;
+
+    this.context = {
+      serialNumber: this.serialNumber,
+      manufacturer: this.manufacturer,
+      model: this.model,
+      softwareVersion: this.softwareVersion,
+    };
 
     this.sensor = SensorAccessory.new(this.addonDependency, this.recordHistory.bind(this), dependency.config.sensor);
 
@@ -126,6 +160,10 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
   protected abstract getAccessoryType(): AccessoryType;
 
+  protected getMatterType(): MatterType | undefined {
+    return undefined;
+  };
+
   protected abstract trigger(): Promise<void>;
 
   protected abstract reset(): Promise<void>;
@@ -139,6 +177,10 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._autoReset?.teardown();
     this._limiter?.teardown();
     this._syncSchedule?.teardown();
+  }
+
+  private get matter(): MatterAPI {
+    return this.dependency.getMatter(this.displayName);
   }
 
   public abstract get webhooks(): Webhook[];
