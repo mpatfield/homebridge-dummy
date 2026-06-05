@@ -1,5 +1,10 @@
 import { isValid } from '../tools/validation.js';
 
+export enum AccessoryPlatform {
+  HomeKit = 'HomeKit',
+  Matter = 'Matter',
+}
+
 export enum AccessoryType {
   Door = 'Door',
   GarageDoorOpener = 'GarageDoorOpener',
@@ -15,11 +20,6 @@ export enum AccessoryType {
   Valve = 'Valve',
   Window = 'Window',
   WindowCovering = 'WindowCovering'
-}
-
-export enum AccessoryPlatform {
-  HomeKit = 'HomeKit',
-  Matter = 'Matter',
 }
 
 export type CharacteristicKey = HKCharacteristicKey | EveCharacteristicKey;
