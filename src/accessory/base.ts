@@ -11,6 +11,7 @@ import { strings } from '../i18n/i18n.js';
 import { ConditionManager } from '../model/conditions.js';
 import { AccessoryState, AccessoryType, CharacteristicKey, TimeUnits } from '../model/enums.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
+import { GetMatter, MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
 import { CharacteristicType, DummyConfig, ServiceType } from '../model/types.js';
 import { Webhook } from '../model/webhook.js';
@@ -19,7 +20,6 @@ import Limiter from '../timeout/limiter.js';
 import { Schedule } from '../timeout/schedule.js';
 
 import { Log } from '../tools/log.js';
-import { GetMatter, MatterType, MatterUnsupportedDeviceType } from '../tools/matter.js';
 import { Storage } from '../tools/storage.js';
 import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';

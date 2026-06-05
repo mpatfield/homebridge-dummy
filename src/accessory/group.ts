@@ -5,11 +5,11 @@ import { createDummyAccessory } from './helpers.js';
 
 import { ConditionManager } from '../model/conditions.js';
 import { History } from '../model/history.js';
+import { GetMatter } from '../model/matter.js';
 import { CharacteristicType, DummyConfig, GroupConfig, ServiceType } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
 import { Log } from '../tools/log.js';
-import { GetMatter } from '../tools/matter.js';
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
 import getVersion from '../tools/version.js';
 
