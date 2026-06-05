@@ -19,7 +19,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     super(dependency);
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.on = this.defaultState;
@@ -38,7 +38,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
         () => this.on,
         (value, syncOnly) => {
           this.setOn(value, syncOnly);
-          return this.logMessageForOnState(value).replace('%s', this.name);
+          return this.logMessageForOnState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

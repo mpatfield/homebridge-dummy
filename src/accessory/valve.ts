@@ -29,11 +29,11 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
     super(dependency);
 
     if (!isValid(ValveType, dependency.config.valveType)) {
-      this.log.warning(strings.valve.badType, this.name, `'${dependency.config.valveType}'`, printableValues(ValveType));
+      this.log.warning(strings.valve.badType, this.displayName, `'${dependency.config.valveType}'`, printableValues(ValveType));
     }
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.state = this.defaultState;
@@ -75,7 +75,7 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value ? 1 : 0, syncOnly);
-          return this.logMessageForState(value).replace('%s', this.name);
+          return this.logMessageForState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];
@@ -111,10 +111,10 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
     duration = Math.round(getDelay(rawTime, units) / SECOND);
 
     if (duration < MIN_DURATION) {
-      this.log.warning(strings.valve.minDuration, this.name);
+      this.log.warning(strings.valve.minDuration, this.displayName);
       duration = MIN_DURATION;
     } else if (duration > MAX_DURATION) {
-      this.log.warning(strings.valve.maxDuration, this.name);
+      this.log.warning(strings.valve.maxDuration, this.displayName);
       duration = MAX_DURATION;
     }
 

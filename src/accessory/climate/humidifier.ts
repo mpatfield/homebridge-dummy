@@ -24,11 +24,11 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     super(dependency);
 
     if (!isValid(HumidifierType, dependency.config.humidifierType)) {
-      this.log.warning(strings.humidifier.badType, this.name, `'${dependency.config.humidifierType}'`, printableValues(HumidifierType));
+      this.log.warning(strings.humidifier.badType, this.displayName, `'${dependency.config.humidifierType}'`, printableValues(HumidifierType));
     }
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.state = this.defaultState;
@@ -102,7 +102,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value ? 1 : 0, syncOnly);
-          return this.logMessageForState(value).replace('%s', this.name);
+          return this.logMessageForState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
 
@@ -111,7 +111,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.currentHumidity,
         (value) => {
           this.setCurrentHumidity(value);
-          return strings.sensor.humidity.replace('%s', this.name).replace('%d', value.toString());
+          return strings.sensor.humidity.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
 
@@ -120,7 +120,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.targetHumidity,
         (value) => {
           this.setTargetHumidity(value);
-          return strings.humidifier.targetHumidity.replace('%s', this.name).replace('%d', value.toString());
+          return strings.humidifier.targetHumidity.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
     ];

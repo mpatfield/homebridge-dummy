@@ -22,7 +22,7 @@ export class TemperatureSensorAccessory extends DummyAccessory<TemperatureSensor
     super(dependency);
 
     if (!isValid(TemperatureUnits, dependency.config.temperatureUnits)) {
-      this.log.warning(strings.sensor.badTemperatureUnits, this.name, `'${dependency.config.temperatureUnits}'`, printableValues(TemperatureUnits));
+      this.log.warning(strings.sensor.badTemperatureUnits, this.displayName, `'${dependency.config.temperatureUnits}'`, printableValues(TemperatureUnits));
     }
 
     this.service.getCharacteristic(dependency.Characteristic.CurrentTemperature)
@@ -44,7 +44,7 @@ export class TemperatureSensorAccessory extends DummyAccessory<TemperatureSensor
         (value, syncOnly) => {
           value = toCelsius(value as number, this.units);
           this.setTemperature(value, syncOnly);
-          return this.temperatureLogTemplateForCV(value).replace('%s', this.name);
+          return this.temperatureLogTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

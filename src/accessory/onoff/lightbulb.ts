@@ -85,7 +85,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
         () => this.brightness,
         (value) => {
           this.setBrightness(value);
-          return strings.lightbulb.brightness.replace('%s', this.name).replace('%d', value.toString());
+          return strings.lightbulb.brightness.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
     ];
@@ -168,7 +168,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
       strings.lightbulb.fadeHours,
     );
 
-    const delay: number = getDelay(rawTime, this.config.fadeOut.units, undefined, logStrings, this.log, this.name);
+    const delay: number = getDelay(rawTime, this.config.fadeOut.units, undefined, logStrings, this.log, this.displayName);
 
     this.fader?.start(Number(this.brightness), 0, delay, (value) => {
       if (value === 0) {

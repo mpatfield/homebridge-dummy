@@ -168,7 +168,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     return DummyAccessory.identifier(this.config);
   }
 
-  public get name(): string {
+  public get displayName(): string {
     return this.config.name;
   }
 
@@ -257,7 +257,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
       if (!this.isExecException(err)) {
         const message = err instanceof Error ? err.message : JSON.stringify(err);
-        this.log.error(`${strings.command.error}: %s`, this.name, message);
+        this.log.error(`${strings.command.error}: %s`, this.displayName, message);
         return;
       }
 
@@ -271,7 +271,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
           this.logIfDesired(`${strings.command.executed}: %s\n%s`, command, output);
         }
       } else {
-        this.log.error(`${strings.command.error}: %s (%s)`, this.name, command, exitCode, error ? `\n${error}` : undefined);
+        this.log.error(`${strings.command.error}: %s (%s)`, this.displayName, command, exitCode, error ? `\n${error}` : undefined);
       }
     }
   }
@@ -284,7 +284,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
     const result = await this.executeCommand(this.config.commandSync);
     if (!result) {
-      this.log.error(strings.command.badSyncCommand, this.name);
+      this.log.error(strings.command.badSyncCommand, this.displayName);
       return;
     }
 
@@ -296,7 +296,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
         const webhook = this.webhooks.find(webhook => webhook.characteristic === key);
         if (webhook === undefined) {
-          this.log.warning(strings.command.unsupportedCharacteristic, this.name, `'${key}'`);
+          this.log.warning(strings.command.unsupportedCharacteristic, this.displayName, `'${key}'`);
           return;
         }
 
@@ -304,7 +304,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
         const result = webhook.validateValue(value);
         if (result instanceof Error) {
-          this.log.error(`${this.name} - ${result.message}`);
+          this.log.error(`${this.displayName} - ${result.message}`);
           return;
         }
 
@@ -312,7 +312,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       });
 
     } catch {
-      this.log.error(strings.command.badSyncCommand, this.name);
+      this.log.error(strings.command.badSyncCommand, this.displayName);
     }
   }
 
@@ -340,6 +340,6 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       return;
     }
 
-    this.log.always(message, this.name, ...parameters);
+    this.log.always(message, this.displayName, ...parameters);
   }
 }

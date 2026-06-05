@@ -67,7 +67,9 @@ export class GarageDoorAccessory extends PositionAccessory<GarageDoorConfig> {
 
   override onTargetPositionChanged(_oldValue: number, newValue: number) {
 
-    if (this.config.simulation === undefined || !assert(this.log, this.name, this.config.simulation, 'enabled') || this.config.simulation.enabled !== true) {
+    if (this.config.simulation === undefined
+      || !assert(this.log, this.displayName, this.config.simulation, 'enabled')
+      || this.config.simulation.enabled !== true) {
       return;
     }
 

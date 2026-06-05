@@ -110,7 +110,7 @@ export class WebhookManager {
     for (const webhook of webhooks) {
       this.webhooks.push(webhook);
       if (!webhook.disableLogging) {
-        this.log.always(strings.webhook.register, webhook.accessory.name, `\`${webhook.accessory.identifier}\`` , `\`${webhook.characteristic}\``);
+        this.log.always(strings.webhook.register, webhook.accessory.displayName, `\`${webhook.accessory.identifier}\`` , `\`${webhook.characteristic}\``);
       }
     }
   }
@@ -327,7 +327,7 @@ tr:nth-child(even) {
     const exampleValue = webhook.validValues instanceof Range ? webhook.validValues.min : webhook.validValues.values[0];
     return `
   <tr>
-    <td>${webhook.accessory.name}</td>
+    <td>${webhook.accessory.displayName}</td>
     <td>${webhook.accessory.identifier}</td>
     <td>${webhook.characteristic}</td>
     <td>${webhook.validValues instanceof Range ? `${webhook.validValues.min} - ${webhook.validValues.max}` : webhook.validValues.asString}</td>

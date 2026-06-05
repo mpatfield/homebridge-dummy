@@ -27,13 +27,13 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     super(dependency);
 
     if (!isValid(Position, dependency.config.defaultPosition)) {
-      this.log.warning(strings.position.badDefault, this.name, `'${dependency.config.defaultPosition}'`, printableValues(Position));
+      this.log.warning(strings.position.badDefault, this.displayName, `'${dependency.config.defaultPosition}'`, printableValues(Position));
     }
 
     this.targetPosition = this.defaultPosition;
 
     if (this.config.simulation !== undefined) {
-      if (!assert(this.log, this.name, this.config.simulation, 'enabled')) {
+      if (!assert(this.log, this.displayName, this.config.simulation, 'enabled')) {
         this.config.simulation = undefined;
       } else if (this.config.simulation.enabled === true) {
         this.fader = new Fader(this.addonDependency);
@@ -102,7 +102,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
         () => this.targetPosition,
         (value, syncOnly) => {
           this.setTargetPosition(value, syncOnly);
-          return this.logTemplateForCV(value).replace('%s', this.name);
+          return this.logTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

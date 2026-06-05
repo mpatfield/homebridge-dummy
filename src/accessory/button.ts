@@ -34,7 +34,7 @@ export class ButtonAccessory extends DummyAccessory<ButtonConfig> {
         () => undefined,
         (value) => {
           this.onPress(value);
-          return this.stringForValue(value).replace('%s', this.name);
+          return this.stringForValue(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

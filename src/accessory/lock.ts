@@ -18,7 +18,7 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     super(dependency);
 
     if (!isValid(LockState, this.config.defaultLockState)) {
-      this.log.warning(strings.lock.badDefault, this.name, `'${dependency.config.defaultLockState}'`, printableValues(LockState));
+      this.log.warning(strings.lock.badDefault, this.displayName, `'${dependency.config.defaultLockState}'`, printableValues(LockState));
     }
 
     this.state = this.defaultLockState;
@@ -65,7 +65,7 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value, syncOnly);
-          return this.logTemplateForCV(value).replace('%s', this.name);
+          return this.logTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

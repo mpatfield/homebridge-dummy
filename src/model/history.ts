@@ -86,7 +86,7 @@ export class History {
       ...entry,
     };
 
-    this.log.ifVerbose(`${accessory.name} ${History.name}.${this.record.name}(${type}) — `, JSON.stringify(entry));
+    this.log.ifVerbose(`${accessory.displayName} ${History.name}.${this.record.name}(${type}) — `, JSON.stringify(entry));
 
     historyService.addEntry(entry);
 
@@ -163,7 +163,7 @@ export class History {
       return;
     }
 
-    this.log.ifVerbose(strings.history.cleanup, accessory.name);
+    this.log.ifVerbose(strings.history.cleanup, accessory.displayName);
 
     try {
       await unlink(filePath);
@@ -173,7 +173,7 @@ export class History {
         return;
       }
 
-      this.log.error(strings.history.cleanupFailed, accessory.name, filename);
+      this.log.error(strings.history.cleanupFailed, accessory.displayName, filename);
     }
   }
 
