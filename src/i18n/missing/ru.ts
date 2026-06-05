@@ -14,12 +14,15 @@ const ru = {
   config: {
 
     enumNames: {
+      homekit: 'HomeKit (Default)',
+      matter: 'Matter',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
     },
 
     title: {
       commandSync: 'Sync Command',
+      platform: 'Platform',
       sensorBehavior: 'Sensor Behavior',
       syncSchedule: 'Sync Schedule',
     },

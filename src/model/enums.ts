@@ -17,6 +17,11 @@ export enum AccessoryType {
   WindowCovering = 'WindowCovering'
 }
 
+export enum AccessoryPlatform {
+  HomeKit = 'HomeKit',
+  Matter = 'Matter',
+}
+
 export type CharacteristicKey = HKCharacteristicKey | EveCharacteristicKey;
 
 export enum HKCharacteristicKey {

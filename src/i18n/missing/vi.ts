@@ -13,8 +13,14 @@ const vi = {
 
   config: {
 
+    enumNames: {
+      homekit: 'HomeKit (Default)',
+      matter: 'Matter',
+    },
+
     title: {
       commandSync: 'Sync Command',
+      platform: 'Platform',
       syncSchedule: 'Sync Schedule',
     },
 

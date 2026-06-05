@@ -485,6 +485,13 @@
               "enum": ["Door", "GarageDoorOpener", "HumidifierDehumidifier", "HumiditySensor", "Lightbulb", "LockMechanism", "Outlet", "StatelessProgrammableSwitch", "Switch", "TemperatureSensor", "Thermostat", "Valve", "Window", "WindowCovering"],
               "enumNames": ["${config.enumNames.door}", "${config.enumNames.garageDoorOpener}", "${config.enumNames.humidifierDehumidifier}", "${config.enumNames.humiditySensor}", "${config.enumNames.lightbulb}", "${config.enumNames.lockMechanism}", "${config.enumNames.outlet}", "${config.enumNames.button}", "${config.enumNames.switch}", "${config.enumNames.temperatureSensor}", "${config.enumNames.thermostat}", "${config.enumNames.valve}", "${config.enumNames.window}", "${config.enumNames.windowCovering}"]
             },
+            "platform": {
+              "type": "string",
+              "title": "${config.title.platform}",
+              "enum": [ "HomeKit", "Matter"],
+              "enumNames": ["${config.enumNames.homekit}", "${config.enumNames.matter}"],
+              "default": "HomeKit"
+            },
             "groupName": {
               "type": "string",
               "title": "${config.title.groupName}"
@@ -703,16 +710,26 @@
                   },
                   "items": [
                     {
+                      "key": "accessories[].platform",
+                      "flex": "0 0 auto",
+                      "condition": {
+                        "functionBody": "return ['Outlet','Switch'].includes(model.accessories?.[arguments[1]]?.type);"
+                      }
+                    },
+                    {
                       "key": "accessories[].defaultState",
-                      "flex": "0 0 33%"
+                      "flex": "0 0 auto"
                     },
                     {
                       "key": "accessories[].sensor.type",
-                      "flex": "0 0 33%"
+                      "flex": "0 0 auto",
+                      "condition": {
+                        "functionBody": "return model.accessories?.[arguments[1]]?.platform !== 'Matter';"
+                      }
                     },
                     {
                       "key": "accessories[].sensor.behavior",
-                      "flex": "0 0 33%",
+                      "flex": "0 0 auto",
                       "condition": {
                         "functionBody": "return model.accessories?.[arguments[1]]?.sensor.type !== undefined;"
                       }
@@ -871,7 +888,7 @@
                       "key": "accessories[].enableHistory",
                       "flex": "0 0 auto",
                       "condition": {
-                        "functionBody": "return ['Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
+                        "functionBody": "return model.accessories?.[arguments[1]]?.platform !== 'Matter' && ['Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
                       }
                     },
                     {
