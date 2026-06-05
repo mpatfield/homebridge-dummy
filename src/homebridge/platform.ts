@@ -89,6 +89,15 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     const history = new History(this.api, this.log);
 
+    const getMatter = (caller: string) => {
+
+      if (!this.api.matter) {
+        throw new Error(strings.startup.matterDisabled.replace('%s', caller));
+      }
+
+      return this.api.matter;
+    };
+
     for (const accessoryConfig of accessories) {
 
       if (accessoryConfig.groupName?.length) {
@@ -110,6 +119,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       const dependency: DummyAccessoryDependency<DummyConfig> = {
         Service: this.Service,
         Characteristic: this.Characteristic,
+        getMatter,
         platformAccessory,
         config: accessoryConfig,
         conditionManager: this.conditionManager,
@@ -142,6 +152,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       const dependency: GroupAccessoryDependency = {
         Service: this.Service,
         Characteristic: this.Characteristic,
+        getMatter,
         platformAccessory: platformAccessory,
         conditionManager: this.conditionManager,
         log: this.log,
@@ -160,8 +171,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     this.webhookManager.startServer();
 
-    const randIndex = Math.floor(Math.random() * strings.startup.welcome.length);
-    this.log.always(`${strings.startup.setupComplete}\n${strings.startup.welcome[randIndex]}`);
+    this.log.always(strings.startup.setupComplete);
   }
 
   private createPlatformAccessory(id: string, name: string): PlatformAccessory {

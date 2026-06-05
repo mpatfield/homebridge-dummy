@@ -191,10 +191,6 @@ const es = {
     restoringAccessory: 'Restaurando accesorio:',
     setupComplete: '✓ Configuración completa',
     unsupportedType: 'Tipo de accesorio no compatible %s',
-    welcome: [
-      'Por favor ★ (ponga una estrella) en este plugin en GitHub si lo encuentra útil! https://github.com/mpatfield/homebridge-dummy',
-      '¿Le gustaría patrocinar este plugin? https://github.com/sponsors/mpatfield',
-    ],
   },
 
   thermostat: {

@@ -9,12 +9,14 @@ import { CharacteristicType, DummyConfig, GroupConfig, ServiceType } from '../mo
 import { WebhookManager } from '../model/webhook.js';
 
 import { Log } from '../tools/log.js';
+import { GetMatter } from '../tools/matter.js';
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
 import getVersion from '../tools/version.js';
 
 export type GroupAccessoryDependency = {
     Service: ServiceType,
     Characteristic: CharacteristicType,
+    getMatter: GetMatter,
     platformAccessory: PlatformAccessory,
     conditionManager: ConditionManager,
     log: Log,

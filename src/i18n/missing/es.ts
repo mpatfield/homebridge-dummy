@@ -200,6 +200,10 @@ const es = {
     temperatureF: '%s is %d°F', // accessory name, number
   },
 
+  startup: {
+    matterDisabled: '%s requires "Enable Matter" to be turned on in the parent bridge', // accessory name
+  },
+
   syncSchedule: {
     badType: '%s has invalid sync schedule type %s. Must be one of: %s', // accessory name, input, list of type names
     badUnits: '%s sync schedule has invalid time units %s. Must be one of: %s', // accessory name, input, list of unit names

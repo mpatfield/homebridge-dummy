@@ -357,15 +357,11 @@ const en = {
 
   startup: {
     newAccessory: 'Adding new accessory:',
+    matterDisabled: '%s requires "Enable Matter" to be turned on in the parent bridge', // accessory name
     removeAccessory: 'Removing accessory:',
     restoringAccessory: 'Restoring accessory:',
     setupComplete: '✓ Setup complete',
     unsupportedType: 'Unsupported accessory type %s', // accessory type
-    welcome: [
-      'Please ★ this plugin on GitHub if you\'re finding it useful! https://github.com/mpatfield/homebridge-dummy',
-      'Would you like to sponsor this plugin? https://github.com/sponsors/mpatfield',
-      'Want to see this plugin in your own language? Please visit https://github.com/mpatfield/homebridge-dummy/issues/105',
-    ],
   },
 
   syncSchedule: {

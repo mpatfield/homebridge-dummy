@@ -191,10 +191,6 @@ const de = {
     restoringAccessory: 'Gerät wird wiederhergestellt:',
     setupComplete: '✓ Einrichtung abgeschlossen',
     unsupportedType: 'Nicht unterstützter Gerätetyp %s',
-    welcome: [
-      'Bitte geben Sie diesem Plugin einen ★ auf GitHub, wenn Sie es nützlich finden! https://github.com/mpatfield/homebridge-dummy',
-      'Möchten Sie dieses Plugin sponsern? https://github.com/sponsors/mpatfield',
-    ],
   },
 
   thermostat: {

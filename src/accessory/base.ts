@@ -19,6 +19,7 @@ import Limiter from '../timeout/limiter.js';
 import { Schedule } from '../timeout/schedule.js';
 
 import { Log } from '../tools/log.js';
+import { GetMatter } from '../tools/matter.js';
 import { Storage } from '../tools/storage.js';
 import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';
@@ -26,6 +27,7 @@ import getVersion from '../tools/version.js';
 export type DummyAccessoryDependency<C extends DummyConfig> = {
   Service: ServiceType,
   Characteristic: CharacteristicType,
+  getMatter: GetMatter,
   platformAccessory: PlatformAccessory,
   config: C,
   conditionManager: ConditionManager,
