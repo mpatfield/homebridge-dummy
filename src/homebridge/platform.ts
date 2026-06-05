@@ -1,4 +1,4 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory } from 'homebridge';
+import { API, DynamicPlatformPlugin, Logger } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
 
@@ -11,7 +11,7 @@ import { setLanguage, strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
 import { History } from '../model/history.js';
-import { DummyConfig, DummyPlatformConfig, GroupConfig } from '../model/types.js';
+import { DummyConfig, DummyPlatformConfig, GroupConfig, HomeKitAccessory } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
 import { Log } from '../tools/log.js';
@@ -21,7 +21,7 @@ import getVersion from '../tools/version.js';
 export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
   private readonly log: Log;
 
-  private readonly homekitAccessories: Map<string, PlatformAccessory> = new Map();
+  private readonly homekitAccessories: Map<string, HomeKitAccessory> = new Map();
 
   private readonly dummyAccessories: (DummyAccessory<DummyConfig> | GroupAccessory)[] = [];
 
@@ -60,9 +60,9 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     });
   }
 
-  configureAccessory(platformAccessory: PlatformAccessory): void {
-    this.log.ifVerbose(strings.startup.restoringAccessory, platformAccessory.displayName);
-    this.homekitAccessories.set(platformAccessory.context.identifier, platformAccessory);
+  configureAccessory(accessory: HomeKitAccessory): void {
+    this.log.ifVerbose(strings.startup.restoringAccessory, accessory.displayName);
+    this.homekitAccessories.set(accessory.context.identifier, accessory);
   }
 
   private teardown() {
@@ -77,45 +77,36 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     await Storage.init(this.api.user.persistPath());
 
-    const keepIdentifiers = new Set<string>();
+    const homekitKeepIdentifiers = new Set<string>();
 
     const accessories: DummyConfig[] = this.config.accessories || [];
-    const groupAccessories = new Map<string, GroupConfig>();
+    const homekitGroupAccessories = new Map<string, GroupConfig>();
 
     const history = new History(this.api, this.log);
-
-    const getMatter = (caller: string) => {
-
-      if (!this.api.matter) {
-        throw new Error(strings.startup.matterDisabled.replace('%s', caller));
-      }
-
-      return this.api.matter;
-    };
 
     for (const accessoryConfig of accessories) {
 
       if (accessoryConfig.groupName?.length) {
-        const groupConfig: GroupConfig = groupAccessories.get(accessoryConfig.groupName) || { accessories: [] };
+        const groupConfig: GroupConfig = homekitGroupAccessories.get(accessoryConfig.groupName) || { accessories: [] };
         groupConfig.accessories.push(accessoryConfig);
-        groupAccessories.set(accessoryConfig.groupName, groupConfig);
+        homekitGroupAccessories.set(accessoryConfig.groupName, groupConfig);
         continue;
       }
 
       const id = DummyAccessory.identifier(accessoryConfig);
-      keepIdentifiers.add(id);
+      homekitKeepIdentifiers.add(id);
 
-      const platformAccessory = this.homekitAccessories.get(id) ?? this.createHomeKitAccessory(id, accessoryConfig.name);
+      const homekitAccessory = this.homekitAccessories.get(id) ?? this.createHomeKitAccessory(id, accessoryConfig.name);
 
-      if (platformAccessory.displayName !== accessoryConfig.name) {
-        platformAccessory.updateDisplayName(accessoryConfig.name);
+      if (homekitAccessory.displayName !== accessoryConfig.name) {
+        homekitAccessory.updateDisplayName(accessoryConfig.name);
       }
 
       const dependency: DummyAccessoryDependency<DummyConfig> = {
         Service: this.api.hap.Service,
         Characteristic: this.api.hap.Characteristic,
-        getMatter,
-        platformAccessory,
+        getMatter: () => this.api.matter,
+        homekitAccessory,
         config: accessoryConfig,
         conditionManager: this.conditionManager,
         log: this.log,
@@ -135,20 +126,20 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       this.dummyAccessories.push(dummyAccessory);
     }
 
-    for (const groupName of groupAccessories.keys()) {
+    for (const groupName of homekitGroupAccessories.keys()) {
 
-      const groupConfig: GroupConfig = groupAccessories.get(groupName)!;
+      const groupConfig: GroupConfig = homekitGroupAccessories.get(groupName)!;
 
       const id = GroupAccessory.identifier(groupName);
-      keepIdentifiers.add(id);
+      homekitKeepIdentifiers.add(id);
 
-      const platformAccessory = this.homekitAccessories.get(id) ?? this.createHomeKitAccessory(id, groupName);
+      const homekitAccessory = this.homekitAccessories.get(id) ?? this.createHomeKitAccessory(id, groupName);
 
       const dependency: GroupAccessoryDependency = {
         Service: this.api.hap.Service,
         Characteristic: this.api.hap.Characteristic,
-        getMatter,
-        platformAccessory: platformAccessory,
+        getMatter: () => this.api.matter,
+        homekitAccessory: homekitAccessory,
         conditionManager: this.conditionManager,
         log: this.log,
         history,
@@ -159,7 +150,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     }
 
     this.homekitAccessories.forEach(accessory => {
-      if (!keepIdentifiers.has(accessory.context.identifier)) {
+      if (!homekitKeepIdentifiers.has(accessory.context.identifier)) {
         this.removeHomeKitAccessory(accessory);
       }
     });
@@ -169,7 +160,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     this.log.always(strings.startup.setupComplete);
   }
 
-  private createHomeKitAccessory(id: string, name: string): PlatformAccessory {
+  private createHomeKitAccessory(id: string, name: string): HomeKitAccessory {
 
     this.log.always(strings.startup.newAccessory, name);
 
@@ -185,9 +176,9 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     return accessory;
   }
 
-  private removeHomeKitAccessory(platformAccessory: PlatformAccessory) {
-    this.log.always(strings.startup.removeAccessory, platformAccessory.displayName);
-    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [platformAccessory]);
-    this.homekitAccessories.delete(platformAccessory.context.identifier);
+  private removeHomeKitAccessory(accessory: HomeKitAccessory) {
+    this.log.always(strings.startup.removeAccessory, accessory.displayName);
+    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+    this.homekitAccessories.delete(accessory.context.identifier);
   }
 }

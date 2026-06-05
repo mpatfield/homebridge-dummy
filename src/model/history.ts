@@ -1,11 +1,11 @@
 import { F_OK } from 'constants';
 import fakegato, { HistoryServiceProvider, HistoryService } from 'fakegato-history/fakegato-history.cjs';
 import { access, unlink } from 'fs/promises';
-import { API, CharacteristicValue, Nullable, PlatformAccessory } from 'homebridge';
+import { API, CharacteristicValue, Nullable } from 'homebridge';
 import path from 'path';
 
 import { EveCharacteristicKey } from './enums.js';
-import { DummyConfig } from './types.js';
+import { DummyConfig, HomeKitAccessory } from './types.js';
 
 import { DummyAccessory } from '../accessory/base.js';
 import { EveCharacteristic } from '../accessory/characteristic/eve.js';
@@ -44,7 +44,7 @@ let ServiceProvider: HistoryServiceProvider | undefined;
 
 const HISTORY_UUID = 'dbca6d94-6d1b-45e1-9feb-daf030819984';
 
-function HistoryService(type: HistoryType, accessory: PlatformAccessory, options?: HistoryOptions): HistoryService {
+function HistoryService(type: HistoryType, accessory: HomeKitAccessory, options?: HistoryOptions): HistoryService {
 
   if (!ServiceProvider) {
     throw new Error('HistoryServiceProvider not initialized');
@@ -108,7 +108,7 @@ export class History {
       filename: this.getFilename(accessory),
     };
 
-    const historyService = HistoryService(type, accessory.platformAccessory, options);
+    const historyService = HistoryService(type, accessory.homekitAccessory, options);
     this.historyServices.set(accessory.identifier, historyService);
 
     if (!addLastActivation) {

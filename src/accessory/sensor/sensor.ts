@@ -1,4 +1,4 @@
-import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+import { CharacteristicValue, Service } from 'homebridge';
 
 import { DummyAddonDependency, OnRecordHistory } from '../base.js';
 
@@ -8,7 +8,7 @@ import { strings } from '../../i18n/i18n.js';
 
 import { EveCharacteristicKey, SensorType, SensorCharacteristic, SensorBehavior }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
-import { ServiceType, SensorConfig } from '../../model/types.js';
+import { ServiceType, SensorConfig, HomeKitAccessory } from '../../model/types.js';
 
 import { Timeout } from '../../timeout/timeout.js';
 
@@ -55,20 +55,20 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
       return new SensorAccessory(sensor, dependency, historyRecorder);
     }
 
-    SensorAccessory.removeUnwantedServices(dependency.Service, dependency.platformAccessory);
+    SensorAccessory.removeUnwantedServices(dependency.Service, dependency.homekitAccessory);
 
     return;
   }
 
-  private static removeUnwantedServices(Service: ServiceType, platformAccessory: PlatformAccessory, keep?: SensorType) {
+  private static removeUnwantedServices(Service: ServiceType, homekitAccessory: HomeKitAccessory, keep?: SensorType) {
     for (const type of Object.values(SensorType)) {
       if (type === keep) {
         continue;
       }
 
-      const existingService = platformAccessory.getService(Service[type]);
+      const existingService = homekitAccessory.getService(Service[type]);
       if (existingService) {
-        platformAccessory.removeService(existingService);
+        homekitAccessory.removeService(existingService);
       }
     }
   }
@@ -76,8 +76,8 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
   private constructor(private readonly config: SensorConfig, dependency: DummyAddonDependency, private readonly historyRecorder: OnRecordHistory) {
     super(dependency);
 
-    this.service = dependency.platformAccessory.getService(dependency.Service[config.type]) ||
-      dependency.platformAccessory.addService(dependency.Service[config.type]);
+    this.service = dependency.homekitAccessory.getService(dependency.Service[config.type]) ||
+      dependency.homekitAccessory.addService(dependency.Service[config.type]);
 
     const characteristicInstance = dependency.Characteristic[this.sensorInfo.characteristic];
     this.service.getCharacteristic(characteristicInstance)
@@ -87,7 +87,7 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
       setupTimesOpened(this);
     }
 
-    SensorAccessory.removeUnwantedServices(dependency.Service, dependency.platformAccessory, config.type);
+    SensorAccessory.removeUnwantedServices(dependency.Service, dependency.homekitAccessory, config.type);
   }
 
   private async onGet(): Promise<CharacteristicValue> {

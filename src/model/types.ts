@@ -1,4 +1,6 @@
-import { AccessoryConfig, CharacteristicValue, PlatformConfig } from 'homebridge';
+import { AccessoryConfig, CharacteristicValue, PlatformAccessory, PlatformConfig } from 'homebridge';
+
+export type HomeKitAccessory = PlatformAccessory;
 
 export type ServiceType = typeof import('homebridge').Service;
 export type CharacteristicType = typeof import('homebridge').Characteristic;

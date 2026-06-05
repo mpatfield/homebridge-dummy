@@ -1,12 +1,10 @@
-import { PlatformAccessory } from 'homebridge';
-
 import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 import { createDummyAccessory } from './helpers.js';
 
 import { ConditionManager } from '../model/conditions.js';
 import { History } from '../model/history.js';
 import { GetMatter } from '../model/matter.js';
-import { CharacteristicType, DummyConfig, GroupConfig, ServiceType } from '../model/types.js';
+import { CharacteristicType, DummyConfig, GroupConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
 import { Log } from '../tools/log.js';
@@ -17,7 +15,7 @@ export type GroupAccessoryDependency = {
     Service: ServiceType,
     Characteristic: CharacteristicType,
     getMatter: GetMatter,
-    platformAccessory: PlatformAccessory,
+    homekitAccessory: HomeKitAccessory,
     conditionManager: ConditionManager,
     log: Log,
     history: History
@@ -33,10 +31,10 @@ export class GroupAccessory {
 
   constructor(dependency: GroupAccessoryDependency, config: GroupConfig, webhookManager: WebhookManager) {
 
-    dependency.platformAccessory.getService(dependency.Service.AccessoryInformation)!
+    dependency.homekitAccessory.getService(dependency.Service.AccessoryInformation)!
       .setCharacteristic(dependency.Characteristic.Manufacturer, PLUGIN_ALIAS)
       .setCharacteristic(dependency.Characteristic.Model, GroupAccessory.name)
-      .setCharacteristic(dependency.Characteristic.SerialNumber, dependency.platformAccessory.UUID)
+      .setCharacteristic(dependency.Characteristic.SerialNumber, dependency.homekitAccessory.UUID)
       .setCharacteristic(dependency.Characteristic.FirmwareRevision, getVersion());
 
     const servicesToKeep = new Map<string, string>();
@@ -62,9 +60,9 @@ export class GroupAccessory {
       this.accessories.push(dummyAccessory);
     };
 
-    for (const service of [...dependency.platformAccessory.services]) {
+    for (const service of [...dependency.homekitAccessory.services]) {
       if (service.subtype !== undefined && servicesToKeep.get(service.subtype) !== service.UUID) {
-        dependency.platformAccessory.removeService(service);
+        dependency.homekitAccessory.removeService(service);
       }
     }
   }

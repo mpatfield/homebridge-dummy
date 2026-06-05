@@ -3,7 +3,7 @@ import { DeviceTypeId } from '@matter/types';
 
 import { EndpointType, MatterAPI } from 'homebridge';
 
-export type GetMatter = (caller: string) => MatterAPI;
+export type GetMatter = () => MatterAPI | undefined;
 
 export const MatterUnsupportedDeviceType: EndpointType = {
   name: 'MatterUnsupportedDeviceType',
