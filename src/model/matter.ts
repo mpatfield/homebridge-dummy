@@ -20,6 +20,7 @@ export function MatterClusterPath(characteristicKey: MatterCharacteristicKey, va
 }
 
 export enum MatterType {
+  OnOffSwitch = 'OnOffSwitch',
 }
 
 export enum MatterCharacteristicKey {
