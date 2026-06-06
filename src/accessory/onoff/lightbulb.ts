@@ -6,7 +6,7 @@ import { DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, FadeOutType, HKCharacteristicKey, ScheduleType } from '../../model/enums.js';
+import { FadeOutType, HKCharacteristicKey, HomeKitType, ScheduleType } from '../../model/enums.js';
 import { LightbulbConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 
@@ -73,8 +73,8 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     return this.config.isDimmer ?? this.config.defaultBrightness !== undefined;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Lightbulb;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Lightbulb;
   }
 
   override get webhooks(): Webhook[] {

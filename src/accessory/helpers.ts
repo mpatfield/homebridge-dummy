@@ -17,39 +17,39 @@ import { ValveAccessory } from './valve.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType } from '../model/enums.js';
+import { HomeKitType } from '../model/enums.js';
 import { DummyConfig } from '../model/types.js';
 
 export function createDummyAccessory(dependency: DummyAccessoryDependency<DummyConfig>): DummyAccessory<DummyConfig> | null {
 
   switch(dependency.config.type) {
-  case AccessoryType.Door:
+  case HomeKitType.Door:
     return new DoorAccessory(dependency);
-  case AccessoryType.GarageDoorOpener:
+  case HomeKitType.GarageDoorOpener:
     return new GarageDoorAccessory(dependency);
-  case AccessoryType.HumidifierDehumidifier:
+  case HomeKitType.HumidifierDehumidifier:
     return new HumidifierAccessory(dependency);
-  case AccessoryType.HumiditySensor:
+  case HomeKitType.HumiditySensor:
     return new HumiditySensorAccessory(dependency);
-  case AccessoryType.Lightbulb:
+  case HomeKitType.Lightbulb:
     return new LightbulbAccessory(dependency);
-  case AccessoryType.LockMechanism:
+  case HomeKitType.LockMechanism:
     return new LockAccessory(dependency);
-  case AccessoryType.Outlet:
+  case HomeKitType.Outlet:
     return new OutletAccessory(dependency);
-  case AccessoryType.StatelessProgrammableSwitch:
+  case HomeKitType.StatelessProgrammableSwitch:
     return new ButtonAccessory(dependency);
-  case AccessoryType.Switch:
+  case HomeKitType.Switch:
     return new SwitchAccessory(dependency);
-  case AccessoryType.TemperatureSensor:
+  case HomeKitType.TemperatureSensor:
     return new TemperatureSensorAccessory(dependency);
-  case AccessoryType.Thermostat:
+  case HomeKitType.Thermostat:
     return new ThermostatAccessory(dependency);
-  case AccessoryType.Valve:
+  case HomeKitType.Valve:
     return new ValveAccessory(dependency);
-  case AccessoryType.Window:
+  case HomeKitType.Window:
     return new WindowAccessory(dependency);
-  case AccessoryType.WindowCovering:
+  case HomeKitType.WindowCovering:
     return new BlindAccessory(dependency);
   default:
     dependency.log.error(strings.startup.unsupportedType, `'${dependency.config.type}'`);

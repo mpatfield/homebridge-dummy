@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, ThermostatState, TemperatureUnits }  from '../../model/enums.js';
+import { HKCharacteristicKey, ThermostatState, TemperatureUnits, HomeKitType }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { ThermostatConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';
@@ -140,8 +140,8 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
     }
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Thermostat;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Thermostat;
   }
 
   override get webhooks(): Webhook[] {

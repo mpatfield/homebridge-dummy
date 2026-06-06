@@ -6,7 +6,7 @@ export type ServiceType = typeof import('homebridge').Service;
 export type CharacteristicType = typeof import('homebridge').Characteristic;
 
 import {
-  AccessoryState, AccessoryType, ConditionOperator, FadeOutType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
+  AccessoryState, ConditionOperator, FadeOutType, HomeKitType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
   Platform, Position, ScheduleType, SensorBehavior, SensorType, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
 } from './enums.js';
 
@@ -127,7 +127,7 @@ export type FadeOutConfig = Assertable & {
 export type DummyConfig = {
   id: string,
   name: string,
-  type: AccessoryType,
+  type: HomeKitType,
   platform: Platform,
   groupName?: string,
   sensor?: SensorConfig,

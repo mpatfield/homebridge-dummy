@@ -5,7 +5,7 @@ export enum Platform {
   Matter = 'Matter',
 }
 
-export enum AccessoryType {
+export enum HomeKitType {
   Door = 'Door',
   GarageDoorOpener = 'GarageDoorOpener',
   HumidifierDehumidifier = 'HumidifierDehumidifier',

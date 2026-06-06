@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, LockState, HKCharacteristicKey, SensorBehavior }  from '../model/enums.js';
+import { LockState, HKCharacteristicKey, SensorBehavior, HomeKitType }  from '../model/enums.js';
 import { LockConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
@@ -51,8 +51,8 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     await this.setState(state);
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.LockMechanism;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.LockMechanism;
   }
 
   override get webhooks(): Webhook[] {

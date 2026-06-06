@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType, OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
 import { ValveConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
@@ -17,8 +17,8 @@ const MAX_DURATION = 3600;
 
 export class ValveAccessory extends DummyAccessory<ValveConfig> {
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Valve;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Valve;
   }
 
   private state: CharacteristicValue;

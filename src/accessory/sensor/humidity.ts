@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { HumiditySensorConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
@@ -22,8 +22,8 @@ export class HumiditySensorAccessory extends DummyAccessory<HumiditySensorConfig
     this.humidity = (this.isStateful ? this.getProperty(HKCharacteristicKey.CurrentRelativeHumidity) : 0) ?? 0;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.HumiditySensor;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.HumiditySensor;
   }
 
   override get webhooks(): Webhook[] {

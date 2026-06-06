@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, HumidifierType, OnState }  from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType, HumidifierType, OnState }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { HumidifierConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';
@@ -89,8 +89,8 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     }
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.HumidifierDehumidifier;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.HumidifierDehumidifier;
   }
 
   override get webhooks(): Webhook[] {

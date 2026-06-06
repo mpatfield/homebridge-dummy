@@ -4,7 +4,7 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, TemperatureUnits } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType, TemperatureUnits } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { TemperatureSensorConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
@@ -31,8 +31,8 @@ export class TemperatureSensorAccessory extends DummyAccessory<TemperatureSensor
     this.temperature = (this.isStateful ? this.getProperty(HKCharacteristicKey.CurrentTemperature) : 0) ?? 0;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.TemperatureSensor;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.TemperatureSensor;
   }
 
   override get webhooks(): Webhook[] {

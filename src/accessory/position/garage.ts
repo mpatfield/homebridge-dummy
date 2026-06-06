@@ -4,7 +4,7 @@ import { DEFAULT_OPEN_CLOSE_DURATION, PositionAccessory } from './position.js';
 
 import { DummyAccessoryDependency } from '../base.js';
 
-import { AccessoryType, HKCharacteristicKey, TimeUnits } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType, TimeUnits } from '../../model/enums.js';
 import { GarageDoorConfig } from '../../model/types.js';
 import { Values } from '../../model/webhook.js';
 
@@ -25,8 +25,8 @@ export class GarageDoorAccessory extends PositionAccessory<GarageDoorConfig> {
       .onGet( async () => false );
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.GarageDoorOpener;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.GarageDoorOpener;
   }
 
   override get hasPositionState() {

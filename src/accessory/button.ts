@@ -4,14 +4,14 @@ import { DummyAccessory } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey } from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/enums.js';
 import { ButtonConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
 export class ButtonAccessory extends DummyAccessory<ButtonConfig> {
 
-  protected getAccessoryType(): AccessoryType {
-    return AccessoryType.StatelessProgrammableSwitch;
+  protected getHomeKitType(): HomeKitType {
+    return HomeKitType.StatelessProgrammableSwitch;
   }
 
   override async trigger(): Promise<void> {

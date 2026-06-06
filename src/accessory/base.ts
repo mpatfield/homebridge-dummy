@@ -9,7 +9,7 @@ import { SensorAccessory } from './sensor/sensor.js';
 import { strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { AccessoryState, AccessoryType, CharacteristicKey, Platform, TimeUnits } from '../model/enums.js';
+import { AccessoryState, HomeKitType, CharacteristicKey, Platform, TimeUnits } from '../model/enums.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
 import { MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
@@ -131,7 +131,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       return;
     }
 
-    const serviceInstance = this.homekit.Service[this.getAccessoryType()];
+    const serviceInstance = this.homekit.Service[this.getHomeKitType()];
 
     if (dependency.isGrouped) {
 
@@ -157,15 +157,15 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
     this._service = this.homekit.accessory.getService(serviceInstance) || this.homekit.accessory.addService(serviceInstance);
 
-    for (const type of Object.values(AccessoryType)) {
+    for (const type of Object.values(HomeKitType)) {
       const existingService = this.homekit.accessory.getService(this.homekit.Service[type]);
-      if (existingService && type !== this.getAccessoryType()) {
+      if (existingService && type !== this.getHomeKitType()) {
         this.homekit.accessory.removeService(existingService);
       }
     }
   }
 
-  protected abstract getAccessoryType(): AccessoryType;
+  protected abstract getHomeKitType(): HomeKitType;
 
   protected getMatterType(): MatterType | undefined {
     return undefined;
