@@ -6,8 +6,9 @@ import { EveCharacteristicHost, incrementTimesOpened, setupTimesOpened } from '.
 
 import { strings } from '../../i18n/i18n.js';
 
-import { EveCharacteristicKey, SensorType, SensorCharacteristic, SensorBehavior }  from '../../model/enums.js';
+import { SensorBehavior }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { EveCharacteristicKey, SensorCharacteristic, SensorType } from '../../model/homekit.js';
 import { ServiceType, SensorConfig, HomeKitAccessory, CharacteristicType } from '../../model/types.js';
 
 import { Timeout } from '../../timeout/timeout.js';

@@ -9,7 +9,8 @@ import { SensorAccessory } from './sensor/sensor.js';
 import { strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { AccessoryState, HomeKitType, CharacteristicKey, Platform, TimeUnits } from '../model/enums.js';
+import { AccessoryState, Platform, TimeUnits } from '../model/enums.js';
+import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
 import { MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';

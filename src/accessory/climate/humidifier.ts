@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { HKCharacteristicKey, HomeKitType, HumidifierType, OnState }  from '../../model/enums.js';
+import { HumidifierType, OnState }  from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { HistoryType } from '../../model/history.js';
 import { HumidifierConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';

@@ -1,6 +1,6 @@
 import { OnOffAccessory } from './onoff.js';
 
-import { HomeKitType } from '../../model/enums.js';
+import { HomeKitType } from '../../model/homekit.js';
 import { OutletConfig } from '../../model/types.js';
 
 export class OutletAccessory extends OnOffAccessory<OutletConfig> {

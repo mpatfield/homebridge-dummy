@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { LockState, HKCharacteristicKey, SensorBehavior, HomeKitType }  from '../model/enums.js';
+import { LockState, SensorBehavior }  from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { LockConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 

@@ -4,8 +4,9 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { HKCharacteristicKey, HomeKitType, TemperatureUnits } from '../../model/enums.js';
+import { TemperatureUnits } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { TemperatureSensorConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 import { fromCelsius, toCelsius } from '../../tools/temperature.js';

@@ -6,7 +6,8 @@ import { EveCharacteristicHost, incrementTimesOpened, setupTimesOpened } from '.
 
 import { strings } from '../../i18n/i18n.js';
 
-import { Position, HKCharacteristicKey, TimeUnits, SensorBehavior } from '../../model/enums.js';
+import { Position, TimeUnits, SensorBehavior } from '../../model/enums.js';
+import { HKCharacteristicKey } from '../../model/homekit.js';
 import { PositionConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';
 

@@ -7,7 +7,7 @@ import path from 'path';
 
 import { DummyAccessory } from '../accessory/base.js';
 
-import { HKCharacteristicKey } from './enums.js';
+import { HKCharacteristicKey } from './homekit.js';
 import { DummyConfig, WebhookConfig } from './types.js';
 
 import { strings } from '../i18n/i18n.js';

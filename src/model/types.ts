@@ -6,9 +6,10 @@ export type ServiceType = typeof import('homebridge').Service;
 export type CharacteristicType = typeof import('homebridge').Characteristic;
 
 import {
-  AccessoryState, ConditionOperator, FadeOutType, HomeKitType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
-  Platform, Position, ScheduleType, SensorBehavior, SensorType, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
+  AccessoryState, ConditionOperator, FadeOutType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
+  Platform, Position, ScheduleType, SensorBehavior, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
 } from './enums.js';
+import { HomeKitType, SensorType } from './homekit.js';
 
 export type LegacyAccessoryConfig = AccessoryConfig & {
   name: string,

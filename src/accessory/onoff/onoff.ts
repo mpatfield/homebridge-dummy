@@ -4,8 +4,9 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { HKCharacteristicKey, OnState, SensorBehavior } from '../../model/enums.js';
+import { OnState, SensorBehavior } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { HKCharacteristicKey } from '../../model/homekit.js';
 import { OnOffConfig } from '../../model/types.js';
 import { Values, Webhook } from '../../model/webhook.js';
 

@@ -4,7 +4,8 @@ import { DEFAULT_OPEN_CLOSE_DURATION, PositionAccessory } from './position.js';
 
 import { DummyAccessoryDependency } from '../base.js';
 
-import { HKCharacteristicKey, HomeKitType, TimeUnits } from '../../model/enums.js';
+import { TimeUnits } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { GarageDoorConfig } from '../../model/types.js';
 import { Values } from '../../model/webhook.js';
 

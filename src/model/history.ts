@@ -4,7 +4,7 @@ import { access, unlink } from 'fs/promises';
 import { API, CharacteristicValue, Nullable } from 'homebridge';
 import path from 'path';
 
-import { EveCharacteristicKey } from './enums.js';
+import { EveCharacteristicKey } from './homekit.js';
 import { DummyConfig, HomeKitAccessory } from './types.js';
 
 import { DummyAccessory } from '../accessory/base.js';

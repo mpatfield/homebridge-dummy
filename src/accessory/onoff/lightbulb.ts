@@ -6,7 +6,8 @@ import { DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { FadeOutType, HKCharacteristicKey, HomeKitType, ScheduleType } from '../../model/enums.js';
+import { FadeOutType, ScheduleType } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { LightbulbConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 

@@ -17,7 +17,7 @@ import { ValveAccessory } from './valve.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { HomeKitType } from '../model/enums.js';
+import { HomeKitType } from '../model/homekit.js';
 import { DummyConfig } from '../model/types.js';
 
 export function createDummyAccessory(dependency: DummyAccessoryDependency<DummyConfig>): DummyAccessory<DummyConfig> | null {

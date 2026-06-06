@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { HKCharacteristicKey, HomeKitType, OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
+import { OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { ValveConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 

@@ -2,7 +2,8 @@ import { IHomebridgePluginUi } from '@homebridge/plugin-ui-utils/ui.interface';
 
 import { PLUGIN_ALIAS } from '../homebridge/settings.js';
 
-import { FadeOutType, HomeKitType, OnState, ScheduleType, SensorBehavior } from '../model/enums.js';
+import { FadeOutType, OnState, ScheduleType, SensorBehavior } from '../model/enums.js';
+import { HomeKitType } from '../model/homekit.js';
 import { DummyConfig, DummyPlatformConfig, LightbulbConfig, OnOffConfig } from '../model/types.js';
 
 declare const homebridge: IHomebridgePluginUi;
