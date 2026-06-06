@@ -35,7 +35,7 @@ export type DummyAccessoryDependency<C extends DummyConfig> = {
   config: C,
   conditionManager: ConditionManager,
   log: Log,
-  history: History
+  history?: History
   isGrouped: boolean,
 }
 
@@ -218,7 +218,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   }
 
   public get historyEnabled(): boolean {
-    return this.dependency.config.enableHistory === true;
+    return this.dependency.history !== undefined && this.dependency.config.enableHistory === true;
   }
 
   public get identifier(): string {
@@ -388,7 +388,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   }
 
   protected recordHistory(type: HistoryType, entry: HistoryEntry, updateLastActivation: boolean = false) {
-    this.dependency.history.record(this, type, entry, updateLastActivation);
+    this.dependency.history?.record(this, type, entry, updateLastActivation);
   }
 
   public logIfDesired(message: string, ...parameters: (string | number)[]) {

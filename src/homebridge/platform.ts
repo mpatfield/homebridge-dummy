@@ -83,9 +83,8 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     const homekitGroupAccessories = new Map<string, GroupConfig>();
 
-    const history = new History(this.api, this.log);
-
     for (const accessoryConfig of accessories) {
+        initEveCharacteristics(this.api);
 
       if (accessoryConfig.groupName?.length) {
         const groupConfig: GroupConfig = homekitGroupAccessories.get(accessoryConfig.groupName) || { accessories: [] };
@@ -105,11 +104,11 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
       const dependency: DummyAccessoryDependency<DummyConfig> = {
         getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
-        getMatter: () => this.api.matter,
+          getMatter: () => undefined,
         config: accessoryConfig,
         conditionManager: this.conditionManager,
         log: this.log,
-        history,
+          history: History.instance(this.api, this.log),
         isGrouped: false,
       };
 
@@ -136,10 +135,10 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
       const dependency: GroupAccessoryDependency = {
         getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
-        getMatter: () => this.api.matter,
+        getMatter: () => undefined,
         conditionManager: this.conditionManager,
         log: this.log,
-        history,
+        history: History.instance(this.api, this.log),
       };
 
       const groupAccessory = new GroupAccessory(dependency, groupConfig, this.webhookManager);

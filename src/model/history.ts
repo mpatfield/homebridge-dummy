@@ -55,6 +55,14 @@ function HistoryService(type: HistoryType, accessory: HomeKitAccessory, options?
 
 export class History {
 
+  private static _instance: History | undefined;
+  public static instance(api: API, log: Log) : History {
+    if (History._instance === undefined) {
+      History._instance = new History(api, log);
+    }
+    return History._instance;
+  }
+
   private readonly historyServices = new Map<string, HistoryService>();
   private readonly persistPath: string;
 

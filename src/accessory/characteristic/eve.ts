@@ -19,7 +19,7 @@ export interface EveCharacteristicHost {
 export function initEveCharacteristics(api: API) {
 
   if (_EveHomeKitTypes) {
-    throw new Error('EveHomeKitTypes already initialized');
+    return;
   }
 
   _EveHomeKitTypes = new EveHomeKitTypes(api);
