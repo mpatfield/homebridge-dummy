@@ -41,9 +41,6 @@ export type DummyAccessoryDependency<C extends DummyConfig> = {
 }
 
 export type DummyAddonDependency = {
-  Service: ServiceType,
-  Characteristic: CharacteristicType,
-  homekitAccessory: HomeKitAccessory,
   identifier: string,
   caller: string,
   log: Log,
@@ -111,7 +108,8 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       softwareVersion: this.softwareVersion,
     };
 
-    this.sensor = SensorAccessory.new(this.addonDependency, this.recordHistory.bind(this), dependency.config.sensor);
+    const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
+    this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
 
     this._schedule = Schedule.new(this.addonDependency, dependency.config.schedule, strings.schedule, 'Schedule', this.trigger.bind(this));
 
@@ -207,9 +205,6 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
   protected get addonDependency(): DummyAddonDependency {
     return {
-      Service: this.homekit.Service,
-      Characteristic: this.homekit.Characteristic,
-      homekitAccessory: this.homekit.accessory,
       identifier: this.identifier,
       caller: this.dependency.config.name,
       log: this.dependency.log,
