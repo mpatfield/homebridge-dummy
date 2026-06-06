@@ -148,7 +148,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         }
 
         if (accessoryConfig.groupName?.length) {
-          this.log.warning(strings.startup.matterGroups, PLUGIN_ALIAS);
+          this.log.warning(strings.startup.matterGroups);
           continue;
         }
 
