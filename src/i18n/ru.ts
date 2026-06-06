@@ -339,9 +339,6 @@ const ru = {
   },
 
   startup: {
-    newAccessory: 'Добавление нового аксессуара:',
-    removeAccessory: 'Удаление аксессуара:',
-    restoringAccessory: 'Восстановление аксессуара:',
     setupComplete: '✓ Настройка завершена',
     unsupportedType: 'Тип аксессуара %s не поддерживается',
   },

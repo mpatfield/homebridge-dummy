@@ -36,7 +36,16 @@ const el = {
   },
 
   startup: {
-    matterDisabled: '%s requires "Enable Matter" to be turned on in the parent bridge', // accessory name
+    matterDisabled: 'Matter is currently disabled. Please enable Matter in the %s parent bridge.', // plugin name
+    matterGroups: 'Groups are not yet supported for Matter accessories',
+    matterUnavailable: 'Matter is not available with this version of Homebridge. Please update to Homebridge v2.0+ to use Matter with %s.', // plugin name
+    newHomeKitAccessory: 'Adding new HomeKit accessory:',
+    newMatterAccessory: 'Adding new Matter accessory:',
+    removeHomeKitAccessory: 'Removing HomeKit accessory:',
+    removeMatterAccessory: 'Removing Matter accessory:',
+    restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
+    restoringMatterAccessory: 'Restoring Matter accessory:',
+    unsupportedPlatform: 'Unsupported platform %s. Must be one of: %s', // platform, list of platforms
   },
 
   syncSchedule: {

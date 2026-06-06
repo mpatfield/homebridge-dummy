@@ -343,9 +343,6 @@ const vi = {
   },
 
   startup: {
-    newAccessory: 'Đang thêm phụ kiện mới:',
-    removeAccessory: 'Đang xóa phụ kiện:',
-    restoringAccessory: 'Đang khôi phục phụ kiện:',
     setupComplete: '✓ Thiết lập hoàn tất',
     unsupportedType: 'Loại phụ kiện không được hỗ trợ %s',
   },

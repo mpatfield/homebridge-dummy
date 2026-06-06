@@ -1,6 +1,6 @@
 import { isValid } from '../tools/validation.js';
 
-export enum AccessoryPlatform {
+export enum Platform {
   HomeKit = 'HomeKit',
   Matter = 'Matter',
 }

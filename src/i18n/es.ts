@@ -186,9 +186,6 @@ const es = {
   },
 
   startup: {
-    newAccessory: 'Agregando nuevo accesorio:',
-    removeAccessory: 'Eliminando accesorio:',
-    restoringAccessory: 'Restaurando accesorio:',
     setupComplete: '✓ Configuración completa',
     unsupportedType: 'Tipo de accesorio no compatible %s',
   },

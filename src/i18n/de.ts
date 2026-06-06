@@ -186,9 +186,6 @@ const de = {
   },
 
   startup: {
-    newAccessory: 'Neues Gerät wird hinzugefügt:',
-    removeAccessory: 'Gerät wird entfernt:',
-    restoringAccessory: 'Gerät wird wiederhergestellt:',
     setupComplete: '✓ Einrichtung abgeschlossen',
     unsupportedType: 'Nicht unterstützter Gerätetyp %s',
   },
