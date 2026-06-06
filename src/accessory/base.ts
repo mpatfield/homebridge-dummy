@@ -9,7 +9,7 @@ import { SensorAccessory } from './sensor/sensor.js';
 import { strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { AccessoryState, AccessoryType, CharacteristicKey, TimeUnits } from '../model/enums.js';
+import { AccessoryState, AccessoryType, CharacteristicKey, Platform, TimeUnits } from '../model/enums.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
 import { MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
@@ -30,6 +30,7 @@ export type GetHomeKit = () => HomeKit | undefined;
 export type GetMatter = () => MatterAPI | undefined;
 
 export type DummyAccessoryDependency<C extends DummyConfig> = {
+  platform: Platform,
   getHomeKit: GetHomeKit;
   getMatter: GetMatter,
   config: C,

@@ -115,6 +115,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         }
 
         const dependency: DummyAccessoryDependency<DummyConfig> = {
+          platform: Platform.HomeKit,
           getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
           getMatter: () => undefined,
           config: accessoryConfig,
@@ -153,6 +154,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         }
 
         const dependency: DummyAccessoryDependency<DummyConfig> = {
+          platform: Platform.Matter,
           getHomeKit: () => undefined,
           getMatter: () => this.api.matter,
           config: accessoryConfig,
