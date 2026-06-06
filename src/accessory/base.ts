@@ -82,7 +82,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     return config.id ?? `${PLATFORM_NAME}:${config.type}:${config.name.replace(/\s+/g,'')}`;
   }
 
-  public readonly service: Service;
+  private readonly _service?: Service;
 
   private readonly _schedule?: Schedule;
   private readonly _autoReset?: Schedule;
@@ -126,6 +126,11 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     dependency.conditionManager.register(name, this.identifier, dependency.config.conditions,
       this.trigger.bind(this), this._autoReset ? undefined : this.reset.bind(this), dependency.config.disableLogging === true);
 
+
+    if (dependency.platform !== Platform.HomeKit) {
+      return;
+    }
+
     const serviceInstance = this.homekit.Service[this.getAccessoryType()];
 
     if (dependency.isGrouped) {
@@ -137,7 +142,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
         accessoryService.setCharacteristic(this.homekit.Characteristic.ConfiguredName, name);
       }
 
-      this.service = accessoryService;
+      this._service = accessoryService;
 
       return;
     }
@@ -150,7 +155,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       .setCharacteristic(this.homekit.Characteristic.SerialNumber, this.identifier)
       .setCharacteristic(this.homekit.Characteristic.FirmwareRevision, getVersion());
 
-    this.service = this.homekit.accessory.getService(serviceInstance) || this.homekit.accessory.addService(serviceInstance);
+    this._service = this.homekit.accessory.getService(serviceInstance) || this.homekit.accessory.addService(serviceInstance);
 
     for (const type of Object.values(AccessoryType)) {
       const existingService = this.homekit.accessory.getService(this.homekit.Service[type]);
@@ -165,6 +170,13 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   protected getMatterType(): MatterType | undefined {
     return undefined;
   };
+
+  public get service(): Service {
+    if (this._service === undefined) {
+      throw new Error(`${this.displayName} unable to get fetch Service instance`);
+    }
+    return this._service;
+  }
 
   protected abstract trigger(): Promise<void>;
 
