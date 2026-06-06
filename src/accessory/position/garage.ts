@@ -21,7 +21,7 @@ export class GarageDoorAccessory extends PositionAccessory<GarageDoorConfig> {
   constructor(dependency: DummyAccessoryDependency<GarageDoorConfig>) {
     super(dependency);
 
-    this.service.getCharacteristic(dependency.Characteristic.ObstructionDetected)
+    this.service.getCharacteristic(this.homekit.Characteristic.ObstructionDetected)
       .onGet( async () => false );
   }
 

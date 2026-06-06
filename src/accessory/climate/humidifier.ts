@@ -34,7 +34,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     this.state = this.defaultState;
     this.targetHumidity = DEFAULT_HUMIDITY;
 
-    this.service.getCharacteristic(dependency.Characteristic.TargetHumidifierDehumidifierState)
+    this.service.getCharacteristic(this.Characteristic.TargetHumidifierDehumidifierState)
       .setProps({
         minStep: 1,
         validValues: [this.targetState as number],
@@ -42,14 +42,14 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
       .onGet(async () => this.targetState)
       .onSet(async () => undefined );
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentHumidifierDehumidifierState)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentHumidifierDehumidifierState)
       .onGet(async () => this.currentState);
 
-    this.service.getCharacteristic(dependency.Characteristic.Active)
+    this.service.getCharacteristic(this.homekit.Characteristic.Active)
       .onGet(async () => this.state)
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentRelativeHumidity)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentRelativeHumidity)
       .onGet(async () => this.currentHumidity);
 
     this.service.getCharacteristic(this.TargetHumidityCharacteristic)

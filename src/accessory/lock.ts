@@ -23,11 +23,11 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
 
     this.state = this.defaultLockState;
 
-    this.service.getCharacteristic(dependency.Characteristic.LockTargetState)
+    this.service.getCharacteristic(this.homekit.Characteristic.LockTargetState)
       .onGet(this.getState.bind(this))
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.LockCurrentState)
+    this.service.getCharacteristic(this.homekit.Characteristic.LockCurrentState)
       .onGet(this.getState.bind(this));
 
     this.initializeState();

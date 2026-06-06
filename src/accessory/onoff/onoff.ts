@@ -24,7 +24,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
 
     this.on = this.defaultState;
 
-    this.service.getCharacteristic(dependency.Characteristic.On)
+    this.service.getCharacteristic(this.homekit.Characteristic.On)
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
 

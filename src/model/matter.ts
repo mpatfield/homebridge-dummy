@@ -1,9 +1,7 @@
 import { DeviceClassification } from '@matter/model';
 import { DeviceTypeId } from '@matter/types';
 
-import { EndpointType, MatterAPI } from 'homebridge';
-
-export type GetMatter = () => MatterAPI | undefined;
+import { EndpointType } from 'homebridge';
 
 export const MatterUnsupportedDeviceType: EndpointType = {
   name: 'MatterUnsupportedDeviceType',

@@ -53,7 +53,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
         }
       }
 
-      this.service.getCharacteristic(dependency.Characteristic.Brightness)
+      this.service.getCharacteristic(this.homekit.Characteristic.Brightness)
         .onGet(this.getBrightness.bind(this))
         .onSet(this.setBrightness.bind(this));
 
@@ -61,7 +61,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
 
     } else {
 
-      const brightnessCharacteristic = this.service.getCharacteristic(dependency.Characteristic.Brightness);
+      const brightnessCharacteristic = this.service.getCharacteristic(this.homekit.Characteristic.Brightness);
 
       if (brightnessCharacteristic) {
         this.service.removeCharacteristic(brightnessCharacteristic);

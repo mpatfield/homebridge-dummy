@@ -38,10 +38,10 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
   constructor(dependency: DummyAccessoryDependency<ThermostatConfig>) {
     super(dependency);
 
-    this.STATE_AUTO = dependency.Characteristic.TargetHeatingCoolingState.AUTO;
-    this.STATE_COOL = dependency.Characteristic.TargetHeatingCoolingState.COOL;
-    this.STATE_HEAT = dependency.Characteristic.TargetHeatingCoolingState.HEAT;
-    this.STATE_OFF = dependency.Characteristic.TargetHeatingCoolingState.OFF;
+    this.STATE_AUTO = this.homekit.Characteristic.TargetHeatingCoolingState.AUTO;
+    this.STATE_COOL = this.homekit.Characteristic.TargetHeatingCoolingState.COOL;
+    this.STATE_HEAT = this.homekit.Characteristic.TargetHeatingCoolingState.HEAT;
+    this.STATE_OFF = this.homekit.Characteristic.TargetHeatingCoolingState.OFF;
 
     if (!isValid(TemperatureUnits, dependency.config.temperatureUnits)) {
       this.log.warning(strings.sensor.badTemperatureUnits, this.displayName, `'${dependency.config.temperatureUnits}'`, printableValues(TemperatureUnits));
@@ -54,7 +54,7 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
     this.targetState = this.defaultTargetState;
     this.targetTemperature = this.defaultTemperature;
 
-    this.service.getCharacteristic(dependency.Characteristic.TemperatureDisplayUnits)
+    this.service.getCharacteristic(this.homekit.Characteristic.TemperatureDisplayUnits)
       .onGet(this.getUnits.bind(this));
 
     let validStates: number[] = [this.STATE_OFF, this.STATE_HEAT, this.STATE_COOL, this.STATE_AUTO];
@@ -79,13 +79,13 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
     this.validCurrentStates = validStates.filter( value => value !== this.STATE_AUTO);
     this.validTargetStates = validStates;
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentHeatingCoolingState)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentHeatingCoolingState)
       .setProps({
         validValues: this.validCurrentStates,
       })
       .onGet(this.getCurrentState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.TargetHeatingCoolingState)
+    this.service.getCharacteristic(this.homekit.Characteristic.TargetHeatingCoolingState)
       .setProps({
         validValues: this.validTargetStates,
       })
@@ -95,11 +95,11 @@ export class ThermostatAccessory extends DummyAccessory<ThermostatConfig> {
     this.minTemp = dependency.config.minimumTemperature !== undefined ? toCelsius(dependency.config.minimumTemperature, this.units) : DEFAULT_MINIMUM;
     this.maxTemp = dependency.config.maximumTemperature !== undefined ? toCelsius(dependency.config.maximumTemperature, this.units) : DEFAULT_MAXIMUM;
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentTemperature)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentTemperature)
       .onGet(this.getCurrentTemperature.bind(this))
       .setProps({ minValue: this.minTemp, maxValue: this.maxTemp });
 
-    this.service.getCharacteristic(dependency.Characteristic.TargetTemperature)
+    this.service.getCharacteristic(this.homekit.Characteristic.TargetTemperature)
       .onGet(this.getTargetTemperature.bind(this))
       .onSet(this.setTargetTemperature.bind(this))
       .setProps({ minValue: this.minTemp, maxValue: this.maxTemp });

@@ -38,30 +38,30 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
 
     this.state = this.defaultState;
 
-    this.service.getCharacteristic(dependency.Characteristic.ValveType)
+    this.service.getCharacteristic(this.homekit.Characteristic.ValveType)
       .onGet(this.getType.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.Active)
+    this.service.getCharacteristic(this.homekit.Characteristic.Active)
       .onGet(this.getState.bind(this))
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.InUse)
+    this.service.getCharacteristic(this.homekit.Characteristic.InUse)
       .onGet(this.getState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.IsConfigured)
-      .onGet(() => dependency.Characteristic.IsConfigured.CONFIGURED);
+    this.service.getCharacteristic(this.homekit.Characteristic.IsConfigured)
+      .onGet(() => this.homekit.Characteristic.IsConfigured.CONFIGURED);
 
     const autoReset = dependency.config.autoReset;
     if (autoReset !== undefined && autoReset.type === ScheduleType.TIMEOUT && autoReset.time !== undefined && autoReset.units !== undefined) {
 
       this.initializeDuration(autoReset.time, autoReset.units);
 
-      this.service.getCharacteristic(dependency.Characteristic.SetDuration)
+      this.service.getCharacteristic(this.homekit.Characteristic.SetDuration)
         .setProps({ minValue: MIN_DURATION, maxValue: MAX_DURATION })
         .onGet(this.getDuration.bind(this))
         .onSet(this.setDuration.bind(this));
 
-      this.service.getCharacteristic(dependency.Characteristic.RemainingDuration)
+      this.service.getCharacteristic(this.homekit.Characteristic.RemainingDuration)
         .onGet(this.getRemainingDuration.bind(this));
     }
 

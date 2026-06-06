@@ -41,7 +41,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     }
 
     if (this.hasPositionState) {
-      this.service.getCharacteristic(dependency.Characteristic.PositionState)
+      this.service.getCharacteristic(this.homekit.Characteristic.PositionState)
         .onGet(this.getState.bind(this));
     }
 

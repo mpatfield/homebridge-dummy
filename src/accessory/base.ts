@@ -11,7 +11,7 @@ import { strings } from '../i18n/i18n.js';
 import { ConditionManager } from '../model/conditions.js';
 import { AccessoryState, AccessoryType, CharacteristicKey, TimeUnits } from '../model/enums.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
-import { GetMatter, MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
+import { MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
 import { CharacteristicType, DummyConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
 import { Webhook } from '../model/webhook.js';
@@ -24,11 +24,14 @@ import { Storage } from '../tools/storage.js';
 import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';
 
+type HomeKit = { Service: ServiceType, Characteristic: CharacteristicType, accessory: HomeKitAccessory}
+
+export type GetHomeKit = () => HomeKit | undefined;
+export type GetMatter = () => MatterAPI | undefined;
+
 export type DummyAccessoryDependency<C extends DummyConfig> = {
-  Service: ServiceType,
-  Characteristic: CharacteristicType,
+  getHomeKit: GetHomeKit;
   getMatter: GetMatter,
-  homekitAccessory: HomeKitAccessory,
   config: C,
   conditionManager: ConditionManager,
   log: Log,
@@ -124,15 +127,15 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     dependency.conditionManager.register(name, this.identifier, dependency.config.conditions,
       this.trigger.bind(this), this._autoReset ? undefined : this.reset.bind(this), dependency.config.disableLogging === true);
 
-    const serviceInstance = dependency.Service[this.getAccessoryType()];
+    const serviceInstance = this.homekit.Service[this.getAccessoryType()];
 
     if (dependency.isGrouped) {
 
-      let accessoryService = dependency.homekitAccessory.getServiceById(serviceInstance, this.identifier);
+      let accessoryService = this.homekit.accessory.getServiceById(serviceInstance, this.identifier);
       if (!accessoryService) {
-        accessoryService = dependency.homekitAccessory.addService(serviceInstance, name, this.identifier);
-        accessoryService.addOptionalCharacteristic(dependency.Characteristic.ConfiguredName);
-        accessoryService.setCharacteristic(dependency.Characteristic.ConfiguredName, name);
+        accessoryService = this.homekit.accessory.addService(serviceInstance, name, this.identifier);
+        accessoryService.addOptionalCharacteristic(this.homekit.Characteristic.ConfiguredName);
+        accessoryService.setCharacteristic(this.homekit.Characteristic.ConfiguredName, name);
       }
 
       this.service = accessoryService;
@@ -140,20 +143,20 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       return;
     }
 
-    dependency.homekitAccessory.getService(dependency.Service.AccessoryInformation)!
-      .setCharacteristic(dependency.Characteristic.Name, name)
-      .setCharacteristic(dependency.Characteristic.ConfiguredName, name)
-      .setCharacteristic(dependency.Characteristic.Manufacturer, PLUGIN_ALIAS)
-      .setCharacteristic(dependency.Characteristic.Model, dependency.config.type)
-      .setCharacteristic(dependency.Characteristic.SerialNumber, this.identifier)
-      .setCharacteristic(dependency.Characteristic.FirmwareRevision, getVersion());
+    this.homekit.accessory.getService(this.homekit.Service.AccessoryInformation)!
+      .setCharacteristic(this.homekit.Characteristic.Name, name)
+      .setCharacteristic(this.homekit.Characteristic.ConfiguredName, name)
+      .setCharacteristic(this.homekit.Characteristic.Manufacturer, PLUGIN_ALIAS)
+      .setCharacteristic(this.homekit.Characteristic.Model, dependency.config.type)
+      .setCharacteristic(this.homekit.Characteristic.SerialNumber, this.identifier)
+      .setCharacteristic(this.homekit.Characteristic.FirmwareRevision, getVersion());
 
-    this.service = dependency.homekitAccessory.getService(serviceInstance) || dependency.homekitAccessory.addService(serviceInstance);
+    this.service = this.homekit.accessory.getService(serviceInstance) || this.homekit.accessory.addService(serviceInstance);
 
     for (const type of Object.values(AccessoryType)) {
-      const existingService = dependency.homekitAccessory.getService(dependency.Service[type]);
+      const existingService = this.homekit.accessory.getService(this.homekit.Service[type]);
       if (existingService && type !== this.getAccessoryType()) {
-        dependency.homekitAccessory.removeService(existingService);
+        this.homekit.accessory.removeService(existingService);
       }
     }
   }
@@ -179,6 +182,14 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     this._syncSchedule?.teardown();
   }
 
+  protected get homekit(): HomeKit {
+    const homekit = this.dependency.getHomeKit();
+    if (homekit === undefined) {
+      throw new Error(`${this.displayName} unable to get HomeKit instance`);
+    }
+    return homekit;
+  }
+
   private get matter(): MatterAPI {
     const matter = this.dependency.getMatter();
     if (matter === undefined) {
@@ -195,9 +206,9 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
   protected get addonDependency(): DummyAddonDependency {
     return {
-      Service: this.dependency.Service,
-      Characteristic: this.dependency.Characteristic,
-      homekitAccessory: this.dependency.homekitAccessory,
+      Service: this.homekit.Service,
+      Characteristic: this.homekit.Characteristic,
+      homekitAccessory: this.homekit.accessory,
       identifier: this.identifier,
       caller: this.dependency.config.name,
       log: this.dependency.log,
@@ -219,7 +230,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   }
 
   public get homekitAccessory(): HomeKitAccessory {
-    return this.dependency.homekitAccessory;
+    return this.homekit.accessory;
   }
 
   protected get log(): Log {
@@ -227,7 +238,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   }
 
   protected get Characteristic(): CharacteristicType {
-    return this.dependency.Characteristic;
+    return this.homekit.Characteristic;
   }
 
   protected get isStateful(): boolean {

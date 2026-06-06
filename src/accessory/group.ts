@@ -1,10 +1,9 @@
-import { DummyAccessory, DummyAccessoryDependency } from './base.js';
+import { DummyAccessory, DummyAccessoryDependency, GetHomeKit, GetMatter } from './base.js';
 import { createDummyAccessory } from './helpers.js';
 
 import { ConditionManager } from '../model/conditions.js';
 import { History } from '../model/history.js';
-import { GetMatter } from '../model/matter.js';
-import { CharacteristicType, DummyConfig, GroupConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
+import { DummyConfig, GroupConfig } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
 import { Log } from '../tools/log.js';
@@ -12,10 +11,8 @@ import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
 import getVersion from '../tools/version.js';
 
 export type GroupAccessoryDependency = {
-    Service: ServiceType,
-    Characteristic: CharacteristicType,
+    getHomeKit: GetHomeKit,
     getMatter: GetMatter,
-    homekitAccessory: HomeKitAccessory,
     conditionManager: ConditionManager,
     log: Log,
     history: History
@@ -31,11 +28,16 @@ export class GroupAccessory {
 
   constructor(dependency: GroupAccessoryDependency, config: GroupConfig, webhookManager: WebhookManager) {
 
-    dependency.homekitAccessory.getService(dependency.Service.AccessoryInformation)!
-      .setCharacteristic(dependency.Characteristic.Manufacturer, PLUGIN_ALIAS)
-      .setCharacteristic(dependency.Characteristic.Model, GroupAccessory.name)
-      .setCharacteristic(dependency.Characteristic.SerialNumber, dependency.homekitAccessory.UUID)
-      .setCharacteristic(dependency.Characteristic.FirmwareRevision, getVersion());
+    const homekit = dependency.getHomeKit();
+    if (homekit === undefined) {
+      throw new Error(`Unable to get HomeKit instance for group ${config.accessories[0].groupName}`);
+    }
+
+    homekit.accessory.getService(homekit.Service.AccessoryInformation)!
+      .setCharacteristic(homekit.Characteristic.Manufacturer, PLUGIN_ALIAS)
+      .setCharacteristic(homekit.Characteristic.Model, GroupAccessory.name)
+      .setCharacteristic(homekit.Characteristic.SerialNumber, homekit.accessory.UUID)
+      .setCharacteristic(homekit.Characteristic.FirmwareRevision, getVersion());
 
     const servicesToKeep = new Map<string, string>();
 
@@ -60,9 +62,9 @@ export class GroupAccessory {
       this.accessories.push(dummyAccessory);
     };
 
-    for (const service of [...dependency.homekitAccessory.services]) {
+    for (const service of [...homekit.accessory.services]) {
       if (service.subtype !== undefined && servicesToKeep.get(service.subtype) !== service.UUID) {
-        dependency.homekitAccessory.removeService(service);
+        homekit.accessory.removeService(service);
       }
     }
   }

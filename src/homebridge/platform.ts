@@ -80,6 +80,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     const homekitKeepIdentifiers = new Set<string>();
 
     const accessories: DummyConfig[] = this.config.accessories || [];
+
     const homekitGroupAccessories = new Map<string, GroupConfig>();
 
     const history = new History(this.api, this.log);
@@ -103,10 +104,8 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       }
 
       const dependency: DummyAccessoryDependency<DummyConfig> = {
-        Service: this.api.hap.Service,
-        Characteristic: this.api.hap.Characteristic,
+        getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
         getMatter: () => this.api.matter,
-        homekitAccessory,
         config: accessoryConfig,
         conditionManager: this.conditionManager,
         log: this.log,
@@ -136,10 +135,8 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       const homekitAccessory = this.homekitAccessories.get(id) ?? this.createHomeKitAccessory(id, groupName);
 
       const dependency: GroupAccessoryDependency = {
-        Service: this.api.hap.Service,
-        Characteristic: this.api.hap.Characteristic,
+        getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
         getMatter: () => this.api.matter,
-        homekitAccessory: homekitAccessory,
         conditionManager: this.conditionManager,
         log: this.log,
         history,
