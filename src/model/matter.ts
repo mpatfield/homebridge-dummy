@@ -5,7 +5,7 @@ import { EndpointType } from 'homebridge';
 
 export const MatterUnsupportedDeviceType: EndpointType = {
   name: 'MatterUnsupportedDeviceType',
-  deviceType: DeviceTypeId(-1),
+  deviceType: DeviceTypeId(-1, false),
   deviceRevision: -1,
   deviceClass: DeviceClassification.Base,
   behaviors: {},
