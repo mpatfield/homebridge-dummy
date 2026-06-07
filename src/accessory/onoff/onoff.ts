@@ -35,6 +35,23 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     this.initializeOn();
   }
 
+  override get clusters() {
+    return {
+      onOff: {
+        onOff: this.getProperty(HKCharacteristicKey.On) as boolean ?? this.defaultState,
+      },
+    };
+  }
+
+  override get handlers() {
+    return {
+      onOff: {
+        on: async () => this.setOn(true),
+        off: async () => this.setOn(false),
+      },
+    };
+  }
+
   override get webhooks(): Webhook[] {
     return [
       new Webhook(this, HKCharacteristicKey.On,
@@ -126,23 +143,6 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     }
 
     await this.registerStateChange();
-  }
-
-  override get clusters() {
-    return {
-      onOff: {
-        onOff: this.getProperty(HKCharacteristicKey.On) as boolean ?? this.defaultState,
-      },
-    };
-  }
-
-  override get handlers() {
-    return {
-      onOff: {
-        on: async () => this.setOn(true),
-        off: async () => this.setOn(false),
-      },
-    };
   }
 
   override async trigger(): Promise<void> {
