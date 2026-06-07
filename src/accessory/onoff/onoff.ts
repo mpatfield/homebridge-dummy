@@ -7,6 +7,7 @@ import { strings } from '../../i18n/i18n.js';
 import { OnState, SensorBehavior } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { HKCharacteristicKey } from '../../model/homekit.js';
+import { MatterClusterKey, MatterValueKey } from '../../model/matter.js';
 import { OnOffConfig } from '../../model/types.js';
 import { Values, Webhook } from '../../model/webhook.js';
 
@@ -25,9 +26,11 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
 
     this.on = this.defaultState;
 
-    this.service.getCharacteristic(this.homekit.Characteristic.On)
-      .onGet(this.getOn.bind(this))
-      .onSet(this.setOn.bind(this));
+    this.ifHomeKit(() => {
+      this.service.getCharacteristic(this.homekit.Characteristic.On)
+        .onGet(this.getOn.bind(this))
+        .onSet(this.setOn.bind(this));
+    });
 
     this.initializeOn();
   }
@@ -50,7 +53,9 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     await new Promise(resolve => setImmediate(resolve));
 
     if (!this.isStateful) {
-      this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      this.ifHomeKit(() => {
+        this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      });
       await this.registerStateChange();
       return;
     }
@@ -103,7 +108,14 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
       this.onReset();
     }
 
-    this.service.updateCharacteristic(this.Characteristic.On, this.on);
+    this.bifurcate(
+      () => {
+        this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      },
+      () => {
+        this.updateMatter(MatterClusterKey.onOff, MatterValueKey.onOff, this.on === true);
+      },
+    );
 
     if (this.sensor) {
       if (this.sensor.behavior === SensorBehavior.MIRROR) {
@@ -114,6 +126,23 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     }
 
     await this.registerStateChange();
+  }
+
+  override get clusters() {
+    return {
+      onOff: {
+        onOff: this.getProperty(HKCharacteristicKey.On) as boolean ?? this.defaultState,
+      },
+    };
+  }
+
+  override get handlers() {
+    return {
+      onOff: {
+        on: async () => this.setOn(true),
+        off: async () => this.setOn(false),
+      },
+    };
   }
 
   override async trigger(): Promise<void> {

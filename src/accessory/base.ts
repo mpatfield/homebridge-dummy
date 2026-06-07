@@ -182,6 +182,10 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     return undefined;
   }
 
+  public get parts(): MatterAccessory['parts'] | undefined {
+    return undefined; // Use this for sensors and groups
+  }
+
   public get context(): Record<string, unknown> {
     return {
       UUID: this.UUID,
