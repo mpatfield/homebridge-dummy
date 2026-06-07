@@ -1,5 +1,5 @@
 import { exec, ExecException } from 'child_process';
-import { CharacteristicValue, EndpointType, MatterAccessory, MatterAPI, Service, UnknownContext } from 'homebridge';
+import { CharacteristicValue, EndpointType, MatterAccessory, MatterAPI, Service } from 'homebridge';
 import { promisify } from 'util';
 
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
@@ -12,7 +12,7 @@ import { ConditionManager } from '../model/conditions.js';
 import { AccessoryState, Platform, TimeUnits } from '../model/enums.js';
 import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
-import { MatterType, MatterUnsupportedDeviceType } from '../model/matter.js';
+import { MATTER_SERIAL_MAX_LEN, MatterClusterKey, MatterType, MatterValue, MatterValueKey } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
 import { CharacteristicType, DummyConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
 import { Webhook } from '../model/webhook.js';
@@ -54,28 +54,11 @@ export type OnRecordHistory = (type: HistoryType, entry: HistoryEntry, updateLas
 export abstract class DummyAccessory<C extends DummyConfig> implements MatterAccessory {
 
   private _UUID?: string;
-  public get UUID(): string {
-    if (!this._UUID) {
-      this._UUID = this.matter.uuid.generate(this.identifier);
-    }
-    return this._UUID;
-  }
-
-  public get deviceType(): EndpointType {
-
-    const type = this.getMatterType();
-    if (type !== undefined) {
-      return this.matter.deviceTypes[type];
-    }
-
-    return MatterUnsupportedDeviceType;
-  }
 
   public readonly manufacturer = PLATFORM_NAME;
   public readonly model: string;
   public readonly serialNumber: string;
   public readonly softwareVersion: string = getVersion();
-  public readonly context: UnknownContext;
 
   protected sensor?: SensorAccessory;
 
@@ -100,17 +83,12 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     const name = dependency.config.name;
 
     this.model = dependency.config.type;
-    this.serialNumber = this.identifier;
+    this.serialNumber = this.identifier.length <= MATTER_SERIAL_MAX_LEN ? this.identifier : this.identifier.substring(0, MATTER_SERIAL_MAX_LEN - 1) + '…';
 
-    this.context = {
-      serialNumber: this.serialNumber,
-      manufacturer: this.manufacturer,
-      model: this.model,
-      softwareVersion: this.softwareVersion,
-    };
-
-    const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
-    this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
+    if (dependency.platform === Platform.HomeKit) {
+      const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
+      this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
+    }
 
     this._schedule = Schedule.new(this.addonDependency, dependency.config.schedule, strings.schedule, 'Schedule', this.trigger.bind(this));
 
@@ -168,15 +146,68 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
   protected abstract getHomeKitType(): HomeKitType;
 
-  protected getMatterType(): MatterType | undefined {
-    return undefined;
-  };
-
   public get service(): Service {
     if (this._service === undefined) {
       throw new Error(`${this.displayName} unable to get fetch Service instance`);
     }
     return this._service;
+  }
+
+  protected getMatterType(): MatterType | undefined {
+    return undefined;
+  };
+
+  public get UUID(): string {
+    if (!this._UUID) {
+      this._UUID = this.matter.uuid.generate(this.identifier);
+    }
+    return this._UUID;
+  }
+
+  public get deviceType(): EndpointType {
+
+    const type = this.getMatterType();
+    if (type !== undefined) {
+      return this.matter.deviceTypes[type];
+    }
+
+    throw new Error(`${this.getMatterType.name} not implemented for ${this.getHomeKitType()}`);
+  }
+
+  public get clusters(): MatterAccessory['clusters'] | undefined {
+    return undefined;
+  }
+
+  public get handlers(): MatterAccessory['handlers'] | undefined {
+    return undefined;
+  }
+
+  public get context(): Record<string, unknown> {
+    return {
+      UUID: this.UUID,
+      deviceType: this.deviceType,
+      displayName: this.displayName,
+      serialNumber: this.serialNumber,
+      manufacturer: this.manufacturer,
+      model: this.model,
+      softwareVersion: this.softwareVersion,
+      clusters: this.clusters,
+      handlers: this.handlers,
+    };
+  }
+
+  public toMatterAccessory(): MatterAccessory {
+    return {
+      UUID: this.UUID,
+      displayName: this.displayName,
+      deviceType: this.deviceType,
+      serialNumber: this.serialNumber,
+      manufacturer: this.manufacturer,
+      model: this.model,
+      context: this.context,
+      clusters: this.clusters,
+      handlers: this.handlers,
+    };
   }
 
   protected abstract trigger(): Promise<void>;
@@ -194,6 +225,21 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     this._syncSchedule?.teardown();
   }
 
+  protected ifHomeKit(perform: () => (void)) {
+    if (this.dependency.platform === Platform.HomeKit) {
+      perform();
+    }
+  }
+
+  protected bifurcate(homekit?: () => (void), matter?: () => (void)) {
+    switch (this.dependency.platform) {
+    case Platform.HomeKit:
+      return homekit?.();
+    case Platform.Matter:
+      return matter?.();
+    }
+  }
+
   protected get homekit(): HomeKit {
     const homekit = this.dependency.getHomeKit();
     if (homekit === undefined) {
@@ -208,6 +254,10 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       throw new Error(`${this.displayName} unable to get MatterAPI instance`);
     }
     return matter;
+  }
+
+  protected updateMatter(clusterKey: MatterClusterKey, valueKey: MatterValueKey, value: MatterValue) {
+    this.matter.updateAccessoryState(this.UUID, clusterKey, { [valueKey]: value });
   }
 
   public abstract get webhooks(): Webhook[];

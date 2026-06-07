@@ -1,34 +1,16 @@
-import { DeviceClassification } from '@matter/model';
-import { DeviceTypeId } from '@matter/types';
+export const MATTER_SERIAL_MAX_LEN = 32;
 
-import { EndpointType } from 'homebridge';
-
-export const MatterUnsupportedDeviceType: EndpointType = {
-  name: 'MatterUnsupportedDeviceType',
-  deviceType: DeviceTypeId(-1, false),
-  deviceRevision: -1,
-  deviceClass: DeviceClassification.Base,
-  behaviors: {},
-  clientClusters: {},
-  requirements:  {},
-};
-
-export type MatterClusterPath = { characteristicKey: MatterCharacteristicKey, valueKey: MatterValueKey };
-
-export function MatterClusterPath(characteristicKey: MatterCharacteristicKey, valueKey: MatterValueKey): MatterClusterPath {
-  return { characteristicKey, valueKey };
-}
-
-export enum MatterType {
-  OnOffSwitch = 'OnOffSwitch',
-}
-
-export enum MatterCharacteristicKey {
+export enum MatterClusterKey {
+  onOff = 'onOff',
 }
 
 export enum MatterValueKey {
+  onOff = 'onOff',
 }
 
-export type MatterValue = {
-  unknown: unknown,
+export enum MatterType {
+  OnOffOutlet = 'OnOffOutlet',
+  OnOffSwitch = 'OnOffSwitch',
 }
+
+export type MatterValue = boolean;

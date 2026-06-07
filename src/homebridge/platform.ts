@@ -171,9 +171,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
         matterKeepIdentifiers.add(dummyAccessory.UUID);
 
-        if (!this.matterAccessories.has(dummyAccessory.UUID)) {
-          this.registerMatterAccessory(dummyAccessory);
-        }
+        await this.registerMatterAccessory(dummyAccessory.toMatterAccessory());
 
         if (accessoryConfig.enableWebhook === true || accessoryConfig.enableWebook === true) {
           this.webhookManager.registerWebhooks(dummyAccessory.webhooks);
@@ -214,9 +212,9 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
       }
     });
 
-    this.matterAccessories.forEach(accessory => {
+    this.matterAccessories.forEach(async accessory => {
       if (!matterKeepIdentifiers.has(accessory.UUID)) {
-        this.removeMatterAccessory(accessory);
+        await this.removeMatterAccessory(accessory);
       }
     });
 
@@ -241,10 +239,12 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     return accessory;
   }
 
-  private registerMatterAccessory(accessory: MatterAccessory) {
-    this.log.always(strings.startup.newMatterAccessory, accessory.displayName);
+  private async registerMatterAccessory(accessory: MatterAccessory) {
+    if (!this.matterAccessories.has(accessory.UUID)) {
+      this.log.always(strings.startup.newMatterAccessory, accessory.displayName);
+    }
     this.matterAccessories.set(accessory.UUID, accessory);
-    this.api.matter?.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+    await this.api.matter?.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
   }
 
   private removeHomeKitAccessory(accessory: HomeKitAccessory) {
@@ -253,9 +253,9 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     this.homekitAccessories.delete(accessory.context.identifier);
   }
 
-  private removeMatterAccessory(accessory: MatterAccessory) {
+  private async removeMatterAccessory(accessory: MatterAccessory) {
     this.log.always(strings.startup.removeMatterAccessory, accessory.displayName);
-    this.api.matter?.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+    await this.api.matter?.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     this.matterAccessories.delete(accessory.UUID);
   }
 }
