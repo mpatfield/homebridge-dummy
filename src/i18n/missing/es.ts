@@ -80,7 +80,7 @@ const es = {
       incremental: 'Incremental',
       irrigation: 'Irrigation',
       log: 'Log Watcher',
-      matter: 'Matter',
+      matter: 'Matter (beta)',
       night: 'Night',
       none: 'None',
       notAvailable: 'Not Available',

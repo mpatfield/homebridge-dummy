@@ -111,7 +111,7 @@ const en = {
       lightbulb: 'Lightbulb',
       lockMechanism: 'Lock',
       log: 'Log Watcher',
-      matter: 'Matter',
+      matter: 'Matter (beta)',
       milliseconds: 'Milliseconds',
       minutely: 'Every Minute',
       minutes: 'Minutes',

@@ -15,7 +15,7 @@ const vi = {
 
     enumNames: {
       homekit: 'HomeKit (Default)',
-      matter: 'Matter',
+      matter: 'Matter (beta)',
     },
 
     title: {
