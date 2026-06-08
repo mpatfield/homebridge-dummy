@@ -713,7 +713,7 @@
                       "key": "accessories[].platform",
                       "flex": "0 0 auto",
                       "condition": {
-                        "functionBody": "return ['Outlet','Switch'].includes(model.accessories?.[arguments[1]]?.type);"
+                        "functionBody": "return ['Lightbulb','Outlet','Switch'].includes(model.accessories?.[arguments[1]]?.type);"
                       }
                     },
                     {

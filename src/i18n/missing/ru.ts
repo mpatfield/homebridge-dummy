@@ -15,7 +15,7 @@ const ru = {
 
     enumNames: {
       homekit: 'HomeKit (Default)',
-      matter: 'Matter (beta)',
+      matter: 'Matter (Beta)',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
     },
