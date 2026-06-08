@@ -88,6 +88,11 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
   }
 
   override get clusters() {
+
+    if (!this.isDimmer) {
+      return super.clusters;
+    }
+
     return {
       ...super.clusters,
       levelControl: {
@@ -99,6 +104,11 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
   }
 
   override get handlers() {
+
+    if (!this.isDimmer) {
+      return super.handlers;
+    }
+
     return {
       ...super.handlers,
       levelControl: {
