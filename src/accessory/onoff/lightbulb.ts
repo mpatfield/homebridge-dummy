@@ -96,7 +96,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     return {
       ...super.clusters,
       levelControl: {
-        currentLevel: this.getProperty(HKCharacteristicKey.Brightness) as number ?? DEFAULT_BRIGHTNESS,
+        currentLevel: this.brightness as number,
         minLevel: 0,
         maxLevel: 100,
       },

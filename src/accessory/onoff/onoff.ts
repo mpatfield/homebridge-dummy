@@ -38,7 +38,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
   override get clusters() {
     return {
       onOff: {
-        onOff: this.getProperty(HKCharacteristicKey.On) as boolean ?? this.defaultState,
+        onOff: this.on as boolean,
       },
     };
   }
