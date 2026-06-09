@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 1.8.1-beta.1 ()
+## 1.8.1 (2026-06-09)
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
@@ -11,6 +11,9 @@ All notable changes to homebridge-dummy will be documented in this file.
 ### Added
 - `CurrentHeatingCoolingState` [Webhook](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks) characteristic for `Thermostat` accessories
     - ⚠️ Please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues related to `Thermostat`
+
+### Changed
+- Updated dependencies
 
 ### Notes
 Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
