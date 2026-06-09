@@ -94,6 +94,10 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     for (const accessoryConfig of accessories) {
 
+      if (accessoryConfig.protocol === undefined) {
+        accessoryConfig.protocol = Protocol.HomeKit;
+      }
+
       if (accessoryConfig.protocol === Protocol.HomeKit) {
 
         initEveCharacteristics(this.api);
