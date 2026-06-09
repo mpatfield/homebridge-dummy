@@ -19,6 +19,8 @@ import { assert } from '../../tools/validation.js';
 
 const DEFAULT_BRIGHTNESS = 100;
 
+const MATTER_MAX_LEVEL = 254;
+
 export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
 
   private brightness: CharacteristicValue;
@@ -96,9 +98,9 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     return {
       ...super.clusters,
       levelControl: {
-        currentLevel: this.brightness as number,
-        minLevel: 0,
-        maxLevel: 100,
+        currentLevel: this.level,
+        minLevel: 1,
+        maxLevel: MATTER_MAX_LEVEL,
       },
     };
   }
@@ -112,7 +114,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     return {
       ...super.handlers,
       levelControl: {
-        moveToLevelWithOnOff: async (request: MatterRequests.MoveToLevel) => this.setBrightness(request.level),
+        moveToLevelWithOnOff: async (request: MatterRequests.MoveToLevel) => this.setBrightness(Math.round((request.level / 254) * 100)),
       },
     };
   }
@@ -165,9 +167,14 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
           this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
         },
         () => {
-          this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.brightness as number);
+          this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.level);
         });
     }
+  }
+
+  private get level(): number {
+    const percentage = (this.brightness as number) / 100;
+    return Math.round(percentage * MATTER_MAX_LEVEL);
   }
 
   private async getBrightness(): Promise<CharacteristicValue> {
@@ -194,7 +201,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
         this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
       },
       () => {
-        this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.brightness as number);
+        this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.level);
       },
     );
   }
@@ -234,7 +241,8 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
             this.service.updateCharacteristic(this.Characteristic.Brightness, value);
           },
           () => {
-            this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, value);
+            const percentage = value / 100;
+            this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, Math.round(percentage * MATTER_MAX_LEVEL));
           },
         );
       }
