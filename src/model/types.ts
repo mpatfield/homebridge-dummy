@@ -7,7 +7,7 @@ export type CharacteristicType = typeof import('homebridge').Characteristic;
 
 import {
   AccessoryState, ConditionOperator, FadeOutType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
-  Platform, Position, ScheduleType, SensorBehavior, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
+  Position, Protocol, ScheduleType, SensorBehavior, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
 } from './enums.js';
 import { HomeKitType, SensorType } from './homekit.js';
 
@@ -129,7 +129,7 @@ export type DummyConfig = {
   id: string,
   name: string,
   type: HomeKitType,
-  platform: Platform,
+  protocol: Protocol,
   groupName?: string,
   sensor?: SensorConfig,
   schedule?: ScheduleConfig,

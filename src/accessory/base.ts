@@ -9,7 +9,7 @@ import { SensorAccessory } from './sensor/sensor.js';
 import { strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { AccessoryState, Platform, TimeUnits } from '../model/enums.js';
+import { AccessoryState, Protocol, TimeUnits } from '../model/enums.js';
 import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
 import { MATTER_SERIAL_MAX_LEN, MatterClusterKey, MatterType, MatterValue, MatterValueKey } from '../model/matter.js';
@@ -31,7 +31,7 @@ export type GetHomeKit = () => HomeKit | undefined;
 export type GetMatter = () => MatterAPI | undefined;
 
 export type DummyAccessoryDependency<C extends DummyConfig> = {
-  platform: Platform,
+  protocol: Protocol,
   getHomeKit: GetHomeKit;
   getMatter: GetMatter,
   config: C,
@@ -85,7 +85,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     this.model = dependency.config.type;
     this.serialNumber = this.identifier.length <= MATTER_SERIAL_MAX_LEN ? this.identifier : this.identifier.substring(0, MATTER_SERIAL_MAX_LEN - 1) + '…';
 
-    if (dependency.platform === Platform.HomeKit) {
+    if (dependency.protocol === Protocol.HomeKit) {
       const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
       this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
     }
@@ -106,7 +106,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       this.trigger.bind(this), this._autoReset ? undefined : this.reset.bind(this), dependency.config.disableLogging === true);
 
 
-    if (dependency.platform !== Platform.HomeKit) {
+    if (dependency.protocol !== Protocol.HomeKit) {
       return;
     }
 
@@ -230,16 +230,16 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   }
 
   protected ifHomeKit(perform: () => (void)) {
-    if (this.dependency.platform === Platform.HomeKit) {
+    if (this.dependency.protocol === Protocol.HomeKit) {
       perform();
     }
   }
 
   protected bifurcate(homekit?: () => (void), matter?: () => (void)) {
-    switch (this.dependency.platform) {
-    case Platform.HomeKit:
+    switch (this.dependency.protocol) {
+    case Protocol.HomeKit:
       return homekit?.();
-    case Platform.Matter:
+    case Protocol.Matter:
       return matter?.();
     }
   }

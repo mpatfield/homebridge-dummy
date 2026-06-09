@@ -10,7 +10,7 @@ import { GroupAccessory, GroupAccessoryDependency } from '../accessory/group.js'
 import { setLanguage, strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { Platform } from '../model/enums.js';
+import { Protocol } from '../model/enums.js';
 import { History } from '../model/history.js';
 import { DummyConfig, DummyPlatformConfig, GroupConfig, HomeKitAccessory } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
@@ -94,7 +94,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     for (const accessoryConfig of accessories) {
 
-      if (accessoryConfig.platform === Platform.HomeKit) {
+      if (accessoryConfig.protocol === Protocol.HomeKit) {
 
         initEveCharacteristics(this.api);
 
@@ -115,7 +115,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         }
 
         const dependency: DummyAccessoryDependency<DummyConfig> = {
-          platform: Platform.HomeKit,
+          protocol: Protocol.HomeKit,
           getHomeKit: () => ({ Service: this.api.hap.Service, Characteristic: this.api.hap.Characteristic, accessory: homekitAccessory }),
           getMatter: () => undefined,
           config: accessoryConfig,
@@ -136,7 +136,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
         this.dummyAccessories.push(dummyAccessory);
 
-      } else if (accessoryConfig.platform === Platform.Matter) {
+      } else if (accessoryConfig.protocol === Protocol.Matter) {
 
         if (!this.api.isMatterAvailable?.()) {
           this.log.warning(strings.startup.matterUnavailable, PLUGIN_ALIAS);
@@ -154,7 +154,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         }
 
         const dependency: DummyAccessoryDependency<DummyConfig> = {
-          platform: Platform.Matter,
+          protocol: Protocol.Matter,
           getHomeKit: () => undefined,
           getMatter: () => this.api.matter,
           config: accessoryConfig,
@@ -180,7 +180,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
         this.dummyAccessories.push(dummyAccessory);
 
       } else {
-        this.log.warning(strings.startup.unsupportedPlatform, accessoryConfig.platform, printableValues(Platform));
+        this.log.warning(strings.startup.unsupportedProtocol, accessoryConfig.protocol, printableValues(Protocol));
         continue;
       }
     }

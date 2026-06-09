@@ -1,6 +1,6 @@
 import { isValid } from '../tools/validation.js';
 
-export enum Platform {
+export enum Protocol {
   HomeKit = 'HomeKit',
   Matter = 'Matter',
 }

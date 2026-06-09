@@ -2,7 +2,7 @@ import { DummyAccessory, DummyAccessoryDependency, GetHomeKit, GetMatter } from 
 import { createDummyAccessory } from './helpers.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { Platform } from '../model/enums.js';
+import { Protocol } from '../model/enums.js';
 import { History } from '../model/history.js';
 import { DummyConfig, GroupConfig } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
@@ -46,7 +46,7 @@ export class GroupAccessory {
 
       const accessoryDependency: DummyAccessoryDependency<DummyConfig> = {
         ...dependency,
-        platform: Platform.HomeKit,
+        protocol: Protocol.HomeKit,
         config: dummyConfig,
         isGrouped: true,
       };

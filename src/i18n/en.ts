@@ -208,7 +208,7 @@ const en = {
       pingAvailability: 'State',
       pingHost: 'Host',
       pingInterval: 'Interval',
-      platform: 'Platform',
+      protocol: 'Protocol',
       pushId: 'Device or Group ID',
       pushText: 'Text',
       pushTitle: 'Title (Optional)',
@@ -369,7 +369,7 @@ const en = {
     restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
     restoringMatterAccessory: 'Restoring Matter accessory:',
     setupComplete: '✓ Setup complete',
-    unsupportedPlatform: 'Unsupported platform %s. Must be one of: %s', // platform, list of platforms
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
     unsupportedType: 'Unsupported accessory type %s', // accessory type
   },
 

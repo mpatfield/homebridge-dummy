@@ -127,7 +127,7 @@ const de = {
       pingAvailability: 'State',
       pingHost: 'Host',
       pingInterval: 'Interval',
-      platform: 'Platform',
+      protocol: 'Protocol',
       pushId: 'Device or Group ID',
       pushText: 'Text',
       pushTitle: 'Title (Optional)',
@@ -213,7 +213,7 @@ const de = {
     removeMatterAccessory: 'Removing Matter accessory:',
     restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
     restoringMatterAccessory: 'Restoring Matter accessory:',
-    unsupportedPlatform: 'Unsupported platform %s. Must be one of: %s', // platform, list of platforms
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
   },
 
   syncSchedule: {

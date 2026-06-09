@@ -22,7 +22,7 @@ const ru = {
 
     title: {
       commandSync: 'Sync Command',
-      platform: 'Platform',
+      protocol: 'Protocol',
       sensorBehavior: 'Sensor Behavior',
       syncSchedule: 'Sync Schedule',
     },
@@ -45,7 +45,7 @@ const ru = {
     removeMatterAccessory: 'Removing Matter accessory:',
     restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
     restoringMatterAccessory: 'Restoring Matter accessory:',
-    unsupportedPlatform: 'Unsupported platform %s. Must be one of: %s', // platform, list of platforms
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
   },
 
   syncSchedule: {

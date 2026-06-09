@@ -485,9 +485,9 @@
               "enum": ["Door", "GarageDoorOpener", "HumidifierDehumidifier", "HumiditySensor", "Lightbulb", "LockMechanism", "Outlet", "StatelessProgrammableSwitch", "Switch", "TemperatureSensor", "Thermostat", "Valve", "Window", "WindowCovering"],
               "enumNames": ["${config.enumNames.door}", "${config.enumNames.garageDoorOpener}", "${config.enumNames.humidifierDehumidifier}", "${config.enumNames.humiditySensor}", "${config.enumNames.lightbulb}", "${config.enumNames.lockMechanism}", "${config.enumNames.outlet}", "${config.enumNames.button}", "${config.enumNames.switch}", "${config.enumNames.temperatureSensor}", "${config.enumNames.thermostat}", "${config.enumNames.valve}", "${config.enumNames.window}", "${config.enumNames.windowCovering}"]
             },
-            "platform": {
+            "protocol": {
               "type": "string",
-              "title": "${config.title.platform}",
+              "title": "${config.title.protocol}",
               "enum": [ "HomeKit", "Matter"],
               "enumNames": ["${config.enumNames.homekit}", "${config.enumNames.matter}"],
               "default": "HomeKit"
@@ -710,7 +710,7 @@
                   },
                   "items": [
                     {
-                      "key": "accessories[].platform",
+                      "key": "accessories[].protocol",
                       "flex": "0 0 auto",
                       "condition": {
                         "functionBody": "return ['Lightbulb','Outlet','Switch'].includes(model.accessories?.[arguments[1]]?.type);"
@@ -724,7 +724,7 @@
                       "key": "accessories[].sensor.type",
                       "flex": "0 0 auto",
                       "condition": {
-                        "functionBody": "return model.accessories?.[arguments[1]]?.platform !== 'Matter';"
+                        "functionBody": "return model.accessories?.[arguments[1]]?.protocol !== 'Matter';"
                       }
                     },
                     {
@@ -888,7 +888,7 @@
                       "key": "accessories[].enableHistory",
                       "flex": "0 0 auto",
                       "condition": {
-                        "functionBody": "return model.accessories?.[arguments[1]]?.platform !== 'Matter' && ['Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
+                        "functionBody": "return model.accessories?.[arguments[1]]?.protocol !== 'Matter' && ['Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
                       }
                     },
                     {
