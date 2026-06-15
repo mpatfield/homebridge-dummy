@@ -4,7 +4,7 @@
   "displayName": "Homebridge Dummy",
   "description": "Create accessories to help with HomeKit automation and control — scheduling, delays, sensors, commands, conditions, webhooks, and more",
   "type": "module",
-  "version": "1.8.1",
+  "version": "2.0.0-beta.0",
   "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
   "repository": {
     "type": "git",
@@ -117,7 +117,7 @@
   },
   "license": "Apache-2.0",
   "allowScripts": {
-    "esbuild@0.28.0": true,
-    "fsevents@2.3.3": true
+    "esbuild": true,
+    "fsevents": true
   }
 }
