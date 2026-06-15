@@ -197,6 +197,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       softwareVersion: this.softwareVersion,
       clusters: this.clusters,
       handlers: this.handlers,
+      parts: this.parts,
     };
   }
 
@@ -211,6 +212,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
       context: this.context,
       clusters: this.clusters,
       handlers: this.handlers,
+      parts: this.parts,
     };
   }
 
