@@ -97,6 +97,7 @@ const en = {
       generic: 'Generic',
       goldenHour: 'Golden Hour',
       heat: 'Heat',
+      homekit: 'HomeKit (Default)',
       hour: 'Hour',
       hourly: 'Hourly',
       hours: 'Hours',
@@ -110,10 +111,16 @@ const en = {
       lightbulb: 'Lightbulb',
       lockMechanism: 'Lock',
       log: 'Log Watcher',
+      matter: 'Matter (Beta)',
+      milliseconds: 'Milliseconds',
       minutely: 'Every Minute',
+      minutes: 'Minutes',
       month: 'Month',
       monthly: 'Monthly',
+      motionSensor: 'Motion',
+      night: 'Night',
       none: 'None',
+      notAvailable: 'Not Available',
       occupancySensor: 'Occupancy',
       off: 'Off',
       on: 'On',
@@ -123,11 +130,6 @@ const en = {
       outlet: 'Outlet',
       ping: 'Reachability',
       pingieNotify: 'Notify! (notify.pingie.com)',
-      milliseconds: 'Milliseconds',
-      minutes: 'Minutes',
-      motionSensor: 'Motion',
-      night: 'Night',
-      notAvailable: 'Not Available',
       secondly: 'Every Second',
       seconds: 'Seconds',
       secured: 'Locked',
@@ -206,6 +208,7 @@ const en = {
       pingAvailability: 'State',
       pingHost: 'Host',
       pingInterval: 'Interval',
+      protocol: 'Protocol',
       pushId: 'Device or Group ID',
       pushText: 'Text',
       pushTitle: 'Title (Optional)',
@@ -356,16 +359,18 @@ const en = {
   },
 
   startup: {
-    newAccessory: 'Adding new accessory:',
-    removeAccessory: 'Removing accessory:',
-    restoringAccessory: 'Restoring accessory:',
+    matterDisabled: 'Matter is currently disabled. Please enable Matter in the %s parent bridge.', // plugin name
+    matterGroups: 'Groups are not yet supported for Matter accessories',
+    matterUnavailable: 'Matter is not available with this version of Homebridge. Please update to Homebridge v2.0+ to use Matter with %s.', // plugin name
+    newHomeKitAccessory: 'Adding new HomeKit accessory:',
+    newMatterAccessory: 'Adding new Matter accessory:',
+    removeHomeKitAccessory: 'Removing HomeKit accessory:',
+    removeMatterAccessory: 'Removing Matter accessory:',
+    restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
+    restoringMatterAccessory: 'Restoring Matter accessory:',
     setupComplete: '✓ Setup complete',
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
     unsupportedType: 'Unsupported accessory type %s', // accessory type
-    welcome: [
-      'Please ★ this plugin on GitHub if you\'re finding it useful! https://github.com/mpatfield/homebridge-dummy',
-      'Would you like to sponsor this plugin? https://github.com/sponsors/mpatfield',
-      'Want to see this plugin in your own language? Please visit https://github.com/mpatfield/homebridge-dummy/issues/105',
-    ],
   },
 
   syncSchedule: {

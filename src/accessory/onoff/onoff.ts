@@ -4,8 +4,10 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { HKCharacteristicKey, OnState, SensorBehavior } from '../../model/enums.js';
+import { OnState, SensorBehavior } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { HKCharacteristicKey } from '../../model/homekit.js';
+import { MatterClusterKey, MatterValueKey } from '../../model/matter.js';
 import { OnOffConfig } from '../../model/types.js';
 import { Values, Webhook } from '../../model/webhook.js';
 
@@ -19,16 +21,35 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     super(dependency);
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.on = this.defaultState;
 
-    this.service.getCharacteristic(dependency.Characteristic.On)
-      .onGet(this.getOn.bind(this))
-      .onSet(this.setOn.bind(this));
+    this.ifHomeKit(() => {
+      this.service.getCharacteristic(this.homekit.Characteristic.On)
+        .onGet(this.getOn.bind(this))
+        .onSet(this.setOn.bind(this));
+    });
 
     this.initializeOn();
+  }
+
+  override get clusters() {
+    return {
+      onOff: {
+        onOff: this.on as boolean,
+      },
+    };
+  }
+
+  override get handlers() {
+    return {
+      onOff: {
+        on: async () => this.setOn(true),
+        off: async () => this.setOn(false),
+      },
+    };
   }
 
   override get webhooks(): Webhook[] {
@@ -38,7 +59,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
         () => this.on,
         (value, syncOnly) => {
           this.setOn(value, syncOnly);
-          return this.logMessageForOnState(value).replace('%s', this.name);
+          return this.logMessageForOnState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];
@@ -49,7 +70,9 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     await new Promise(resolve => setImmediate(resolve));
 
     if (!this.isStateful) {
-      this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      this.ifHomeKit(() => {
+        this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      });
       await this.registerStateChange();
       return;
     }
@@ -102,7 +125,14 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
       this.onReset();
     }
 
-    this.service.updateCharacteristic(this.Characteristic.On, this.on);
+    this.bifurcate(
+      () => {
+        this.service.updateCharacteristic(this.Characteristic.On, this.on);
+      },
+      () => {
+        this.updateMatter(MatterClusterKey.onOff, MatterValueKey.onOff, this.on === true);
+      },
+    );
 
     if (this.sensor) {
       if (this.sensor.behavior === SensorBehavior.MIRROR) {

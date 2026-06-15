@@ -343,16 +343,8 @@ const vi = {
   },
 
   startup: {
-    newAccessory: 'Đang thêm phụ kiện mới:',
-    removeAccessory: 'Đang xóa phụ kiện:',
-    restoringAccessory: 'Đang khôi phục phụ kiện:',
     setupComplete: '✓ Thiết lập hoàn tất',
     unsupportedType: 'Loại phụ kiện không được hỗ trợ %s',
-    welcome: [
-      'Hãy ★ plugin này trên GitHub nếu bạn thấy nó hữu ích! https: //github.com/mpatfield/homebridge-dummy',
-      'Bạn có muốn tài trợ cho plugin này không? https: //github.com/sponsors/mpatfield',
-      'Muốn thấy plugin này bằng ngôn ngữ của bạn? Hãy truy cập https: //github.com/mpatfield/homebridge-dummy/issues/105',
-    ],
   },
 
   thermostat: {

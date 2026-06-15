@@ -1,12 +1,12 @@
 import { PositionAccessory } from './position.js';
 
-import { AccessoryType } from '../../model/enums.js';
+import { HomeKitType } from '../../model/homekit.js';
 import { BlindConfig } from '../../model/types.js';
 
 export class BlindAccessory extends PositionAccessory<BlindConfig> {
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.WindowCovering;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.WindowCovering;
   }
 
 }

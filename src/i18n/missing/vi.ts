@@ -13,11 +13,30 @@ const vi = {
 
   config: {
 
+    enumNames: {
+      homekit: 'HomeKit (Default)',
+      matter: 'Matter (Beta)',
+    },
+
     title: {
       commandSync: 'Sync Command',
+      protocol: 'Protocol',
       syncSchedule: 'Sync Schedule',
     },
 
+  },
+
+  startup: {
+    matterDisabled: 'Matter is currently disabled. Please enable Matter in the %s parent bridge.', // plugin name
+    matterGroups: 'Groups are not yet supported for Matter accessories',
+    matterUnavailable: 'Matter is not available with this version of Homebridge. Please update to Homebridge v2.0+ to use Matter with %s.', // plugin name
+    newHomeKitAccessory: 'Adding new HomeKit accessory:',
+    newMatterAccessory: 'Adding new Matter accessory:',
+    removeHomeKitAccessory: 'Removing HomeKit accessory:',
+    removeMatterAccessory: 'Removing Matter accessory:',
+    restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
+    restoringMatterAccessory: 'Restoring Matter accessory:',
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
   },
 
   syncSchedule: {

@@ -2,7 +2,8 @@ import { IHomebridgePluginUi } from '@homebridge/plugin-ui-utils/ui.interface';
 
 import { PLUGIN_ALIAS } from '../homebridge/settings.js';
 
-import { AccessoryType, FadeOutType, OnState, ScheduleType, SensorBehavior } from '../model/enums.js';
+import { FadeOutType, OnState, ScheduleType, SensorBehavior } from '../model/enums.js';
+import { HomeKitType } from '../model/homekit.js';
 import { DummyConfig, DummyPlatformConfig, LightbulbConfig, OnOffConfig } from '../model/types.js';
 
 declare const homebridge: IHomebridgePluginUi;
@@ -151,10 +152,10 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
   for (const config of configs) {
     const populated = (config.accessories ?? []).filter( (accessory) => accessory.id && accessory.name &&
     ![
-      AccessoryType.HumiditySensor,
-      AccessoryType.StatelessProgrammableSwitch,
-      AccessoryType.TemperatureSensor,
-      AccessoryType.Thermostat,
+      HomeKitType.HumiditySensor,
+      HomeKitType.StatelessProgrammableSwitch,
+      HomeKitType.TemperatureSensor,
+      HomeKitType.Thermostat,
     ].includes(accessory.type));
     newAccessories.push(...populated);
   }
@@ -252,11 +253,11 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
       unlockedOption.hidden = true;
 
       switch (accessory.type) {
-      case AccessoryType.HumidifierDehumidifier:
-      case AccessoryType.Lightbulb:
-      case AccessoryType.Outlet:
-      case AccessoryType.Switch:
-      case AccessoryType.Valve:
+      case HomeKitType.HumidifierDehumidifier:
+      case HomeKitType.Lightbulb:
+      case HomeKitType.Outlet:
+      case HomeKitType.Switch:
+      case HomeKitType.Valve:
         onOption.hidden = false;
         offOption.hidden = false;
         if (stateSelect.selectedIndex !== 1 && stateSelect.selectedIndex !== 2) {
@@ -264,10 +265,10 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
           stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
         }
         break;
-      case AccessoryType.Door:
-      case AccessoryType.GarageDoorOpener:
-      case AccessoryType.Window:
-      case AccessoryType.WindowCovering:
+      case HomeKitType.Door:
+      case HomeKitType.GarageDoorOpener:
+      case HomeKitType.Window:
+      case HomeKitType.WindowCovering:
         openOption.hidden = false;
         closedOption.hidden = false;
         if (stateSelect.selectedIndex !== 3 && stateSelect.selectedIndex !== 4) {
@@ -275,7 +276,7 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
           stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
         }
         break;
-      case AccessoryType.LockMechanism:
+      case HomeKitType.LockMechanism:
         if (stateSelect.selectedIndex !== 5 && stateSelect.selectedIndex !== 6) {
           stateSelect.selectedIndex = -1;
           stateSelect.dispatchEvent(new Event('change', { bubbles: true }));
@@ -283,7 +284,7 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
         lockedOption.hidden = false;
         unlockedOption.hidden = false;
         break;
-      case AccessoryType.Thermostat:
+      case HomeKitType.Thermostat:
       default:
         return;
       }

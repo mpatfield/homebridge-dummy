@@ -1,4 +1,4 @@
-import { CharacteristicValue } from 'homebridge';
+import { CharacteristicValue, MatterRequests } from 'homebridge';
 
 import { OnOffAccessory } from './onoff.js';
 
@@ -6,7 +6,9 @@ import { DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, FadeOutType, HKCharacteristicKey, ScheduleType } from '../../model/enums.js';
+import { FadeOutType, ScheduleType } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
+import { MatterClusterKey, MatterType, MatterValueKey } from '../../model/matter.js';
 import { LightbulbConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 
@@ -16,6 +18,8 @@ import { DelayLogStrings, getDelay } from '../../timeout/timeout.js';
 import { assert } from '../../tools/validation.js';
 
 const DEFAULT_BRIGHTNESS = 100;
+
+const MATTER_MAX_LEVEL = 254;
 
 export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
 
@@ -53,19 +57,23 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
         }
       }
 
-      this.service.getCharacteristic(dependency.Characteristic.Brightness)
-        .onGet(this.getBrightness.bind(this))
-        .onSet(this.setBrightness.bind(this));
+      this.ifHomeKit(() => {
+        this.service.getCharacteristic(this.homekit.Characteristic.Brightness)
+          .onGet(this.getBrightness.bind(this))
+          .onSet(this.setBrightness.bind(this));
+      });
 
       this.initializeBrightness();
 
     } else {
 
-      const brightnessCharacteristic = this.service.getCharacteristic(dependency.Characteristic.Brightness);
+      this.ifHomeKit( () => {
+        const brightnessCharacteristic = this.service.getCharacteristic(this.homekit.Characteristic.Brightness);
 
-      if (brightnessCharacteristic) {
-        this.service.removeCharacteristic(brightnessCharacteristic);
-      }
+        if (brightnessCharacteristic) {
+          this.service.removeCharacteristic(brightnessCharacteristic);
+        }
+      });
     }
   }
 
@@ -73,8 +81,43 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     return this.config.isDimmer ?? this.config.defaultBrightness !== undefined;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Lightbulb;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Lightbulb;
+  }
+
+  override getMatterType(): MatterType {
+    return this.isDimmer ? MatterType.DimmableLight : MatterType.OnOffLight;
+  }
+
+  override get clusters() {
+
+    if (!this.isDimmer) {
+      return super.clusters;
+    }
+
+    return {
+      ...super.clusters,
+      levelControl: {
+        currentLevel: this.level(),
+        minLevel: 1,
+        maxLevel: MATTER_MAX_LEVEL,
+      },
+    };
+  }
+
+  override get handlers() {
+
+    if (!this.isDimmer) {
+      return super.handlers;
+    }
+
+    return {
+      ...super.handlers,
+      levelControl: {
+        moveToLevelWithOnOff: async (request: MatterRequests.MoveToLevel) =>
+          this.setBrightness(Math.round(((request.level - 1) / (MATTER_MAX_LEVEL - 1)) * 100)),
+      },
+    };
   }
 
   override get webhooks(): Webhook[] {
@@ -85,7 +128,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
         () => this.brightness,
         (value) => {
           this.setBrightness(value);
-          return strings.lightbulb.brightness.replace('%s', this.name).replace('%d', value.toString());
+          return strings.lightbulb.brightness.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
     ];
@@ -94,7 +137,9 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
   private async initializeBrightness() {
 
     if (!this.isStateful) {
-      this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+      this.ifHomeKit(() => {
+        this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+      });
       return;
     }
 
@@ -118,8 +163,26 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     super.setOn(value, syncOnly);
 
     if (this.isDimmer && !value) {
-      this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+      this.bifurcate(
+        () => {
+          this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+        },
+        () => {
+          this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.level());
+        });
     }
+  }
+
+  private level(brightness: number | undefined = undefined): number {
+
+    let percentage: number;
+    if (brightness !== undefined) {
+      percentage = brightness / 100;
+    } else {
+      percentage = (this.brightness as number) / 100;
+    }
+
+    return Math.round(percentage * (MATTER_MAX_LEVEL - 1)) + 1;
   }
 
   private async getBrightness(): Promise<CharacteristicValue> {
@@ -141,7 +204,14 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
 
     this.setProperty(HKCharacteristicKey.Brightness, this.brightness);
 
-    this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+    this.bifurcate(
+      () => {
+        this.service.updateCharacteristic(this.Characteristic.Brightness, this.brightness);
+      },
+      () => {
+        this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.level());
+      },
+    );
   }
 
   override onTriggered(stateChanged: boolean) {
@@ -168,13 +238,20 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
       strings.lightbulb.fadeHours,
     );
 
-    const delay: number = getDelay(rawTime, this.config.fadeOut.units, undefined, logStrings, this.log, this.name);
+    const delay: number = getDelay(rawTime, this.config.fadeOut.units, undefined, logStrings, this.log, this.displayName);
 
     this.fader?.start(Number(this.brightness), 0, delay, (value) => {
       if (value === 0) {
         this.setOn(false);
       } else {
-        this.service.updateCharacteristic(this.Characteristic.Brightness, value);
+        this.bifurcate(
+          () => {
+            this.service.updateCharacteristic(this.Characteristic.Brightness, value);
+          },
+          () => {
+            this.updateMatter(MatterClusterKey.levelControl, MatterValueKey.currentLevel, this.level(value));
+          },
+        );
       }
     });
   }

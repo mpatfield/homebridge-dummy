@@ -339,15 +339,8 @@ const ru = {
   },
 
   startup: {
-    newAccessory: 'Добавление нового аксессуара:',
-    removeAccessory: 'Удаление аксессуара:',
-    restoringAccessory: 'Восстановление аксессуара:',
     setupComplete: '✓ Настройка завершена',
     unsupportedType: 'Тип аксессуара %s не поддерживается',
-    welcome: [
-      'Поставьте ★ этому плагину на GitHub, если он вам полезен! https://github.com/mpatfield/homebridge-dummy',
-      'Хотите спонсировать этот плагин? https://github.com/sponsors/mpatfield',
-    ],
   },
 
   thermostat: {

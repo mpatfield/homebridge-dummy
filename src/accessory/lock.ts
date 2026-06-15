@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, LockState, HKCharacteristicKey, SensorBehavior }  from '../model/enums.js';
+import { LockState, SensorBehavior }  from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { LockConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
@@ -18,16 +19,16 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     super(dependency);
 
     if (!isValid(LockState, this.config.defaultLockState)) {
-      this.log.warning(strings.lock.badDefault, this.name, `'${dependency.config.defaultLockState}'`, printableValues(LockState));
+      this.log.warning(strings.lock.badDefault, this.displayName, `'${dependency.config.defaultLockState}'`, printableValues(LockState));
     }
 
     this.state = this.defaultLockState;
 
-    this.service.getCharacteristic(dependency.Characteristic.LockTargetState)
+    this.service.getCharacteristic(this.homekit.Characteristic.LockTargetState)
       .onGet(this.getState.bind(this))
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.LockCurrentState)
+    this.service.getCharacteristic(this.homekit.Characteristic.LockCurrentState)
       .onGet(this.getState.bind(this));
 
     this.initializeState();
@@ -51,8 +52,8 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     await this.setState(state);
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.LockMechanism;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.LockMechanism;
   }
 
   override get webhooks(): Webhook[] {
@@ -65,7 +66,7 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value, syncOnly);
-          return this.logTemplateForCV(value).replace('%s', this.name);
+          return this.logTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

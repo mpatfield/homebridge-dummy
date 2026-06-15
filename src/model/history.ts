@@ -1,11 +1,11 @@
 import { F_OK } from 'constants';
 import fakegato, { HistoryServiceProvider, HistoryService } from 'fakegato-history/fakegato-history.cjs';
 import { access, unlink } from 'fs/promises';
-import { API, CharacteristicValue, Nullable, PlatformAccessory } from 'homebridge';
+import { API, CharacteristicValue, Nullable } from 'homebridge';
 import path from 'path';
 
-import { EveCharacteristicKey } from './enums.js';
-import { DummyConfig } from './types.js';
+import { EveCharacteristicKey } from './homekit.js';
+import { DummyConfig, HomeKitAccessory } from './types.js';
 
 import { DummyAccessory } from '../accessory/base.js';
 import { EveCharacteristic } from '../accessory/characteristic/eve.js';
@@ -44,7 +44,7 @@ let ServiceProvider: HistoryServiceProvider | undefined;
 
 const HISTORY_UUID = 'dbca6d94-6d1b-45e1-9feb-daf030819984';
 
-function HistoryService(type: HistoryType, accessory: PlatformAccessory, options?: HistoryOptions): HistoryService {
+function HistoryService(type: HistoryType, accessory: HomeKitAccessory, options?: HistoryOptions): HistoryService {
 
   if (!ServiceProvider) {
     throw new Error('HistoryServiceProvider not initialized');
@@ -54,6 +54,14 @@ function HistoryService(type: HistoryType, accessory: PlatformAccessory, options
 }
 
 export class History {
+
+  private static _instance: History | undefined;
+  public static instance(api: API, log: Log) : History {
+    if (History._instance === undefined) {
+      History._instance = new History(api, log);
+    }
+    return History._instance;
+  }
 
   private readonly historyServices = new Map<string, HistoryService>();
   private readonly persistPath: string;
@@ -86,7 +94,7 @@ export class History {
       ...entry,
     };
 
-    this.log.ifVerbose(`${accessory.name} ${History.name}.${this.record.name}(${type}) — `, JSON.stringify(entry));
+    this.log.ifVerbose(`${accessory.displayName} ${History.name}.${this.record.name}(${type}) — `, JSON.stringify(entry));
 
     historyService.addEntry(entry);
 
@@ -108,7 +116,7 @@ export class History {
       filename: this.getFilename(accessory),
     };
 
-    const historyService = HistoryService(type, accessory.platformAccessory, options);
+    const historyService = HistoryService(type, accessory.homekitAccessory, options);
     this.historyServices.set(accessory.identifier, historyService);
 
     if (!addLastActivation) {
@@ -163,7 +171,7 @@ export class History {
       return;
     }
 
-    this.log.ifVerbose(strings.history.cleanup, accessory.name);
+    this.log.ifVerbose(strings.history.cleanup, accessory.displayName);
 
     try {
       await unlink(filePath);
@@ -173,7 +181,7 @@ export class History {
         return;
       }
 
-      this.log.error(strings.history.cleanupFailed, accessory.name, filename);
+      this.log.error(strings.history.cleanupFailed, accessory.displayName, filename);
     }
   }
 

@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
+import { OnState, ScheduleType, TimeUnits, ValveType }  from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { ValveConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
@@ -17,8 +18,8 @@ const MAX_DURATION = 3600;
 
 export class ValveAccessory extends DummyAccessory<ValveConfig> {
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Valve;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Valve;
   }
 
   private state: CharacteristicValue;
@@ -29,39 +30,39 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
     super(dependency);
 
     if (!isValid(ValveType, dependency.config.valveType)) {
-      this.log.warning(strings.valve.badType, this.name, `'${dependency.config.valveType}'`, printableValues(ValveType));
+      this.log.warning(strings.valve.badType, this.displayName, `'${dependency.config.valveType}'`, printableValues(ValveType));
     }
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.state = this.defaultState;
 
-    this.service.getCharacteristic(dependency.Characteristic.ValveType)
+    this.service.getCharacteristic(this.homekit.Characteristic.ValveType)
       .onGet(this.getType.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.Active)
+    this.service.getCharacteristic(this.homekit.Characteristic.Active)
       .onGet(this.getState.bind(this))
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.InUse)
+    this.service.getCharacteristic(this.homekit.Characteristic.InUse)
       .onGet(this.getState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.IsConfigured)
-      .onGet(() => dependency.Characteristic.IsConfigured.CONFIGURED);
+    this.service.getCharacteristic(this.homekit.Characteristic.IsConfigured)
+      .onGet(() => this.homekit.Characteristic.IsConfigured.CONFIGURED);
 
     const autoReset = dependency.config.autoReset;
     if (autoReset !== undefined && autoReset.type === ScheduleType.TIMEOUT && autoReset.time !== undefined && autoReset.units !== undefined) {
 
       this.initializeDuration(autoReset.time, autoReset.units);
 
-      this.service.getCharacteristic(dependency.Characteristic.SetDuration)
+      this.service.getCharacteristic(this.homekit.Characteristic.SetDuration)
         .setProps({ minValue: MIN_DURATION, maxValue: MAX_DURATION })
         .onGet(this.getDuration.bind(this))
         .onSet(this.setDuration.bind(this));
 
-      this.service.getCharacteristic(dependency.Characteristic.RemainingDuration)
+      this.service.getCharacteristic(this.homekit.Characteristic.RemainingDuration)
         .onGet(this.getRemainingDuration.bind(this));
     }
 
@@ -75,7 +76,7 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value ? 1 : 0, syncOnly);
-          return this.logMessageForState(value).replace('%s', this.name);
+          return this.logMessageForState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];
@@ -111,10 +112,10 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
     duration = Math.round(getDelay(rawTime, units) / SECOND);
 
     if (duration < MIN_DURATION) {
-      this.log.warning(strings.valve.minDuration, this.name);
+      this.log.warning(strings.valve.minDuration, this.displayName);
       duration = MIN_DURATION;
     } else if (duration > MAX_DURATION) {
-      this.log.warning(strings.valve.maxDuration, this.name);
+      this.log.warning(strings.valve.maxDuration, this.displayName);
       duration = MAX_DURATION;
     }
 

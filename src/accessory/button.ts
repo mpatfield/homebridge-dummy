@@ -4,14 +4,14 @@ import { DummyAccessory } from './base.js';
 
 import { strings } from '../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey } from '../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { ButtonConfig } from '../model/types.js';
 import { Values, Webhook } from '../model/webhook.js';
 
 export class ButtonAccessory extends DummyAccessory<ButtonConfig> {
 
-  protected getAccessoryType(): AccessoryType {
-    return AccessoryType.StatelessProgrammableSwitch;
+  protected getHomeKitType(): HomeKitType {
+    return HomeKitType.StatelessProgrammableSwitch;
   }
 
   override async trigger(): Promise<void> {
@@ -34,7 +34,7 @@ export class ButtonAccessory extends DummyAccessory<ButtonConfig> {
         () => undefined,
         (value) => {
           this.onPress(value);
-          return this.stringForValue(value).replace('%s', this.name);
+          return this.stringForValue(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

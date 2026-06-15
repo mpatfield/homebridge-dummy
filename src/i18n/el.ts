@@ -339,15 +339,8 @@ const el = {
   },
 
   startup: {
-    newAccessory: 'Προσθήκη νέου αξεσουάρ:',
-    removeAccessory: 'Αφαίρεση αξεσουάρ:',
-    restoringAccessory: 'Επαναφορά αξεσουάρ:',
     setupComplete: '✓ Η εγκατάσταση ολοκληρώθηκε',
     unsupportedType: 'Μη υποστηριζόμενος τύπος αξεσουάρ %s',
-    welcome: [
-      'Παρακαλούμε βαθμολογήστε με ★ αυτό το πρόσθετο στο GitHub αν το βρίσκετε χρήσιμο! https://github.com/mpatfield/homebridge-dummy',
-      'Θα θέλατε να υποστηρίξετε αυτό το πρόσθετο; https://github.com/sponsors/mpatfield',
-    ],
   },
 
   thermostat: {

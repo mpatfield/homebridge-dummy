@@ -1,12 +1,12 @@
 import { PositionAccessory } from './position.js';
 
-import { AccessoryType } from '../../model/enums.js';
+import { HomeKitType } from '../../model/homekit.js';
 import { DoorConfig } from '../../model/types.js';
 
 export class DoorAccessory extends PositionAccessory<DoorConfig> {
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.Door;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.Door;
   }
 
 }

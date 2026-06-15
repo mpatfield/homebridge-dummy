@@ -4,8 +4,9 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, TemperatureUnits } from '../../model/enums.js';
+import { TemperatureUnits } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { TemperatureSensorConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 import { fromCelsius, toCelsius } from '../../tools/temperature.js';
@@ -22,17 +23,17 @@ export class TemperatureSensorAccessory extends DummyAccessory<TemperatureSensor
     super(dependency);
 
     if (!isValid(TemperatureUnits, dependency.config.temperatureUnits)) {
-      this.log.warning(strings.sensor.badTemperatureUnits, this.name, `'${dependency.config.temperatureUnits}'`, printableValues(TemperatureUnits));
+      this.log.warning(strings.sensor.badTemperatureUnits, this.displayName, `'${dependency.config.temperatureUnits}'`, printableValues(TemperatureUnits));
     }
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentTemperature)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentTemperature)
       .onGet(this.getTemperature.bind(this));
 
     this.temperature = (this.isStateful ? this.getProperty(HKCharacteristicKey.CurrentTemperature) : 0) ?? 0;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.TemperatureSensor;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.TemperatureSensor;
   }
 
   override get webhooks(): Webhook[] {
@@ -44,7 +45,7 @@ export class TemperatureSensorAccessory extends DummyAccessory<TemperatureSensor
         (value, syncOnly) => {
           value = toCelsius(value as number, this.units);
           this.setTemperature(value, syncOnly);
-          return this.temperatureLogTemplateForCV(value).replace('%s', this.name);
+          return this.temperatureLogTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];

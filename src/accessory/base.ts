@@ -1,5 +1,5 @@
 import { exec, ExecException } from 'child_process';
-import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+import { CharacteristicValue, EndpointType, MatterAccessory, MatterAPI, Service } from 'homebridge';
 import { promisify } from 'util';
 
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
@@ -9,10 +9,12 @@ import { SensorAccessory } from './sensor/sensor.js';
 import { strings } from '../i18n/i18n.js';
 
 import { ConditionManager } from '../model/conditions.js';
-import { AccessoryState, AccessoryType, CharacteristicKey, TimeUnits } from '../model/enums.js';
+import { AccessoryState, Protocol, TimeUnits } from '../model/enums.js';
+import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
+import { MATTER_SERIAL_MAX_LEN, MatterClusterKey, MatterType, MatterValue, MatterValueKey } from '../model/matter.js';
 import { NotificationManager } from '../model/notification.js';
-import { CharacteristicType, DummyConfig, ServiceType } from '../model/types.js';
+import { CharacteristicType, DummyConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
 import { Webhook } from '../model/webhook.js';
 
 import Limiter from '../timeout/limiter.js';
@@ -23,21 +25,23 @@ import { Storage } from '../tools/storage.js';
 import { assert } from '../tools/validation.js';
 import getVersion from '../tools/version.js';
 
+type HomeKit = { Service: ServiceType, Characteristic: CharacteristicType, accessory: HomeKitAccessory}
+
+export type GetHomeKit = () => HomeKit | undefined;
+export type GetMatter = () => MatterAPI | undefined;
+
 export type DummyAccessoryDependency<C extends DummyConfig> = {
-  Service: ServiceType,
-  Characteristic: CharacteristicType,
-  platformAccessory: PlatformAccessory,
+  protocol: Protocol,
+  getHomeKit: GetHomeKit;
+  getMatter: GetMatter,
   config: C,
   conditionManager: ConditionManager,
   log: Log,
-  history: History
+  history?: History
   isGrouped: boolean,
 }
 
 export type DummyAddonDependency = {
-  Service: ServiceType,
-  Characteristic: CharacteristicType,
-  platformAccessory: PlatformAccessory,
   identifier: string,
   caller: string,
   log: Log,
@@ -47,7 +51,14 @@ export type DummyAddonDependency = {
 
 export type OnRecordHistory = (type: HistoryType, entry: HistoryEntry, updateLastActivation: boolean) => void
 
-export abstract class DummyAccessory<C extends DummyConfig> {
+export abstract class DummyAccessory<C extends DummyConfig> implements MatterAccessory {
+
+  private _UUID?: string;
+
+  public readonly manufacturer = PLATFORM_NAME;
+  public readonly model: string;
+  public readonly serialNumber: string;
+  public readonly softwareVersion: string = getVersion();
 
   protected sensor?: SensorAccessory;
 
@@ -55,7 +66,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     return config.id ?? `${PLATFORM_NAME}:${config.type}:${config.name.replace(/\s+/g,'')}`;
   }
 
-  public readonly service: Service;
+  private readonly _service?: Service;
 
   private readonly _schedule?: Schedule;
   private readonly _autoReset?: Schedule;
@@ -71,7 +82,13 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
     const name = dependency.config.name;
 
-    this.sensor = SensorAccessory.new(this.addonDependency, this.recordHistory.bind(this), dependency.config.sensor);
+    this.model = dependency.config.type;
+    this.serialNumber = this.identifier.length <= MATTER_SERIAL_MAX_LEN ? this.identifier : this.identifier.substring(0, MATTER_SERIAL_MAX_LEN - 1) + '…';
+
+    if (dependency.protocol === Protocol.HomeKit) {
+      const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
+      this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
+    }
 
     this._schedule = Schedule.new(this.addonDependency, dependency.config.schedule, strings.schedule, 'Schedule', this.trigger.bind(this));
 
@@ -88,41 +105,114 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     dependency.conditionManager.register(name, this.identifier, dependency.config.conditions,
       this.trigger.bind(this), this._autoReset ? undefined : this.reset.bind(this), dependency.config.disableLogging === true);
 
-    const serviceInstance = dependency.Service[this.getAccessoryType()];
+
+    if (dependency.protocol !== Protocol.HomeKit) {
+      return;
+    }
+
+    const serviceInstance = this.homekit.Service[this.getHomeKitType()];
 
     if (dependency.isGrouped) {
 
-      let accessoryService = dependency.platformAccessory.getServiceById(serviceInstance, this.identifier);
+      let accessoryService = this.homekit.accessory.getServiceById(serviceInstance, this.identifier);
       if (!accessoryService) {
-        accessoryService = dependency.platformAccessory.addService(serviceInstance, name, this.identifier);
-        accessoryService.addOptionalCharacteristic(dependency.Characteristic.ConfiguredName);
-        accessoryService.setCharacteristic(dependency.Characteristic.ConfiguredName, name);
+        accessoryService = this.homekit.accessory.addService(serviceInstance, name, this.identifier);
+        accessoryService.addOptionalCharacteristic(this.homekit.Characteristic.ConfiguredName);
+        accessoryService.setCharacteristic(this.homekit.Characteristic.ConfiguredName, name);
       }
 
-      this.service = accessoryService;
+      this._service = accessoryService;
 
       return;
     }
 
-    dependency.platformAccessory.getService(dependency.Service.AccessoryInformation)!
-      .setCharacteristic(dependency.Characteristic.Name, name)
-      .setCharacteristic(dependency.Characteristic.ConfiguredName, name)
-      .setCharacteristic(dependency.Characteristic.Manufacturer, PLUGIN_ALIAS)
-      .setCharacteristic(dependency.Characteristic.Model, dependency.config.type)
-      .setCharacteristic(dependency.Characteristic.SerialNumber, this.identifier)
-      .setCharacteristic(dependency.Characteristic.FirmwareRevision, getVersion());
+    this.homekit.accessory.getService(this.homekit.Service.AccessoryInformation)!
+      .setCharacteristic(this.homekit.Characteristic.Name, name)
+      .setCharacteristic(this.homekit.Characteristic.ConfiguredName, name)
+      .setCharacteristic(this.homekit.Characteristic.Manufacturer, PLUGIN_ALIAS)
+      .setCharacteristic(this.homekit.Characteristic.Model, dependency.config.type)
+      .setCharacteristic(this.homekit.Characteristic.SerialNumber, this.identifier)
+      .setCharacteristic(this.homekit.Characteristic.FirmwareRevision, getVersion());
 
-    this.service = dependency.platformAccessory.getService(serviceInstance) || dependency.platformAccessory.addService(serviceInstance);
+    this._service = this.homekit.accessory.getService(serviceInstance) || this.homekit.accessory.addService(serviceInstance);
 
-    for (const type of Object.values(AccessoryType)) {
-      const existingService = dependency.platformAccessory.getService(dependency.Service[type]);
-      if (existingService && type !== this.getAccessoryType()) {
-        dependency.platformAccessory.removeService(existingService);
+    for (const type of Object.values(HomeKitType)) {
+      const existingService = this.homekit.accessory.getService(this.homekit.Service[type]);
+      if (existingService && type !== this.getHomeKitType()) {
+        this.homekit.accessory.removeService(existingService);
       }
     }
   }
 
-  protected abstract getAccessoryType(): AccessoryType;
+  protected abstract getHomeKitType(): HomeKitType;
+
+  public get service(): Service {
+    if (this._service === undefined) {
+      throw new Error(`${this.displayName} unable to get fetch Service instance`);
+    }
+    return this._service;
+  }
+
+  protected getMatterType(): MatterType | undefined {
+    return undefined;
+  };
+
+  public get UUID(): string {
+    if (!this._UUID) {
+      this._UUID = this.matter.uuid.generate(this.identifier);
+    }
+    return this._UUID;
+  }
+
+  public get deviceType(): EndpointType {
+
+    const type = this.getMatterType();
+    if (type !== undefined) {
+      return this.matter.deviceTypes[type];
+    }
+
+    throw new Error(`${this.getMatterType.name} not implemented for ${this.getHomeKitType()}`);
+  }
+
+  public get clusters(): MatterAccessory['clusters'] | undefined {
+    return undefined;
+  }
+
+  public get handlers(): MatterAccessory['handlers'] | undefined {
+    return undefined;
+  }
+
+  public get parts(): MatterAccessory['parts'] | undefined {
+    return undefined; // Use this for sensors and groups
+  }
+
+  public get context(): Record<string, unknown> {
+    return {
+      UUID: this.UUID,
+      deviceType: this.deviceType,
+      displayName: this.displayName,
+      serialNumber: this.serialNumber,
+      manufacturer: this.manufacturer,
+      model: this.model,
+      softwareVersion: this.softwareVersion,
+      clusters: this.clusters,
+      handlers: this.handlers,
+    };
+  }
+
+  public toMatterAccessory(): MatterAccessory {
+    return {
+      UUID: this.UUID,
+      displayName: this.displayName,
+      deviceType: this.deviceType,
+      serialNumber: this.serialNumber,
+      manufacturer: this.manufacturer,
+      model: this.model,
+      context: this.context,
+      clusters: this.clusters,
+      handlers: this.handlers,
+    };
+  }
 
   protected abstract trigger(): Promise<void>;
 
@@ -139,6 +229,41 @@ export abstract class DummyAccessory<C extends DummyConfig> {
     this._syncSchedule?.teardown();
   }
 
+  protected ifHomeKit(perform: () => (void)) {
+    if (this.dependency.protocol === Protocol.HomeKit) {
+      perform();
+    }
+  }
+
+  protected bifurcate(homekit?: () => (void), matter?: () => (void)) {
+    switch (this.dependency.protocol) {
+    case Protocol.HomeKit:
+      return homekit?.();
+    case Protocol.Matter:
+      return matter?.();
+    }
+  }
+
+  protected get homekit(): HomeKit {
+    const homekit = this.dependency.getHomeKit();
+    if (homekit === undefined) {
+      throw new Error(`${this.displayName} unable to get HomeKit instance`);
+    }
+    return homekit;
+  }
+
+  private get matter(): MatterAPI {
+    const matter = this.dependency.getMatter();
+    if (matter === undefined) {
+      throw new Error(`${this.displayName} unable to get MatterAPI instance`);
+    }
+    return matter;
+  }
+
+  protected updateMatter(clusterKey: MatterClusterKey, valueKey: MatterValueKey, value: MatterValue) {
+    this.matter.updateAccessoryState(this.UUID, clusterKey, { [valueKey]: value });
+  }
+
   public abstract get webhooks(): Webhook[];
 
   protected get config(): C {
@@ -147,9 +272,6 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
   protected get addonDependency(): DummyAddonDependency {
     return {
-      Service: this.dependency.Service,
-      Characteristic: this.dependency.Characteristic,
-      platformAccessory: this.dependency.platformAccessory,
       identifier: this.identifier,
       caller: this.dependency.config.name,
       log: this.dependency.log,
@@ -159,19 +281,19 @@ export abstract class DummyAccessory<C extends DummyConfig> {
   }
 
   public get historyEnabled(): boolean {
-    return this.dependency.config.enableHistory === true;
+    return this.dependency.history !== undefined && this.dependency.config.enableHistory === true;
   }
 
   public get identifier(): string {
     return DummyAccessory.identifier(this.config);
   }
 
-  public get name(): string {
+  public get displayName(): string {
     return this.config.name;
   }
 
-  public get platformAccessory(): PlatformAccessory {
-    return this.dependency.platformAccessory;
+  public get homekitAccessory(): HomeKitAccessory {
+    return this.homekit.accessory;
   }
 
   protected get log(): Log {
@@ -179,7 +301,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
   }
 
   protected get Characteristic(): CharacteristicType {
-    return this.dependency.Characteristic;
+    return this.homekit.Characteristic;
   }
 
   protected get isStateful(): boolean {
@@ -255,7 +377,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
       if (!this.isExecException(err)) {
         const message = err instanceof Error ? err.message : JSON.stringify(err);
-        this.log.error(`${strings.command.error}: %s`, this.name, message);
+        this.log.error(`${strings.command.error}: %s`, this.displayName, message);
         return;
       }
 
@@ -269,7 +391,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
           this.logIfDesired(`${strings.command.executed}: %s\n%s`, command, output);
         }
       } else {
-        this.log.error(`${strings.command.error}: %s (%s)`, this.name, command, exitCode, error ? `\n${error}` : undefined);
+        this.log.error(`${strings.command.error}: %s (%s)`, this.displayName, command, exitCode, error ? `\n${error}` : undefined);
       }
     }
   }
@@ -282,7 +404,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
     const result = await this.executeCommand(this.config.commandSync);
     if (!result) {
-      this.log.error(strings.command.badSyncCommand, this.name);
+      this.log.error(strings.command.badSyncCommand, this.displayName);
       return;
     }
 
@@ -294,7 +416,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
         const webhook = this.webhooks.find(webhook => webhook.characteristic === key);
         if (webhook === undefined) {
-          this.log.warning(strings.command.unsupportedCharacteristic, this.name, `'${key}'`);
+          this.log.warning(strings.command.unsupportedCharacteristic, this.displayName, `'${key}'`);
           return;
         }
 
@@ -302,7 +424,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
 
         const result = webhook.validateValue(value);
         if (result instanceof Error) {
-          this.log.error(`${this.name} - ${result.message}`);
+          this.log.error(`${this.displayName} - ${result.message}`);
           return;
         }
 
@@ -310,7 +432,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       });
 
     } catch {
-      this.log.error(strings.command.badSyncCommand, this.name);
+      this.log.error(strings.command.badSyncCommand, this.displayName);
     }
   }
 
@@ -329,7 +451,7 @@ export abstract class DummyAccessory<C extends DummyConfig> {
   }
 
   protected recordHistory(type: HistoryType, entry: HistoryEntry, updateLastActivation: boolean = false) {
-    this.dependency.history.record(this, type, entry, updateLastActivation);
+    this.dependency.history?.record(this, type, entry, updateLastActivation);
   }
 
   public logIfDesired(message: string, ...parameters: (string | number)[]) {
@@ -338,6 +460,6 @@ export abstract class DummyAccessory<C extends DummyConfig> {
       return;
     }
 
-    this.log.always(message, this.name, ...parameters);
+    this.log.always(message, this.displayName, ...parameters);
   }
 }

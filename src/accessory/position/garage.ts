@@ -4,7 +4,8 @@ import { DEFAULT_OPEN_CLOSE_DURATION, PositionAccessory } from './position.js';
 
 import { DummyAccessoryDependency } from '../base.js';
 
-import { AccessoryType, HKCharacteristicKey, TimeUnits } from '../../model/enums.js';
+import { TimeUnits } from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { GarageDoorConfig } from '../../model/types.js';
 import { Values } from '../../model/webhook.js';
 
@@ -21,12 +22,12 @@ export class GarageDoorAccessory extends PositionAccessory<GarageDoorConfig> {
   constructor(dependency: DummyAccessoryDependency<GarageDoorConfig>) {
     super(dependency);
 
-    this.service.getCharacteristic(dependency.Characteristic.ObstructionDetected)
+    this.service.getCharacteristic(this.homekit.Characteristic.ObstructionDetected)
       .onGet( async () => false );
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.GarageDoorOpener;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.GarageDoorOpener;
   }
 
   override get hasPositionState() {
@@ -67,7 +68,9 @@ export class GarageDoorAccessory extends PositionAccessory<GarageDoorConfig> {
 
   override onTargetPositionChanged(_oldValue: number, newValue: number) {
 
-    if (this.config.simulation === undefined || !assert(this.log, this.name, this.config.simulation, 'enabled') || this.config.simulation.enabled !== true) {
+    if (this.config.simulation === undefined
+      || !assert(this.log, this.displayName, this.config.simulation, 'enabled')
+      || this.config.simulation.enabled !== true) {
       return;
     }
 

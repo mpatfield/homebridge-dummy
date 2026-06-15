@@ -4,8 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey } from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { HumiditySensorConfig } from '../../model/types.js';
 import { Range, Webhook } from '../../model/webhook.js';
 
@@ -16,14 +16,14 @@ export class HumiditySensorAccessory extends DummyAccessory<HumiditySensorConfig
   constructor(dependency: DummyAccessoryDependency<HumiditySensorConfig>) {
     super(dependency);
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentRelativeHumidity)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentRelativeHumidity)
       .onGet(this.getHumidity.bind(this));
 
     this.humidity = (this.isStateful ? this.getProperty(HKCharacteristicKey.CurrentRelativeHumidity) : 0) ?? 0;
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.HumiditySensor;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.HumiditySensor;
   }
 
   override get webhooks(): Webhook[] {
@@ -34,7 +34,7 @@ export class HumiditySensorAccessory extends DummyAccessory<HumiditySensorConfig
         () => this.humidity,
         (value, syncOnly) => {
           this.setHumidity(value, syncOnly);
-          return strings.sensor.humidity.replace('%s', this.name).replace('%d', value.toString());
+          return strings.sensor.humidity.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
     ];

@@ -73,19 +73,21 @@ const es = {
       garageDoorOpener: 'Garage Door',
       generic: 'Generic',
       goldenHour: 'Golden Hour',
+      homekit: 'HomeKit (Default)',
       humidifier: 'Humidifier',
       humidifierDehumidifier: 'Humidifier/Dehumidifier',
       humiditySensor: 'Humidity Sensor',
       incremental: 'Incremental',
       irrigation: 'Irrigation',
       log: 'Log Watcher',
+      matter: 'Matter (Beta)',
+      night: 'Night',
       none: 'None',
+      notAvailable: 'Not Available',
       operatorAnd: 'ALL conditions are met', // proceeded by "Trigger when…"
       operatorOr: 'ANY conditions are met', // proceeded by "Trigger when…"
       ping: 'Reachability',
       pingieNotify: 'Notify! (notify.pingie.com)',
-      night: 'Night',
-      notAvailable: 'Not Available',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
       shower: 'Shower',
@@ -125,6 +127,7 @@ const es = {
       pingAvailability: 'State',
       pingHost: 'Host',
       pingInterval: 'Interval',
+      protocol: 'Protocol',
       pushId: 'Device or Group ID',
       pushText: 'Text',
       pushTitle: 'Title (Optional)',
@@ -198,6 +201,19 @@ const es = {
 
     temperatureC: '%s is %d°C', // accessory name, number
     temperatureF: '%s is %d°F', // accessory name, number
+  },
+
+  startup: {
+    matterDisabled: 'Matter is currently disabled. Please enable Matter in the %s parent bridge.', // plugin name
+    matterGroups: 'Groups are not yet supported for Matter accessories',
+    matterUnavailable: 'Matter is not available with this version of Homebridge. Please update to Homebridge v2.0+ to use Matter with %s.', // plugin name
+    newHomeKitAccessory: 'Adding new HomeKit accessory:',
+    newMatterAccessory: 'Adding new Matter accessory:',
+    removeHomeKitAccessory: 'Removing HomeKit accessory:',
+    removeMatterAccessory: 'Removing Matter accessory:',
+    restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
+    restoringMatterAccessory: 'Restoring Matter accessory:',
+    unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
   },
 
   syncSchedule: {

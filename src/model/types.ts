@@ -1,12 +1,15 @@
-import { AccessoryConfig, CharacteristicValue, PlatformConfig } from 'homebridge';
+import { AccessoryConfig, CharacteristicValue, PlatformAccessory, PlatformConfig } from 'homebridge';
+
+export type HomeKitAccessory = PlatformAccessory;
 
 export type ServiceType = typeof import('homebridge').Service;
 export type CharacteristicType = typeof import('homebridge').Characteristic;
 
 import {
-  AccessoryState, AccessoryType, ConditionOperator, FadeOutType, HumidifierType, LockState, NotificationAPI, OnState, OperandType,
-  PingAvailability, Position, ScheduleType, SensorBehavior, SensorType, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
+  AccessoryState, ConditionOperator, FadeOutType, HumidifierType, LockState, NotificationAPI, OnState, OperandType, PingAvailability,
+  Position, Protocol, ScheduleType, SensorBehavior, ThermostatState, TemperatureUnits, TimePeriod, TimeUnits, ValveType,
 } from './enums.js';
+import { HomeKitType, SensorType } from './homekit.js';
 
 export type LegacyAccessoryConfig = AccessoryConfig & {
   name: string,
@@ -125,7 +128,8 @@ export type FadeOutConfig = Assertable & {
 export type DummyConfig = {
   id: string,
   name: string,
-  type: AccessoryType,
+  type: HomeKitType,
+  protocol: Protocol,
   groupName?: string,
   sensor?: SensorConfig,
   schedule?: ScheduleConfig,

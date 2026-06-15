@@ -4,7 +4,8 @@ import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
 import { strings } from '../../i18n/i18n.js';
 
-import { AccessoryType, HKCharacteristicKey, HumidifierType, OnState }  from '../../model/enums.js';
+import { HumidifierType, OnState }  from '../../model/enums.js';
+import { HKCharacteristicKey, HomeKitType } from '../../model/homekit.js';
 import { HistoryType } from '../../model/history.js';
 import { HumidifierConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';
@@ -24,17 +25,17 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     super(dependency);
 
     if (!isValid(HumidifierType, dependency.config.humidifierType)) {
-      this.log.warning(strings.humidifier.badType, this.name, `'${dependency.config.humidifierType}'`, printableValues(HumidifierType));
+      this.log.warning(strings.humidifier.badType, this.displayName, `'${dependency.config.humidifierType}'`, printableValues(HumidifierType));
     }
 
     if (!isValid(OnState, this.config.defaultState)) {
-      this.log.warning(strings.onOff.badDefault, this.name, `'${dependency.config.defaultState}'`, printableValues(OnState));
+      this.log.warning(strings.onOff.badDefault, this.displayName, `'${dependency.config.defaultState}'`, printableValues(OnState));
     }
 
     this.state = this.defaultState;
     this.targetHumidity = DEFAULT_HUMIDITY;
 
-    this.service.getCharacteristic(dependency.Characteristic.TargetHumidifierDehumidifierState)
+    this.service.getCharacteristic(this.Characteristic.TargetHumidifierDehumidifierState)
       .setProps({
         minStep: 1,
         validValues: [this.targetState as number],
@@ -42,14 +43,14 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
       .onGet(async () => this.targetState)
       .onSet(async () => undefined );
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentHumidifierDehumidifierState)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentHumidifierDehumidifierState)
       .onGet(async () => this.currentState);
 
-    this.service.getCharacteristic(dependency.Characteristic.Active)
+    this.service.getCharacteristic(this.homekit.Characteristic.Active)
       .onGet(async () => this.state)
       .onSet(this.setState.bind(this));
 
-    this.service.getCharacteristic(dependency.Characteristic.CurrentRelativeHumidity)
+    this.service.getCharacteristic(this.homekit.Characteristic.CurrentRelativeHumidity)
       .onGet(async () => this.currentHumidity);
 
     this.service.getCharacteristic(this.TargetHumidityCharacteristic)
@@ -89,8 +90,8 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     }
   }
 
-  override getAccessoryType(): AccessoryType {
-    return AccessoryType.HumidifierDehumidifier;
+  override getHomeKitType(): HomeKitType {
+    return HomeKitType.HumidifierDehumidifier;
   }
 
   override get webhooks(): Webhook[] {
@@ -102,7 +103,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.state,
         (value, syncOnly) => {
           this.setState(value ? 1 : 0, syncOnly);
-          return this.logMessageForState(value).replace('%s', this.name);
+          return this.logMessageForState(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
 
@@ -111,7 +112,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.currentHumidity,
         (value) => {
           this.setCurrentHumidity(value);
-          return strings.sensor.humidity.replace('%s', this.name).replace('%d', value.toString());
+          return strings.sensor.humidity.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
 
@@ -120,7 +121,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
         () => this.targetHumidity,
         (value) => {
           this.setTargetHumidity(value);
-          return strings.humidifier.targetHumidity.replace('%s', this.name).replace('%d', value.toString());
+          return strings.humidifier.targetHumidity.replace('%s', this.displayName).replace('%d', value.toString());
         },
         this.config.disableLogging),
     ];

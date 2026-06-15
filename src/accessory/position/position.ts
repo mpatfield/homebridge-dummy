@@ -6,7 +6,8 @@ import { EveCharacteristicHost, incrementTimesOpened, setupTimesOpened } from '.
 
 import { strings } from '../../i18n/i18n.js';
 
-import { Position, HKCharacteristicKey, TimeUnits, SensorBehavior } from '../../model/enums.js';
+import { Position, TimeUnits, SensorBehavior } from '../../model/enums.js';
+import { HKCharacteristicKey } from '../../model/homekit.js';
 import { PositionConfig } from '../../model/types.js';
 import { Range, Values, Webhook } from '../../model/webhook.js';
 
@@ -27,13 +28,13 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     super(dependency);
 
     if (!isValid(Position, dependency.config.defaultPosition)) {
-      this.log.warning(strings.position.badDefault, this.name, `'${dependency.config.defaultPosition}'`, printableValues(Position));
+      this.log.warning(strings.position.badDefault, this.displayName, `'${dependency.config.defaultPosition}'`, printableValues(Position));
     }
 
     this.targetPosition = this.defaultPosition;
 
     if (this.config.simulation !== undefined) {
-      if (!assert(this.log, this.name, this.config.simulation, 'enabled')) {
+      if (!assert(this.log, this.displayName, this.config.simulation, 'enabled')) {
         this.config.simulation = undefined;
       } else if (this.config.simulation.enabled === true) {
         this.fader = new Fader(this.addonDependency);
@@ -41,7 +42,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     }
 
     if (this.hasPositionState) {
-      this.service.getCharacteristic(dependency.Characteristic.PositionState)
+      this.service.getCharacteristic(this.homekit.Characteristic.PositionState)
         .onGet(this.getState.bind(this));
     }
 
@@ -102,7 +103,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
         () => this.targetPosition,
         (value, syncOnly) => {
           this.setTargetPosition(value, syncOnly);
-          return this.logTemplateForCV(value).replace('%s', this.name);
+          return this.logTemplateForCV(value).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];
