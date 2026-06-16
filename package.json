@@ -1,7 +1,7 @@
 {
   "name": "homebridge-dummy",
   "platform": "HomebridgeDummy",
-  "displayName": "Homebridge Dummy",
+  "displayName": "Dummy",
   "description": "Create accessories to help with HomeKit automation and control — scheduling, delays, sensors, commands, conditions, webhooks, and more",
   "type": "module",
   "version": "2.0.0-beta.0",
