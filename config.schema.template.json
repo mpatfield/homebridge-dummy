@@ -662,7 +662,7 @@
       }
     }
   },
-    "layout": [
+  "layout": [
     {
       "type": "array",
       "key": "accessories",
