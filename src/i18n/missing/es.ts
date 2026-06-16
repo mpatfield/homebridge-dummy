@@ -88,6 +88,7 @@ const es = {
       operatorOr: 'ANY conditions are met', // proceeded by "Trigger when…"
       ping: 'Reachability',
       pingieNotify: 'Notify! (notify.pingie.com)',
+      pushover: 'Pushover (pushover.net)',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
       shower: 'Shower',

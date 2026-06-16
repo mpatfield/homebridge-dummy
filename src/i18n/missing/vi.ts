@@ -16,6 +16,7 @@ const vi = {
     enumNames: {
       homekit: 'HomeKit (Default)',
       matter: 'Matter (Beta)',
+      pushover: 'Pushover (pushover.net)',
     },
 
     title: {

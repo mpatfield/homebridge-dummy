@@ -12,6 +12,7 @@ export enum SensorBehavior {
 
 export enum NotificationAPI {
   PINGIE_NOTIFY = 'PINGIE_NOTIFY',
+  PUSHOVER = 'PUSHOVER',
 }
 
 export enum ConditionOperator {

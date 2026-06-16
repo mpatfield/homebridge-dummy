@@ -130,6 +130,7 @@ const en = {
       outlet: 'Outlet',
       ping: 'Reachability',
       pingieNotify: 'Notify! (notify.pingie.com)',
+      pushover: 'Pushover (pushover.net)',
       secondly: 'Every Second',
       seconds: 'Seconds',
       secured: 'Locked',

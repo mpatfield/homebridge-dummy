@@ -16,6 +16,7 @@ const ru = {
     enumNames: {
       homekit: 'HomeKit (Default)',
       matter: 'Matter (Beta)',
+      pushover: 'Pushover (pushover.net)',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
     },

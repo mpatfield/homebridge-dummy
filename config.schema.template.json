@@ -36,8 +36,8 @@
           "api": {
             "type": "string",
             "title": "${config.title.api}",
-            "enum": ["PINGIE_NOTIFY"],
-            "enumNames": ["${config.enumNames.pingieNotify}"]
+            "enum": ["PINGIE_NOTIFY", "PUSHOVER"],
+            "enumNames": ["${config.enumNames.pingieNotify}", "${config.enumNames.pushover}"]
           },
           "token": {
             "type": "string",
@@ -79,10 +79,26 @@
           {
             "if": {
               "properties": {
+                "api": {
+                  "enum": ["PUSHOVER"]
+                }
+              },
+              "required": ["api"]
+            },
+            "then": {
+              "required": ["token", "text"]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "api": {
+                  "enum": ["PINGIE_NOTIFY"]
+                },
                 "token": {
                 }
               },
-              "required": ["token"]
+              "required": ["api", "token"]
             },
             "then": {
               "required": ["api", "id", "text"]
@@ -1148,16 +1164,16 @@
                         },
                         {
                           "key": "accessories[].notification.token",
-                          "flex": "0 0 auto",
+                          "flex": "1 0 auto",
                           "condition": {
-                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api;"
+                            "functionBody": "return ['PINGIE_NOTIFY','PUSHOVER'].includes(model.accessories?.[arguments[1]]?.notification?.api);"
                           }
                         },
                         {
                           "key": "accessories[].notification.id",
-                          "flex": "0 0 auto",
+                          "flex": "1 0 auto",
                           "condition": {
-                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api;"
+                            "functionBody": "return ['PINGIE_NOTIFY'].includes(model.accessories?.[arguments[1]]?.notification?.api);"
                           }
                         }
                       ]
