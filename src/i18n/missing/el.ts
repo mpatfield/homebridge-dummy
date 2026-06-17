@@ -24,6 +24,8 @@ const el = {
     title: {
       commandSync: 'Sync Command',
       protocol: 'Protocol',
+      pushoverID: 'App Token (optional)',
+      pushoverToken: 'User Key',
       sensorBehavior: 'Sensor Behavior',
       syncSchedule: 'Sync Schedule',
     },

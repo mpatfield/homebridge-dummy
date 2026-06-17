@@ -40,12 +40,10 @@
             "enumNames": ["${config.enumNames.pingieNotify}", "${config.enumNames.pushover}"]
           },
           "token": {
-            "type": "string",
-            "title": "${config.title.pushToken}"
+            "type": "string"
           },
           "id": {
-            "type": "string",
-            "title": "${config.title.pushId}"
+            "type": "string"
           },
           "title": {
             "type": "string",
@@ -1164,16 +1162,34 @@
                         },
                         {
                           "key": "accessories[].notification.token",
+                          "title": "${config.title.pingieToken}",
                           "flex": "1 0 auto",
                           "condition": {
-                            "functionBody": "return ['PINGIE_NOTIFY','PUSHOVER'].includes(model.accessories?.[arguments[1]]?.notification?.api);"
+                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api === 'PINGIE_NOTIFY';"
+                          }
+                        },
+                        {
+                          "key": "accessories[].notification.token",
+                          "title": "${config.title.pushoverToken}",
+                          "flex": "1 0 auto",
+                          "condition": {
+                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api === 'PUSHOVER';"
                           }
                         },
                         {
                           "key": "accessories[].notification.id",
                           "flex": "1 0 auto",
+                          "title": "${config.title.pingieID}",
                           "condition": {
-                            "functionBody": "return ['PINGIE_NOTIFY'].includes(model.accessories?.[arguments[1]]?.notification?.api);"
+                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api === 'PINGIE_NOTIFY';"
+                          }
+                        },
+                        {
+                          "key": "accessories[].notification.id",
+                          "flex": "1 0 auto",
+                          "title": "${config.title.pushoverID}",
+                          "condition": {
+                            "functionBody": "return model.accessories?.[arguments[1]]?.notification?.api === 'PUSHOVER';"
                           }
                         }
                       ]

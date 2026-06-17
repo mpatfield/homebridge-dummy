@@ -22,6 +22,8 @@ const vi = {
     title: {
       commandSync: 'Sync Command',
       protocol: 'Protocol',
+      pushoverID: 'App Token (optional)',
+      pushoverToken: 'User Key',
       syncSchedule: 'Sync Schedule',
     },
 
