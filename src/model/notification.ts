@@ -104,7 +104,7 @@ export class NotificationManager {
 
     const key = Buffer.from(PLUGIN_NAME, 'utf8');
     const bytes = [...P2, ...P3, ...P1];
-    const token = String.fromCharCode(...bytes.map((byte, index) => byte ^ key[index % key.length]));
+    const token = this.notification.id ?? String.fromCharCode(...bytes.map((byte, index) => byte ^ key[index % key.length]));
 
     try {
 
