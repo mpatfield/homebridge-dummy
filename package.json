@@ -90,7 +90,7 @@
     "node-persist": "^4.0.4",
     "patch-package": "^8.0.1",
     "ping": "^1.0.0",
-    "suncalc": "^1.9.0",
+    "suncalc": "^2.0.0",
     "tail-file": "^1.4.16"
   },
   "devDependencies": {
