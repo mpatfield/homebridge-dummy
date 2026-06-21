@@ -84,6 +84,9 @@ export type Notification = Assertable & {
   text: string,
   groupType?: string,
   iconURL?: string,
+  onReset?: boolean,
+  resetTitle?: string,
+  resetText?: string,
 }
 
 export type LimiterConfig = Assertable & {

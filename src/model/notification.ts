@@ -51,26 +51,26 @@ export class NotificationManager {
 
   private constructor(private readonly dependency: DummyAddonDependency, private readonly notification: Notification) {}
 
-  public async notify(): Promise<void> {
+  public async notify(resetting: boolean = false): Promise<void> {
 
     switch (this.notification.api) {
     case NotificationAPI.PINGIE_NOTIFY:
-      await this.pingieNotify();
+      await this.pingieNotify(resetting);
       break;
     case NotificationAPI.PUSHOVER:
-      await this.pushover();
+      await this.pushover(resetting);
       break;
     }
   }
 
-  private async pingieNotify() {
+  private async pingieNotify(resetting: boolean) {
     try {
 
       const endpoint = `https://notifypush.pingie.com/notify-json/${this.notification.id}`;
 
       const payload: Record<string, string | undefined> = {
-        text: this.notification.text,
-        title: this.notification.title,
+        text: (resetting && this.notification?.onReset) ? this.notification.resetText : this.notification.text,
+        title: (resetting && this.notification?.onReset) ? this.notification.resetTitle : this.notification.title,
         groupType: this.notification.groupType,
         iconUrl: this.notification.iconURL ?? DEFAULT_PUSH_ICON_URL,
       };
@@ -100,7 +100,7 @@ export class NotificationManager {
     }
   }
 
-  private async pushover() {
+  private async pushover(resetting: boolean) {
 
     const key = Buffer.from(PLUGIN_NAME, 'utf8');
     const bytes = [...P2, ...P3, ...P1];
@@ -113,8 +113,8 @@ export class NotificationManager {
       const params: Record<string, string | undefined> = {
         token,
         user: this.notification.token,
-        message: this.notification.text,
-        title: this.notification.title,
+        message: (resetting && this.notification?.onReset) ? this.notification.resetText : this.notification.text,
+        title: (resetting && this.notification?.onReset) ? this.notification.resetTitle : this.notification.title,
       };
 
       const response = await axios.post(endpoint, undefined,

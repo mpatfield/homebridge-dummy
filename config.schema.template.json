@@ -53,6 +53,18 @@
             "type": "string",
             "title": "${config.title.pushText}"
           },
+          "onReset": {
+            "type": "boolean",
+            "title": "${config.title.onReset}"
+          },
+          "resetTitle": {
+            "type": "string",
+            "title": "${config.title.pushTitle}"
+          },
+          "resetText": {
+            "type": "string",
+            "title": "${config.title.pushText}"
+          },
           "groupType": {
             "type": "string"
           },
@@ -1209,6 +1221,40 @@
                         },
                         {
                           "key": "accessories[].notification.text",
+                          "flex": "0 0 70%"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "displayFlex": true,
+                      "flex-direction": "row",
+                      "notitle": true,
+                      "condition": {
+                        "functionBody": "return model.accessories?.[arguments[1]]?.notification?.token || model.accessories?.[arguments[1]]?.notification?.id;"
+                      },
+                      "items": [
+                        {
+                          "key": "accessories[].notification.onReset",
+                          "flex": "0 0 auto"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "displayFlex": true,
+                      "flex-direction": "row",
+                      "notitle": true,
+                      "condition": {
+                        "functionBody": "return model.accessories?.[arguments[1]]?.notification?.onReset && (model.accessories?.[arguments[1]]?.notification?.token || model.accessories?.[arguments[1]]?.notification?.id);"
+                      },
+                      "items": [
+                        {
+                          "key": "accessories[].notification.resetTitle",
+                          "flex": "0 0 30%"
+                        },
+                        {
+                          "key": "accessories[].notification.resetText",
                           "flex": "0 0 70%"
                         }
                       ]

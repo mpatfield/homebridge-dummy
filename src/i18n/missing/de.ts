@@ -123,6 +123,7 @@ const de = {
       minimumTemperature: 'Min Temperature',
       notification: 'Notification',
       offset: 'Offset',
+      onReset: 'Also receive a notification when accessory is reset to its default value',
       operator: 'Trigger when…',
       pattern: 'Search String or RegEx',
       pingAvailability: 'State',

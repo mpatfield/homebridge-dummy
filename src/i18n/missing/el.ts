@@ -23,6 +23,7 @@ const el = {
 
     title: {
       commandSync: 'Sync Command',
+      onReset: 'Also receive a notification when accessory is reset to its default value',
       protocol: 'Protocol',
       pushoverID: 'App Token (optional)',
       pushoverToken: 'User Key',

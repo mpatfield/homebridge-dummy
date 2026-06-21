@@ -343,6 +343,9 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     this._schedule?.startTimeout();
     this._autoReset?.cancel();
     this._limiter?.cancel();
+    if (this.config?.notification?.onReset) {
+      this._notification?.notify(true);
+    }
   }
 
   protected async executeCommand(command: string): Promise<string | undefined> {
