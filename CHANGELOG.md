@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.0-beta.1 ()
+## 2.0.0-beta.3 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
@@ -13,6 +13,8 @@ All notable changes to homebridge-dummy will be documented in this file.
     - ⚠️ Enabling Matter on an existing Homebridge Dummy accessory will require you to reconfigure any scenes or automations for that accessory
 - [Pushover](https://pushover.net/) option for [Push Notifications](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification#pushover)
     - ⚠️ We share a limited number of monthly notifications across all Dummy users, so please don't overuse this!
+- Added option for [Push Notification](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification) on accessory reset with its own title/message (Thanks, [@dkerr64](https://github.com/sponsors/dkerr64)!)
+    - You may receive a push notification for accessory trigger, reset, or both
 
 ### Notes
 - The major version update from v1 to v2 reflects the significant code restructuring needed to support Matter. There should be no breaking changes for existing configurations, but please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues.
