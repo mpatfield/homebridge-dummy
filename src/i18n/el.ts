@@ -199,8 +199,6 @@ const el = {
       pingieToken: 'Token',
       pingInterval: 'Διάστημα',
       preset: 'Προεπιλογή',
-      pushText: 'Κείμενο',
-      pushTitle: 'Τίτλος (Προαιρετικό)',
       random: 'Τυχαία επιλογή',
       resetOnRestart: 'Επαναφορά κατά την Επανεκκίνηση',
       schedule: 'Πρόγραμμα',

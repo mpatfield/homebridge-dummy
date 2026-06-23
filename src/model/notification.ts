@@ -19,6 +19,11 @@ const P3 = [0x59, 0x05, 0x1A, 0x1A, 0x18, 0x08, 0x1F, 0x0C, 0x1E, 0x02];
 
 const AXIOS_TIMEOUT = 10000;
 
+export enum NotificationType {
+  TRIGGER,
+  RESET
+}
+
 export class NotificationManager {
 
   public static new(dependency: DummyAddonDependency, notification?: Notification): NotificationManager | undefined {
@@ -28,18 +33,23 @@ export class NotificationManager {
     }
 
     if (!isValid(NotificationAPI, notification.api)) {
-      dependency.log.warning(strings.notification.badAPI, this.name, `'${notification.api}'`, printableValues(NotificationAPI));
+      dependency.log.warning(strings.notification.badAPI, dependency.caller, `'${notification.api}'`, printableValues(NotificationAPI));
       return;
     }
 
     let valid: boolean;
     switch (notification.api) {
     case NotificationAPI.PINGIE_NOTIFY:
-      valid = assert(dependency.log, dependency.caller, notification, 'token', 'id', 'text');
+      valid = assert(dependency.log, dependency.caller, notification, 'token', 'id');
       break;
     case NotificationAPI.PUSHOVER:
-      valid = assert(dependency.log, dependency.caller, notification, 'token', 'text');
+      valid = assert(dependency.log, dependency.caller, notification, 'token');
       break;
+    }
+
+    if (notification.text === undefined && notification.resetText === undefined) {
+      dependency.log.warning(strings.notification.missingText, dependency.caller, '\'text\', \'resetText\'');
+      valid = false;
     }
 
     if (!valid) {
@@ -51,26 +61,31 @@ export class NotificationManager {
 
   private constructor(private readonly dependency: DummyAddonDependency, private readonly notification: Notification) {}
 
-  public async notify(resetting: boolean = false): Promise<void> {
+  public async notify(type: NotificationType): Promise<void> {
+
+    if ( (type === NotificationType.TRIGGER && this.notification.text === undefined)
+      || (type === NotificationType.RESET && this.notification.resetText === undefined)) {
+      return;
+    }
 
     switch (this.notification.api) {
     case NotificationAPI.PINGIE_NOTIFY:
-      await this.pingieNotify(resetting);
+      await this.pingieNotify(type);
       break;
     case NotificationAPI.PUSHOVER:
-      await this.pushover(resetting);
+      await this.pushover(type);
       break;
     }
   }
 
-  private async pingieNotify(resetting: boolean) {
+  private async pingieNotify(type: NotificationType) {
     try {
 
       const endpoint = `https://notifypush.pingie.com/notify-json/${this.notification.id}`;
 
       const payload: Record<string, string | undefined> = {
-        text: (resetting && this.notification?.onReset) ? this.notification.resetText : this.notification.text,
-        title: (resetting && this.notification?.onReset) ? this.notification.resetTitle : this.notification.title,
+        text: type === NotificationType.RESET ? this.notification.resetText : this.notification.text,
+        title: type === NotificationType.RESET ? this.notification.resetTitle : this.notification.title,
         groupType: this.notification.groupType,
         iconUrl: this.notification.iconURL ?? DEFAULT_PUSH_ICON_URL,
       };
@@ -100,7 +115,7 @@ export class NotificationManager {
     }
   }
 
-  private async pushover(resetting: boolean) {
+  private async pushover(type: NotificationType) {
 
     const key = Buffer.from(PLUGIN_NAME, 'utf8');
     const bytes = [...P2, ...P3, ...P1];
@@ -113,8 +128,8 @@ export class NotificationManager {
       const params: Record<string, string | undefined> = {
         token,
         user: this.notification.token,
-        message: (resetting && this.notification?.onReset) ? this.notification.resetText : this.notification.text,
-        title: (resetting && this.notification?.onReset) ? this.notification.resetTitle : this.notification.title,
+        message: type === NotificationType.RESET ? this.notification.resetText : this.notification.text,
+        title: type === NotificationType.RESET ? this.notification.resetTitle : this.notification.title,
       };
 
       const response = await axios.post(endpoint, undefined,

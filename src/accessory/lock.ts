@@ -107,7 +107,7 @@ export class LockAccessory extends DummyAccessory<LockConfig> {
     if (this.state !== this.defaultLockState) {
       this.onTriggered(stateChanged);
     } else {
-      this.onReset();
+      this.onReset(stateChanged);
     }
 
     this.service.updateCharacteristic(this.Characteristic.LockTargetState, this.state);

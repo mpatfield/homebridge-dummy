@@ -47,23 +47,21 @@
           },
           "title": {
             "type": "string",
-            "title": "${config.title.pushTitle}"
+            "title": "${config.title.pushTriggerTitle}"
           },
           "text": {
             "type": "string",
-            "title": "${config.title.pushText}"
-          },
-          "onReset": {
-            "type": "boolean",
-            "title": "${config.title.onReset}"
+            "title": "${config.title.pushTriggerText}",
+            "description": "${config.description.pushTrigger}"
           },
           "resetTitle": {
             "type": "string",
-            "title": "${config.title.pushTitle}"
+            "title": "${config.title.pushResetTitle}"
           },
           "resetText": {
             "type": "string",
-            "title": "${config.title.pushText}"
+            "title": "${config.title.pushResetText}",
+            "description": "${config.description.pushReset}"
           },
           "groupType": {
             "type": "string"
@@ -83,7 +81,7 @@
               "required": ["api"]
             },
             "then": {
-              "required": ["token", "id", "text"]
+              "required": ["token", "id"]
             }
           },
           {
@@ -96,22 +94,7 @@
               "required": ["api"]
             },
             "then": {
-              "required": ["token", "text"]
-            }
-          },
-          {
-            "if": {
-              "properties": {
-                "api": {
-                  "enum": ["PINGIE_NOTIFY"]
-                },
-                "token": {
-                }
-              },
-              "required": ["api", "token"]
-            },
-            "then": {
-              "required": ["api", "id", "text"]
+              "required": ["token"]
             }
           },
           {
@@ -136,6 +119,44 @@
             },
             "then": {
               "required": ["text"]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "title": {
+                }
+              },
+              "required": ["resetTitle"]
+            },
+            "then": {
+              "required": ["resetText"]
+            }
+          }
+        ],
+        "anyOf": [
+          {
+            "if": {
+              "properties": {
+                "token": {
+                }
+              },
+              "required": ["token"]
+            },
+            "then": {
+              "required": ["text"]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "token": {
+                }
+              },
+              "required": ["token"]
+            },
+            "then": {
+              "required": ["resetText"]
             }
           }
         ]
@@ -1232,21 +1253,6 @@
                       "notitle": true,
                       "condition": {
                         "functionBody": "return model.accessories?.[arguments[1]]?.notification?.token || model.accessories?.[arguments[1]]?.notification?.id;"
-                      },
-                      "items": [
-                        {
-                          "key": "accessories[].notification.onReset",
-                          "flex": "0 0 auto"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "div",
-                      "displayFlex": true,
-                      "flex-direction": "row",
-                      "notitle": true,
-                      "condition": {
-                        "functionBody": "return model.accessories?.[arguments[1]]?.notification?.onReset && (model.accessories?.[arguments[1]]?.notification?.token || model.accessories?.[arguments[1]]?.notification?.id);"
                       },
                       "items": [
                         {

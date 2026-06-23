@@ -173,7 +173,7 @@ export abstract class PositionAccessory<C extends PositionConfig = PositionConfi
     if (this.targetPosition !== this.defaultPosition) {
       this.onTriggered(stateChanged);
     } else {
-      this.onReset();
+      this.onReset(stateChanged);
     }
 
     this.service.updateCharacteristic(this.targetCharacteristic, this.targetPosition);

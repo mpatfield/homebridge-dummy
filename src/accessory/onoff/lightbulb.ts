@@ -256,9 +256,9 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
     });
   }
 
-  override onReset() {
+  override onReset(stateChanged: boolean) {
     this.fader?.cancel();
-    super.onReset();
+    super.onReset(stateChanged);
   }
 
   override teardown(): void {

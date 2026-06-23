@@ -194,7 +194,7 @@ export class ValveAccessory extends DummyAccessory<ValveConfig> {
       this.onTriggered(stateChanged);
     } else {
       this.timerExpiration = undefined;
-      this.onReset();
+      this.onReset(stateChanged);
     }
 
     this.service.updateCharacteristic(this.Characteristic.Active, this.state);
