@@ -1,5 +1,5 @@
 import { CronJob, validateCronExpression } from 'cron';
-import SunCalc from 'suncalc';
+import * as SunCalc from 'suncalc';
 
 import { DummyAddonDependency } from '../accessory/base.js';
 
@@ -221,7 +221,7 @@ export class Schedule extends Timeout {
 
     const times = SunCalc.getTimes(date, this.config.latitude!, this.config.longitude!);
 
-    let eventDate: Date;
+    let eventDate: Date | null | undefined;
     switch (this.config.type) {
     case ScheduleType.DAWN:
       eventDate = times.dawn;
@@ -241,7 +241,9 @@ export class Schedule extends Timeout {
     case ScheduleType.SUNSET:
       eventDate = times.sunset;
       break;
-    default:
+    }
+
+    if (!eventDate) {
       throw new Error(`Cannot get sun delay for time type '${this.config.type}'`);
     }
 

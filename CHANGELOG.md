@@ -16,6 +16,10 @@ All notable changes to homebridge-dummy will be documented in this file.
 - Added option for [Push Notification](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification) on accessory reset with its own title/message (Thanks, [@dkerr64](https://github.com/sponsors/dkerr64)!)
     - You can setup push notifications for when an accessory is triggered, reset, or both
 
+### Changed
+- Updated to [suncalc v2.0.0](https://github.com/mourner/suncalc/releases/tag/v2.0.0)
+    - ⚠️ Please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues related to scheduling for sunrise, sunset, etc.
+
 ### Notes
 - The major version update from v1 to v2 reflects the significant code restructuring needed to support Matter. There should be no breaking changes for existing configurations, but please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues.
 - Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
