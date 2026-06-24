@@ -12,9 +12,9 @@ All notable changes to homebridge-dummy will be documented in this file.
 - [Matter Support](https://github.com/mpatfield/homebridge-dummy/wiki/Matter-Support) (Beta) for `Switch`, `Outlet`, and `Lightbulb`
     - ⚠️ Enabling Matter on an existing Homebridge Dummy accessory will require you to reconfigure any scenes or automations for that accessory
 - [Pushover](https://pushover.net/) option for [Push Notifications](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification#pushover)
-    - ⚠️ We share a limited number of monthly notifications across all Dummy users, so please don't overuse this!
+    - ⚠️ Monthly limits are shared across all Dummy users who don't provide an `App Token` — please be considerate!
 - Added option for [Push Notification](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification) on accessory reset with its own title/message (Thanks, [@dkerr64](https://github.com/sponsors/dkerr64)!)
-    - You may receive a push notification for accessory trigger, reset, or both
+    - You can setup push notifications for when an accessory is triggered, reset, or both
 
 ### Notes
 - The major version update from v1 to v2 reflects the significant code restructuring needed to support Matter. There should be no breaking changes for existing configurations, but please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues.
