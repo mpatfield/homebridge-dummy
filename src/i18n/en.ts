@@ -67,6 +67,8 @@ const en = {
       fadeOut: 'Reduce brightness over a fixed duration, or decrease by 1% incrementally per each time duration',
       limiter: 'Restrict the total time this accessory can be set to its non-default value, for each specified period',
       notification: 'Receive a notification when accessory is set to its opposite (non-default) value. See wiki for help.',
+      pushReset: 'When accessory returns to its default value',
+      pushTrigger: 'When accessory is set to its opposite (non-default) value',
       random: 'Time will be randomized with the above value as a maximum',
       schedule: 'Sets the accessory to its opposite (non-default) value',
     },
@@ -214,8 +216,10 @@ const en = {
       protocol: 'Protocol',
       pushoverID: 'App Token (optional)',
       pushoverToken: 'User Key',
-      pushText: 'Text',
-      pushTitle: 'Title (Optional)',
+      pushResetText: 'Reset Text',
+      pushResetTitle: 'Reset Title (Optional)',
+      pushTriggerText: 'Trigger Text',
+      pushTriggerTitle: 'Trigger Title (Optional)',
       preset: 'Preset',
       random: 'Randomize',
       resetOnRestart: 'Reset on Restart',
@@ -277,6 +281,7 @@ const en = {
 
   notification: {
     badAPI: '%s has invalid api %s. Must be one of: %s', // accessory name, input, list of APIs
+    missingText: '%s must have at least one of:  %s', // accessory name, list of required fields
     pushError: '%s was unable to send push notification', // accessory name
     pushSuccess: '%s sent a push notification', // accessory name
   },

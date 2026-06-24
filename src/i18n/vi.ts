@@ -201,8 +201,6 @@ const vi = {
       pingieToken: 'Token',
       pingInterval: 'Khoảng thời gian',
       preset: 'Cài đặt sẵn',
-      pushText: 'Nội dung',
-      pushTitle: 'Tiêu đề (Tùy chọn)',
       random: 'Ngẫu nhiên',
       resetOnRestart: 'Đặt lại khi khởi động lại',
       schedule: 'Lịch',

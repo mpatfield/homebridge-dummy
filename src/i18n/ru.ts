@@ -199,8 +199,6 @@ const ru = {
       pingieToken: 'Токен',
       pingInterval: 'Интервал',
       preset: 'Предустановка',
-      pushText: 'Текст',
-      pushTitle: 'Заголовок (необязательно)',
       random: 'Случайность',
       resetOnRestart: 'Сброс при перезапуске',
       schedule: 'Расписание',

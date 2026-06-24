@@ -13,7 +13,7 @@ import { AccessoryState, Protocol, TimeUnits } from '../model/enums.js';
 import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';
 import { MATTER_SERIAL_MAX_LEN, MatterClusterKey, MatterType, MatterValue, MatterValueKey } from '../model/matter.js';
-import { NotificationManager } from '../model/notification.js';
+import { NotificationManager, NotificationType } from '../model/notification.js';
 import { CharacteristicType, DummyConfig, HomeKitAccessory, ServiceType } from '../model/types.js';
 import { Webhook } from '../model/webhook.js';
 
@@ -330,7 +330,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
     }
 
     if (stateChanged) {
-      this._notification?.notify();
+      this._notification?.notify(NotificationType.TRIGGER);
     }
 
     this._limiter?.start(this.reset.bind(this));
@@ -339,10 +339,14 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected onTimerStarted(_delay: number) {}
 
-  protected onReset() {
+  protected onReset(stateChanged: boolean = true) {
     this._schedule?.startTimeout();
     this._autoReset?.cancel();
     this._limiter?.cancel();
+
+    if (stateChanged) {
+      this._notification?.notify(NotificationType.RESET);
+    }
   }
 
   protected async executeCommand(command: string): Promise<string | undefined> {

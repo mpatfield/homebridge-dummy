@@ -59,6 +59,8 @@ const de = {
       conditions: 'Set the accessory to its opposite (non-default) value when the specified conditions are met',
       fadeOut: 'Reduce brightness over a fixed duration, or decrease by 1% incrementally per each time duration',
       notification: 'Receive a notification when accessory is set to its opposite (non-default) value. See wiki for help.',
+      pushReset: 'When accessory returns to its default value',
+      pushTrigger: 'When accessory is set to its opposite (non-default) value',
     },
 
     enumNames: {
@@ -133,8 +135,10 @@ const de = {
       protocol: 'Protocol',
       pushoverID: 'App Token (optional)',
       pushoverToken: 'User Key',
-      pushText: 'Text',
-      pushTitle: 'Title (Optional)',
+      pushResetText: 'Reset Text',
+      pushResetTitle: 'Reset Title (Optional)',
+      pushTriggerText: 'Trigger Text',
+      pushTriggerTitle: 'Trigger Title (Optional)',
       sensorBehavior: 'Sensor Behavior',
       simulateOpenClose: 'Simulate Open/Close',
       syncSchedule: 'Sync Schedule',
@@ -169,6 +173,7 @@ const de = {
 
   notification: {
     badAPI: '%s has invalid api %s. Must be one of: %s', // accessory name, input, list of APIs
+    missingText: '%s must have at least one of:  %s', // accessory name, list of required fields
     pushError: '%s was unable to send push notification', // accessory name
     pushSuccess: '%s sent a push notification', // accessory name
   },

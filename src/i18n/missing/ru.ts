@@ -13,6 +13,11 @@ const ru = {
 
   config: {
 
+    description: {
+      pushReset: 'When accessory returns to its default value',
+      pushTrigger: 'When accessory is set to its opposite (non-default) value',
+    },
+
     enumNames: {
       homekit: 'HomeKit (Default)',
       matter: 'Matter (Beta)',
@@ -26,10 +31,18 @@ const ru = {
       protocol: 'Protocol',
       pushoverID: 'App Token (optional)',
       pushoverToken: 'User Key',
+      pushResetText: 'Reset Text',
+      pushResetTitle: 'Reset Title (Optional)',
+      pushTriggerText: 'Trigger Text',
+      pushTriggerTitle: 'Trigger Title (Optional)',
       sensorBehavior: 'Sensor Behavior',
       syncSchedule: 'Sync Schedule',
     },
 
+  },
+
+  notification: {
+    missingText: '%s must have at least one of:  %s', // accessory name, list of required fields
   },
 
   sensor: {

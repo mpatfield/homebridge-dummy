@@ -185,7 +185,7 @@ export class HumidifierAccessory extends DummyAccessory<HumidifierConfig> {
     if (this.state !== this.defaultState) {
       this.onTriggered(stateChanged);
     } else {
-      this.onReset();
+      this.onReset(stateChanged);
     }
 
     this.service.updateCharacteristic(this.Characteristic.CurrentHumidifierDehumidifierState, this.currentState);

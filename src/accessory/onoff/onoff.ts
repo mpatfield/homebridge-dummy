@@ -122,7 +122,7 @@ export abstract class OnOffAccessory<C extends OnOffConfig = OnOffConfig> extend
     if (this.on !== this.defaultState) {
       this.onTriggered(stateChanged);
     } else {
-      this.onReset();
+      this.onReset(stateChanged);
     }
 
     this.bifurcate(
