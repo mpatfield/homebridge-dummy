@@ -47,7 +47,7 @@ export class NotificationManager {
       break;
     }
 
-    if (notification.text === undefined && notification.resetText === undefined) {
+    if (!notification.text?.trim().length && !notification.resetText?.trim().length) {
       dependency.log.warning(strings.notification.missingText, dependency.caller, '\'text\', \'resetText\'');
       valid = false;
     }

@@ -81,7 +81,7 @@ export type Notification = Assertable & {
   token: string,
   id: string,
   title?: string,
-  text: string,
+  text?: string,
   resetTitle?: string,
   resetText?: string,
   groupType?: string,
