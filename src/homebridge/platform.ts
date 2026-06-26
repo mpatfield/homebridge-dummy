@@ -44,12 +44,13 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     this.conditionManager = new ConditionManager(this.log, api.user.storagePath());
 
     this.log.ifVerbose(
-      'v%s | System %s | Node %s | HB v%s | HAPNodeJS v%s',
+      'v%s | System %s | Node %s | HB v%s | HAPNodeJS v%s | Matter %s',
       getVersion(),
       process.platform,
       process.version,
       api.serverVersion,
       api.hap.HAPLibraryVersion(),
+      !this.api.isMatterAvailable?.() ? 'unavailable' : ( !this.api.isMatterEnabled?.() ? 'disabled' : 'enabled' ),
     );
 
     initEveCharacteristics(api);
