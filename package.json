@@ -4,7 +4,7 @@
   "displayName": "Dummy",
   "description": "Create accessories to help with HomeKit automation and control — scheduling, delays, sensors, commands, conditions, webhooks, and more",
   "type": "module",
-  "version": "2.0.0-beta.5",
+  "version": "2.0.0-beta.6",
   "homepage": "https://github.com/mpatfield/homebridge-dummy#readme",
   "repository": {
     "type": "git",
@@ -77,7 +77,7 @@
   ],
   "engines": {
     "homebridge": "^1.8.0 || ^2.0.0",
-    "node": "^20 || ^22 || ^24"
+    "node": "^22 || ^24 || ^26"
   },
   "dependencies": {
     "arpping": "^4.0.0",

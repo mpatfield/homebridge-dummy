@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.0-beta.3 ()
+## 2.0.0-beta.6 ()
 
 ### ‼️ WARNING ‼️ — If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration).
 
@@ -17,6 +17,7 @@ All notable changes to homebridge-dummy will be documented in this file.
     - You can setup push notifications for when an accessory is triggered, reset, or both
 
 ### Changed
+- ⚠️ Drop official support for NodeJS v20 and added v26
 - Updated to [suncalc v2.0.0](https://github.com/mourner/suncalc/releases/tag/v2.0.0)
     - ⚠️ Please [open a ticket](https://github.com/mpatfield/homebridge-dummy/issues/new/choose) if you have any issues related to scheduling for sunrise, sunset, etc.
 
