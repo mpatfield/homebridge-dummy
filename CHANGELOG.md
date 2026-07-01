@@ -2,6 +2,11 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
+## 2.0.1-beta. ()
+
+### Changed
+- Обновлены русские переводы. Спасибо, [@Silverdragon122](https://github.com/sponsors/Silverdragon122)!
+
 ## 2.0.0 (2026-06-30)
 
 ### Added
