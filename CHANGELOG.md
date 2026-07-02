@@ -6,6 +6,7 @@ All notable changes to homebridge-dummy will be documented in this file.
 
 ### Changed
 - Обновлены русские переводы. Спасибо, [@Silverdragon122](https://github.com/sponsors/Silverdragon122)!
+- Bản dịch tiếng Việt được cập nhật. Cảm ơn [@khanhnd88](https://github.com/sponsors/khanhnd88)!
 
 ## 2.0.0 (2026-06-30)
 
