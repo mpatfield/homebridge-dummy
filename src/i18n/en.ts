@@ -32,7 +32,7 @@ const en = {
   },
 
   command: {
-    badSyncCommand: '%s sync command must produce valid JSON`', // accessory name
+    badSyncCommand: '%s sync command must produce valid JSON', // accessory name
     error: '%s failed to execute command', // accessory name
     executed: '%s executed command', // accessory name
     unsupportedCharacteristic: '%s trying to sync unsupported characteristic %s', // accessory name, variable name
