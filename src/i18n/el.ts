@@ -363,7 +363,7 @@ const el = {
   startup: {
     matterDisabled: 'Το Matter είναι προς το παρόν απενεργοποιημένο. Παρακαλούμε ενεργοποιήστε το Matter στην parent bridge %s.',
     matterGroups: 'Οι ομάδες δεν υποστηρίζονται ακόμα για αξεσουάρ Matter',
-    matterUnavailable: 'Το Matter δεν είναι διαθέσιμο με αυτή την έκδοση του Homebridge. Παρακαλούμε κάντε αναβάθμιση σε Homebridge v2.0+ για να χρησιμοποιήσετε το Matter με το %s.',
+    matterUnavailable: 'Το Matter δεν είναι διαθέσιμο σε αυτή την έκδοση. Αναβαθμίστε σε Homebridge v2.0+ για να το χρησιμοποιήσετε με το %s.',
     newHomeKitAccessory: 'Προσθήκη νέου αξεσουάρ HomeKit:',
     newMatterAccessory: 'Προσθήκη νέου αξεσουάρ Matter:',
     removeHomeKitAccessory: 'Αφαίρεση αξεσουάρ HomeKit:',
