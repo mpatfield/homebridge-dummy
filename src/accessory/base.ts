@@ -371,7 +371,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
     try {
       const { stdout } = await this.execAsync(command, execOptions);
-      const output = stdout.trim();
+      const output = (stdout ?? '').trim();
 
       if (output !== undefined) {
         this.logIfDesired(`${strings.command.executed}: %s\n%s`, command, output);
