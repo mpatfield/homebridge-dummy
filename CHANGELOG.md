@@ -2,9 +2,13 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.1-beta. ()
+## 2.0.1-beta.0 (2026-07-13)
+
+### Fixed
+- Commands throwing errors even when execution succeeds in certain setups — Thank you, [@jacsuper](https://github.com/sponsors/jacsuper)!
 
 ### Changed
+- Updated dependencies
 - Обновлены русские переводы. Спасибо, [@Silverdragon122](https://github.com/sponsors/Silverdragon122)!
 - Bản dịch tiếng Việt được cập nhật. Cảm ơn [@khanhnd88](https://github.com/sponsors/khanhnd88)!
 - Ενημερωμένες ελληνικές μεταφράσεις. Ευχαριστώ, [@loveisfoss](https://github.com/sponsors/loveisfoss)!
