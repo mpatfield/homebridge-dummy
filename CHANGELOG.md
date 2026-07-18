@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.1-beta.0 (2026-07-13)
+## 2.0.1 (2026-07-18)
 
 ### Fixed
 - Commands throwing errors even when execution succeeds in certain setups — Thank you, [@jacsuper](https://github.com/sponsors/jacsuper)!
