@@ -2,14 +2,14 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.2-beta. ()
+## 2.0.2-beta.0 (2026-07-21)
+
+### Fixed
+- Vulnerabilities
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
 - Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
-
-### Changed
-- Fixed vulnerabilities
 
 ## 2.0.1 (2026-07-18)
 
