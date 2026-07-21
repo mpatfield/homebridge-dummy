@@ -4,8 +4,8 @@ All notable changes to homebridge-dummy will be documented in this file.
 
 ## 2.0.2-beta.0 (2026-07-21)
 
-### Fixed
-- Vulnerabilities
+### Changed
+- Updated dependencies
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
@@ -21,10 +21,6 @@ All notable changes to homebridge-dummy will be documented in this file.
 - Обновлены русские переводы. Спасибо, [@Silverdragon122](https://github.com/sponsors/Silverdragon122)!
 - Bản dịch tiếng Việt được cập nhật. Cảm ơn [@khanhnd88](https://github.com/sponsors/khanhnd88)!
 - Ενημερωμένες ελληνικές μεταφράσεις. Ευχαριστώ, [@loveisfoss](https://github.com/sponsors/loveisfoss)!
-
-### Notes
-- ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
-- Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
 
 ## 2.0.0 (2026-06-30)
 
