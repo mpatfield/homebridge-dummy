@@ -12,6 +12,13 @@ export class Fader extends Timeout {
 
     this.reset();
 
+    if (startingValue === endingValue) {
+      this.value = endingValue;
+      tick(this.value);
+      this.reset();
+      return;
+    }
+
     const interval = delay / Math.abs(endingValue - startingValue);
     this.value = startingValue;
 
@@ -23,7 +30,7 @@ export class Fader extends Timeout {
         return;
       }
 
-      this.value += delta;
+      this.value = this.limitValue(this.value + delta, startingValue, endingValue);
       tick(this.value);
 
       if (this.value === endingValue) {
@@ -36,5 +43,21 @@ export class Fader extends Timeout {
   override reset() {
     this.value = undefined;
     super.reset();
+  }
+
+  private limitValue(value: number, limitA: number, limitB: number): number {
+
+    const min = limitA < limitB ? limitA : limitB;
+    const max = limitA > limitB ? limitA : limitB;
+
+    if (value < min) {
+      return min;
+    }
+
+    if (value > max) {
+      return max;
+    }
+
+    return value;
   }
 }

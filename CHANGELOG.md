@@ -2,7 +2,10 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.0.2-beta.0 (2026-07-21)
+## 2.0.2-beta.1 (2026-08-06)
+
+### Fixed
+- Brightness characteristic warnings when using `fadeOut`
 
 ### Changed
 - Updated dependencies
