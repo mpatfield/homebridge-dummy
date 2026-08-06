@@ -44,6 +44,8 @@
     "homebridge",
     "homebridge-plugin",
     "homebridge-dummy",
+    "supports-hap",
+    "supports-matter",
     "hoobs",
     "hoobs-plugin",
     "homekit",
