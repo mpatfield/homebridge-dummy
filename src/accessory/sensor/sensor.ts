@@ -46,7 +46,7 @@ export class SensorAccessory extends DummyAccessory<SensorConfig> {
         () => this.active,
         (value, syncOnly) => {
           this.setActive(value, syncOnly);
-          return value ? this.sensorInfo.strings.active :this.sensorInfo.strings.inactive;
+          return (value ? this.sensorInfo.strings.active :this.sensorInfo.strings.inactive).replace('%s', this.displayName);
         },
         this.config.disableLogging),
     ];
