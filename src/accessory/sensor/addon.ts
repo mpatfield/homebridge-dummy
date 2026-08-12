@@ -9,25 +9,13 @@ import { strings } from '../../i18n/i18n.js';
 import { SensorBehavior }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { EveCharacteristicKey, SensorCharacteristic, SensorType } from '../../model/homekit.js';
+import { sensorInfoForType } from '../../model/sensor.js';
 import { ServiceType, SensorAddonConfig, HomeKitAccessory, CharacteristicType } from '../../model/types.js';
 
 import { Timeout } from '../../timeout/timeout.js';
 
 import { Storage } from '../../tools/storage.js';
 import { assert, isValid, printableValues } from '../../tools/validation.js';
-
-type SensorStrings = { active: string, inactive: string };
-type SensorInfo = { characteristic: SensorCharacteristic, strings: SensorStrings };
-
-const INFO_MAP: { [key in SensorType]: SensorInfo } = {
-  [SensorType.CarbonDioxideSensor]: { characteristic: SensorCharacteristic.CarbonDioxideDetected, strings: strings.sensor.carbonDioxide },
-  [SensorType.CarbonMonoxideSensor]: { characteristic: SensorCharacteristic.CarbonMonoxideDetected, strings: strings.sensor.carbonMonoxide },
-  [SensorType.ContactSensor]: { characteristic: SensorCharacteristic.ContactSensorState, strings: strings.sensor.contact },
-  [SensorType.LeakSensor]: { characteristic: SensorCharacteristic.LeakDetected, strings: strings.sensor.leak },
-  [SensorType.MotionSensor]: { characteristic: SensorCharacteristic.MotionDetected, strings: strings.sensor.motion },
-  [SensorType.OccupancySensor]: { characteristic: SensorCharacteristic.OccupancyDetected, strings: strings.sensor.occupancy },
-  [SensorType.SmokeSensor]: { characteristic: SensorCharacteristic.SmokeDetected, strings: strings.sensor.smoke },
-};
 
 type SensorAddonDependency = DummyAddonDependency & {
   getHomeKit: GetHomeKit,
@@ -113,8 +101,8 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
     return this._active;
   }
 
-  private get sensorInfo(): SensorInfo {
-    return INFO_MAP[this.config.type];
+  private get sensorInfo() {
+    return sensorInfoForType(this.config.type);
   }
 
   public get behavior(): SensorBehavior {
