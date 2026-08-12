@@ -9,7 +9,7 @@ import { strings } from '../../i18n/i18n.js';
 import { SensorBehavior }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
 import { EveCharacteristicKey, SensorCharacteristic, SensorType } from '../../model/homekit.js';
-import { ServiceType, SensorConfig, HomeKitAccessory, CharacteristicType } from '../../model/types.js';
+import { ServiceType, SensorAddonConfig, HomeKitAccessory, CharacteristicType } from '../../model/types.js';
 
 import { Timeout } from '../../timeout/timeout.js';
 
@@ -39,7 +39,7 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
 
   private _active: number = 0;
 
-  static new(dependency: SensorAddonDependency, historyRecorder: OnRecordHistory, sensor?: SensorConfig): SensorAddon | undefined {
+  static new(dependency: SensorAddonDependency, historyRecorder: OnRecordHistory, sensor?: SensorAddonConfig): SensorAddon | undefined {
 
     if (sensor) {
 
@@ -85,7 +85,7 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
 
   private Characteristic: CharacteristicType;
 
-  private constructor(private readonly config: SensorConfig, dependency: SensorAddonDependency, private readonly historyRecorder: OnRecordHistory) {
+  private constructor(private readonly config: SensorAddonConfig, dependency: SensorAddonDependency, private readonly historyRecorder: OnRecordHistory) {
     super(dependency);
 
     const homekit = dependency.getHomeKit();

@@ -58,7 +58,7 @@ export type ScheduleConfig = Assertable & {
   longitude?: number,
 }
 
-export type SensorConfig = Assertable & {
+export type SensorAddonConfig = Assertable & {
   type: SensorType,
   /**
    * @deprecated
@@ -133,7 +133,7 @@ export type DummyConfig = {
   type: HomeKitType,
   protocol: Protocol,
   groupName?: string,
-  sensor?: SensorConfig,
+  sensor?: SensorAddonConfig,
   schedule?: ScheduleConfig,
   autoReset?: ScheduleConfig,
   notification?: Notification,
