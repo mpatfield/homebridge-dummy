@@ -138,7 +138,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
     for (const type of Object.values(HomeKitType)) {
       const existingService = this.homekit.accessory.getService(this.homekit.Service[type]);
-      if (existingService && type !== this.getHomeKitType()) {
+      if (existingService && type !== this.getHomeKitType() && type !== this.config.sensor?.type) {
         this.homekit.accessory.removeService(existingService);
       }
     }
