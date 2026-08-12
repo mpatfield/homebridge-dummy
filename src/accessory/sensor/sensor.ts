@@ -1,19 +1,21 @@
 import { CharacteristicValue } from 'homebridge';
 
+import { incrementTimesOpened } from '../characteristic/eve.js';
+
 import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
+import { HistoryType } from '../../model/history.js';
 import { HomeKitType, SensorCharacteristicKey, SensorType } from '../../model/homekit.js';
 import { sensorInfoForType } from '../../model/sensor.js';
 import { SensorConfig } from '../../model/types.js';
 import { Values, Webhook } from '../../model/webhook.js';
-import { HistoryType } from '../../model/history.js';
-import { incrementTimesOpened } from '../characteristic/eve.js';
 
 export class SensorAccessory extends DummyAccessory<SensorConfig> {
 
   private active: CharacteristicValue = 0;
 
   constructor(dependency: DummyAccessoryDependency<SensorConfig>) {
+    dependency.config.enableWebhook = true;
     super(dependency);
 
     this.service.getCharacteristic(this.sensorCharacteristic)

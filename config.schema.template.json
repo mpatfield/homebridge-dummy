@@ -937,10 +937,10 @@
                   "items": [
                     {
                       "key": "accessories[].enableWebhook",
-                      "flex": "0 0 auto"
-                    },
-                    {
-                      "flex": "0 0 5%"
+                      "flex": "0 0 auto",
+                      "condition": {
+                        "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !type.endsWith('Sensor');"
+                      }
                     },
                     {
                       "key": "accessories[].enableHistory",
@@ -948,9 +948,6 @@
                       "condition": {
                         "functionBody": "return model.accessories?.[arguments[1]]?.protocol !== 'Matter' && ['ContactSensor', 'Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'MotionSensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
                       }
-                    },
-                    {
-                      "flex": "0 0 5%"
                     },
                     {
                       "key": "accessories[].simulation.enabled",
@@ -980,9 +977,6 @@
                       "flex": "0 0 auto"
                     },
                     {
-                      "flex": "0 0 5%"
-                    },
-                    {
                       "key": "accessories[].resetOnRestart",
                       "flex": "0 0 auto",
                       "condition": {
@@ -998,7 +992,7 @@
               "title": "${config.title.schedule}",
               "description": "${config.description.schedule}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.endsWith('Sensor');"
               },
               "items": [
                 {
@@ -1111,7 +1105,7 @@
               "title": "${config.title.autoReset}",
               "description": "${config.description.autoReset}",
               "condition": {
-                "functionBody": "const accessory = model.accessories?.[arguments[1]]; const type = accessory?.type; return !accessory?.fadeOut && type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.includes('Sensor');"
+                "functionBody": "const accessory = model.accessories?.[arguments[1]]; const type = accessory?.type; return !accessory?.fadeOut && type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.endsWith('Sensor');"
               },
               "items": [
                 {
@@ -1188,7 +1182,7 @@
               "title": "${config.title.notification}",
               "description": "${config.description.notification}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.endsWith('Sensor');"
               },
               "items": [
                 {
@@ -1285,7 +1279,7 @@
               "title": "${config.title.limiter}",
               "description": "${config.description.limiter}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.includes('Sensor');"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.endsWith('Sensor');"
               },
               "items": [
                 {
@@ -1320,7 +1314,7 @@
               "title": "${config.title.conditions}",
               "description": "${config.description.conditions}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.endsWith('Sensor');"
               },
               "items": [
                 {
