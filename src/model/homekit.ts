@@ -1,4 +1,5 @@
-export enum HomeKitType {
+export type HomeKitType = _HomeKitType | SensorType;
+export enum _HomeKitType {
   Door = 'Door',
   GarageDoorOpener = 'GarageDoorOpener',
   HumidifierDehumidifier = 'HumidifierDehumidifier',
@@ -17,7 +18,8 @@ export enum HomeKitType {
 
 export type CharacteristicKey = HKCharacteristicKey | EveCharacteristicKey;
 
-export enum HKCharacteristicKey {
+export type HKCharacteristicKey = _HKCharacteristicKey | SensorCharacteristicKey;
+export enum _HKCharacteristicKey {
   Brightness = 'Brightness',
   CurrentHeatingCoolingState = 'CurrentHeatingCoolingState',
   CurrentRelativeHumidity = 'CurrentRelativeHumidity',
@@ -60,3 +62,13 @@ export enum SensorCharacteristicKey {
   OccupancyDetected = 'OccupancyDetected',
   SmokeDetected = 'SmokeDetected'
 }
+
+export const HomeKitType = {
+  ..._HomeKitType,
+  ...SensorType,
+} as const;
+
+export const HKCharacteristicKey = {
+  ..._HKCharacteristicKey,
+  ...SensorCharacteristicKey,
+} as const;

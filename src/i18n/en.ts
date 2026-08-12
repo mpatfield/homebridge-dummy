@@ -78,11 +78,14 @@ const en = {
       auto: 'Auto',
       available: 'Available',
       button: 'Stateless Switch',
-      carbonDioxideSensor:'Carbon Dioxide',
-      carbonMonoxideSensor: 'Carbon Monoxide',
+      carbonDioxide:'Carbon Dioxide',
+      carbonDioxideSensor:'Carbon Dioxide Sensor',
+      carbonMonoxide: 'Carbon Monoxide',
+      carbonMonoxideSensor: 'Carbon Monoxide Sensor',
       celsius: '°C',
       closed: 'Closed',
-      contactSensor: 'Contact',
+      contact: 'Contact',
+      contactSensor: 'Contact Sensor',
       cool: 'Cool',
       cron: 'Cron',
       custom: 'Custom',
@@ -109,7 +112,8 @@ const en = {
       incremental: 'Incremental',
       interval: 'Repeating Interval',
       irrigation: 'Irrigation',
-      leakSensor: 'Leak',
+      leak: 'Leak',
+      leakSensor: 'Leak Sensor',
       lightbulb: 'Lightbulb',
       lockMechanism: 'Lock',
       log: 'Log Watcher',
@@ -119,11 +123,13 @@ const en = {
       minutes: 'Minutes',
       month: 'Month',
       monthly: 'Monthly',
-      motionSensor: 'Motion',
+      motion: 'Motion',
+      motionSensor: 'Motion Sensor',
       night: 'Night',
       none: 'None',
       notAvailable: 'Not Available',
-      occupancySensor: 'Occupancy',
+      occupancy: 'Occupancy',
+      occupancySensor: 'Occupancy Sensor',
       off: 'Off',
       on: 'On',
       open: 'Open',
@@ -139,7 +145,8 @@ const en = {
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
       shower: 'Shower',
-      smokeSensor: 'Smoke',
+      smoke: 'Smoke',
+      smokeSensor: 'Smoke Sensor',
       sunrise: 'Sunrise',
       sunset: 'Sunset',
       switch: 'Switch',
@@ -171,8 +178,10 @@ const en = {
       accessoryState: 'State',
       api: 'API',
       autoReset: 'Auto-Reset',
+      commandActive: 'Active Command',
       commandClose: 'Close Command',
       commandHumidity: 'Humidity Changed Command',
+      commandInactive: 'Inactive Command',
       commandOff: 'Off Command',
       commandOn: 'On Command',
       commandOpen: 'Open Command',
@@ -328,16 +337,22 @@ const en = {
     carbonDioxide: {
       active: '%s detected carbon dioxide', // accessory name
       inactive: '%s stopped detecting carbon dioxide', // accessory name
+      labelActive: 'Abnormal',
+      labelInactive: 'Normal',
     },
 
     carbonMonoxide: {
       active: '%s detected carbon monoxide', // accessory name
       inactive: '%s stopped detecting carbon monoxide', // accessory name
+      labelActive: 'Abnormal',
+      labelInactive: 'Normal',
     },
 
     contact: {
       active: '%s stopped detecting contact', // accessory name
       inactive: '%s detected contact', // accessory name
+      labelActive: 'Not Detected / Open',
+      labelInactive: 'Detected / Closed',
     },
 
     humidity: '%s humidity is %d%', // accessory name, number
@@ -345,21 +360,29 @@ const en = {
     leak: {
       active: '%s detected a leak', // accessory name
       inactive: '%s stopped detecting the leak', // accessory name
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
     },
 
     motion: {
       active: '%s detected motion', // accessory name
       inactive: '%s stopped detecting motion', // accessory name
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
     },
 
     occupancy: {
       active: '%s detected occupancy', // accessory name
       inactive: '%s stopped detecting occupancy', // accessory name
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
     },
 
     smoke: {
       active: '%s detected smoke', // accessory name
       inactive: '%s stopped detecting smoke', // accessory name
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
     },
 
     temperatureC: '%s is %d°C', // accessory name, number

@@ -2,7 +2,7 @@ import { SensorCharacteristicKey, SensorType } from './homekit.js';
 
 import { strings } from '../i18n/i18n.js';
 
-type SensorStrings = { active: string, inactive: string };
+type SensorStrings = { active: string, inactive: string, labelActive: string, labelInactive: string };
 export type SensorInfo = { characteristic: SensorCharacteristicKey, strings: SensorStrings };
 
 const INFO_MAP: { [key in SensorType]: SensorInfo } = {

@@ -20,7 +20,7 @@
             "type": "string",
             "title": "${config.title.sensor}",
             "enum": ["CarbonDioxideSensor", "CarbonMonoxideSensor", "ContactSensor", "LeakSensor", "MotionSensor", "OccupancySensor", "SmokeSensor"],
-            "enumNames": ["${config.enumNames.carbonDioxideSensor}", "${config.enumNames.carbonMonoxideSensor}", "${config.enumNames.contactSensor}", "${config.enumNames.leakSensor}", "${config.enumNames.motionSensor}", "${config.enumNames.occupancySensor}", "${config.enumNames.smokeSensor}"]
+            "enumNames": ["${config.enumNames.carbonDioxide}", "${config.enumNames.carbonMonoxide}", "${config.enumNames.contact}", "${config.enumNames.leak}", "${config.enumNames.motion}", "${config.enumNames.occupancy}", "${config.enumNames.smoke}"]
           },
           "behavior": {
             "type": "string",
@@ -529,8 +529,8 @@
             "type": {
               "type": "string",
               "title": "${config.title.type}",
-              "enum": ["Door", "GarageDoorOpener", "HumidifierDehumidifier", "HumiditySensor", "Lightbulb", "LockMechanism", "Outlet", "StatelessProgrammableSwitch", "Switch", "TemperatureSensor", "Thermostat", "Valve", "Window", "WindowCovering"],
-              "enumNames": ["${config.enumNames.door}", "${config.enumNames.garageDoorOpener}", "${config.enumNames.humidifierDehumidifier}", "${config.enumNames.humiditySensor}", "${config.enumNames.lightbulb}", "${config.enumNames.lockMechanism}", "${config.enumNames.outlet}", "${config.enumNames.button}", "${config.enumNames.switch}", "${config.enumNames.temperatureSensor}", "${config.enumNames.thermostat}", "${config.enumNames.valve}", "${config.enumNames.window}", "${config.enumNames.windowCovering}"]
+              "enum": ["CarbonDioxideSensor", "CarbonMonoxideSensor", "ContactSensor", "Door", "GarageDoorOpener", "HumidifierDehumidifier", "HumiditySensor", "LeakSensor", "Lightbulb", "LockMechanism", "MotionSensor", "OccupancySensor", "Outlet", "SmokeSensor", "StatelessProgrammableSwitch", "Switch", "TemperatureSensor", "Thermostat", "Valve", "Window", "WindowCovering"],
+              "enumNames": ["${config.enumNames.carbonDioxideSensor}", "${config.enumNames.carbonMonoxideSensor}", "${config.enumNames.contactSensor}", "${config.enumNames.door}", "${config.enumNames.garageDoorOpener}", "${config.enumNames.humidifierDehumidifier}", "${config.enumNames.humiditySensor}", "${config.enumNames.leakSensor}", "${config.enumNames.lightbulb}", "${config.enumNames.lockMechanism}", "${config.enumNames.motionSensor}", "${config.enumNames.occupancySensor}", "${config.enumNames.outlet}", "${config.enumNames.smokeSensor}", "${config.enumNames.button}", "${config.enumNames.switch}", "${config.enumNames.temperatureSensor}", "${config.enumNames.thermostat}", "${config.enumNames.valve}", "${config.enumNames.window}", "${config.enumNames.windowCovering}"]
             },
             "protocol": {
               "type": "string",
@@ -616,6 +616,14 @@
               "title": "${config.title.valveType}",
               "enum": ["generic", "faucet", "irrigation", "shower"],
               "enumNames": ["${config.enumNames.generic}", "${config.enumNames.faucet}", "${config.enumNames.irrigation}", "${config.enumNames.shower}"]
+            },
+            "commandActive": {
+              "type": "string",
+              "title": "${config.title.commandActive}"
+            },
+            "commandInactive": {
+              "type": "string",
+              "title": "${config.title.commandInactive}"
             },
             "commandOn": {
               "type": "string",
@@ -938,7 +946,7 @@
                       "key": "accessories[].enableHistory",
                       "flex": "0 0 auto",
                       "condition": {
-                        "functionBody": "return model.accessories?.[arguments[1]]?.protocol !== 'Matter' && ['Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
+                        "functionBody": "return model.accessories?.[arguments[1]]?.protocol !== 'Matter' && ['ContactSensor', 'Door', 'GarageDoorOpener', 'HumidifierDehumidifier', 'HumiditySensor', 'MotionSensor', 'Outlet', 'Lightbulb', 'Switch', 'TemperatureSensor', 'Thermostat', 'Window', 'WindowCovering'].includes(model.accessories?.[arguments[1]]?.type);"
                       }
                     },
                     {
@@ -990,7 +998,7 @@
               "title": "${config.title.schedule}",
               "description": "${config.description.schedule}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['HumiditySensor','TemperatureSensor','Thermostat'].includes(type);"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
               },
               "items": [
                 {
@@ -1103,7 +1111,7 @@
               "title": "${config.title.autoReset}",
               "description": "${config.description.autoReset}",
               "condition": {
-                "functionBody": "const accessory = model.accessories?.[arguments[1]]; const type = accessory?.type; return !accessory?.fadeOut && type && !['HumiditySensor','StatelessProgrammableSwitch','TemperatureSensor','Thermostat'].includes(type);"
+                "functionBody": "const accessory = model.accessories?.[arguments[1]]; const type = accessory?.type; return !accessory?.fadeOut && type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.includes('Sensor');"
               },
               "items": [
                 {
@@ -1180,7 +1188,7 @@
               "title": "${config.title.notification}",
               "description": "${config.description.notification}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['HumiditySensor','TemperatureSensor','Thermostat'].includes(type);"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
               },
               "items": [
                 {
@@ -1277,7 +1285,7 @@
               "title": "${config.title.limiter}",
               "description": "${config.description.limiter}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['HumiditySensor','StatelessProgrammableSwitch','TemperatureSensor','Thermostat'].includes(type);"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['StatelessProgrammableSwitch','Thermostat'].includes(type) && !type.includes('Sensor');"
               },
               "items": [
                 {
@@ -1312,7 +1320,7 @@
               "title": "${config.title.conditions}",
               "description": "${config.description.conditions}",
               "condition": {
-                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && !['HumiditySensor','TemperatureSensor','Thermostat'].includes(type);"
+                "functionBody": "const type = model.accessories?.[arguments[1]]?.type; return type && type !== 'Thermostat' && !type.includes('Sensor');"
               },
               "items": [
                 {
@@ -1407,6 +1415,18 @@
                 "functionBody": "return model.accessories?.[arguments[1]]?.type;"
               },
               "items": [
+                {
+                  "key": "accessories[].commandActive",
+                  "condition": {
+                    "functionBody": "return ['CarbonDioxideSensor','CarbonMonoxideSensor','ContactSensor','LeakSensor','MotionSensor','OccupancySensor','SmokeSensor'].includes(model.accessories?.[arguments[1]]?.type);"
+                  }
+                },
+                {
+                  "key": "accessories[].commandInactive",
+                  "condition": {
+                    "functionBody": "return ['CarbonDioxideSensor','CarbonMonoxideSensor','ContactSensor','LeakSensor','MotionSensor','OccupancySensor','SmokeSensor'].includes(model.accessories?.[arguments[1]]?.type);"
+                  }
+                },
                 {
                   "key": "accessories[].commandOn",
                   "condition": {

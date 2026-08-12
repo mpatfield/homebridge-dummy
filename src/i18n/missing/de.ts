@@ -67,6 +67,9 @@ const de = {
       accessory: 'Accessory',
       available: 'Available',
       button: 'Stateless Switch',
+      carbonDioxideSensor:'Carbon Dioxide Sensor',
+      carbonMonoxideSensor: 'Carbon Monoxide Sensor',
+      contactSensor: 'Contact Sensor',
       dawn: 'Dawn',
       dehumidifier: 'Dehumidifier',
       dusk: 'Dusk',
@@ -81,11 +84,14 @@ const de = {
       humiditySensor: 'Humidity Sensor',
       incremental: 'Incremental',
       irrigation: 'Irrigation',
+      leakSensor: 'Leak Sensor',
       log: 'Log Watcher',
       matter: 'Matter (Beta)',
+      motionSensor: 'Motion Sensor',
       night: 'Night',
       none: 'None',
       notAvailable: 'Not Available',
+      occupancySensor: 'Occupancy Sensor',
       operatorAnd: 'ALL conditions are met', // proceeded by "Trigger when…"
       operatorOr: 'ANY conditions are met', // proceeded by "Trigger when…"
       ping: 'Reachability',
@@ -94,6 +100,7 @@ const de = {
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',
       shower: 'Shower',
+      smokeSensor: 'Smoke Sensor',
       sunrise: 'Sunrise',
       sunset: 'Sunset',
       temperatureSensor: 'Temperature Sensor',
@@ -111,7 +118,9 @@ const de = {
       accessoryState: 'State',
       api: 'API',
       autoReset: 'Auto-Reset',
+      commandActive: 'Active Command',
       commandHumidity: 'Humidity Changed Command',
+      commandInactive: 'Inactive Command',
       commandSync: 'Sync Command',
       condition: 'Condition',
       conditions: 'Trigger Conditions',
@@ -205,7 +214,42 @@ const de = {
     badBehavior: '%s has invalid sensor behavior %s. Must be one of: %s', // accessory name, input, list of type names
     badTemperatureUnits: '%s has invalid temperature units %s. Must be one of: %s', // accessory name, input, list of unit names
 
+    carbonDioxide: {
+      labelActive: 'Abnormal',
+      labelInactive: 'Normal',
+    },
+
+    carbonMonoxide: {
+      labelActive: 'Abnormal',
+      labelInactive: 'Normal',
+    },
+
+    contact: {
+      labelActive: 'Not Detected / Open',
+      labelInactive: 'Detected / Closed',
+    },
+
     humidity: '%s humidity is %d%', // accessory name, number
+
+    leak: {
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
+    },
+
+    motion: {
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
+    },
+
+    occupancy: {
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
+    },
+
+    smoke: {
+      labelActive: 'Detected',
+      labelInactive: 'Not Detected',
+    },
 
     temperatureC: '%s is %d°C', // accessory name, number
     temperatureF: '%s is %d°F', // accessory name, number

@@ -67,6 +67,11 @@ export type SensorAddonConfig = Assertable & {
   behavior?: SensorBehavior,
 }
 
+export type SensorConfig = DummyConfig & {
+  commandActive?: string,
+  commandInactive?: string,
+}
+
 export type HumiditySensorConfig = DummyConfig & {
   commandHumidity?: string,
 }

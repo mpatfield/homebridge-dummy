@@ -12,6 +12,7 @@ import { DoorAccessory } from './position/door.js';
 import { WindowAccessory } from './position/window.js';
 import { GarageDoorAccessory } from './position/garage.js';
 import { HumiditySensorAccessory } from './sensor/humidity.js';
+import { SensorAccessory } from './sensor/sensor.js';
 import { TemperatureSensorAccessory } from './sensor/temperature.js';
 import { ValveAccessory } from './valve.js';
 
@@ -51,6 +52,14 @@ export function createDummyAccessory(dependency: DummyAccessoryDependency<DummyC
     return new WindowAccessory(dependency);
   case HomeKitType.WindowCovering:
     return new BlindAccessory(dependency);
+  case HomeKitType.CarbonDioxideSensor:
+  case HomeKitType.CarbonMonoxideSensor:
+  case HomeKitType.ContactSensor:
+  case HomeKitType.LeakSensor:
+  case HomeKitType.MotionSensor:
+  case HomeKitType.OccupancySensor:
+  case HomeKitType.SmokeSensor:
+    return new SensorAccessory(dependency);
   default:
     dependency.log.error(strings.startup.unsupportedType, `'${dependency.config.type}'`);
     return null;
