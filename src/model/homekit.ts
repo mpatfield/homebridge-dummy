@@ -51,7 +51,7 @@ export enum SensorType {
   SmokeSensor = 'SmokeSensor'
 }
 
-export enum SensorCharacteristic {
+export enum SensorCharacteristicKey {
   CarbonDioxideDetected = 'CarbonDioxideDetected',
   CarbonMonoxideDetected = 'CarbonMonoxideDetected',
   ContactSensorState = 'ContactSensorState',

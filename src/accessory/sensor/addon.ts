@@ -8,7 +8,7 @@ import { strings } from '../../i18n/i18n.js';
 
 import { SensorBehavior }  from '../../model/enums.js';
 import { HistoryType } from '../../model/history.js';
-import { EveCharacteristicKey, SensorCharacteristic, SensorType } from '../../model/homekit.js';
+import { EveCharacteristicKey, SensorCharacteristicKey, SensorType } from '../../model/homekit.js';
 import { sensorInfoForType } from '../../model/sensor.js';
 import { ServiceType, SensorAddonConfig, HomeKitAccessory, CharacteristicType } from '../../model/types.js';
 
@@ -90,7 +90,7 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
     this.service.getCharacteristic(characteristicInstance)
       .onGet(this.onGet.bind(this));
 
-    if (dependency.historyEnabled && this.sensorInfo.characteristic === SensorCharacteristic.ContactSensorState) {
+    if (dependency.historyEnabled && this.sensorInfo.characteristic === SensorCharacteristicKey.ContactSensorState) {
       setupTimesOpened(this);
     }
 
@@ -128,12 +128,12 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
 
     this._active = isActive ? 1 : 0;
 
-    if (this.sensorInfo.characteristic === SensorCharacteristic.ContactSensorState) {
+    if (this.sensorInfo.characteristic === SensorCharacteristicKey.ContactSensorState) {
       this.historyRecorder(HistoryType.DOOR, { status: isActive ? 1 : 0 }, true);
       if (this.dependency.historyEnabled && isActive) {
         incrementTimesOpened(this);
       }
-    } else if (this.sensorInfo.characteristic === SensorCharacteristic.MotionDetected) {
+    } else if (this.sensorInfo.characteristic === SensorCharacteristicKey.MotionDetected) {
       this.historyRecorder(HistoryType.MOTION, { status: isActive ? 1 : 0 }, true);
     }
 
