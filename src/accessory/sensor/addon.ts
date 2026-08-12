@@ -29,17 +29,17 @@ const INFO_MAP: { [key in SensorType]: SensorInfo } = {
   [SensorType.SmokeSensor]: { characteristic: SensorCharacteristic.SmokeDetected, strings: strings.sensor.smoke },
 };
 
-type SensorAccessoryDependency = DummyAddonDependency & {
+type SensorAddonDependency = DummyAddonDependency & {
   getHomeKit: GetHomeKit,
 }
 
-export class SensorAccessory extends Timeout implements EveCharacteristicHost {
+export class SensorAddon extends Timeout implements EveCharacteristicHost {
 
   public readonly service: Service;
 
   private _active: number = 0;
 
-  static new(dependency: SensorAccessoryDependency, historyRecorder: OnRecordHistory, sensor?: SensorConfig): SensorAccessory | undefined {
+  static new(dependency: SensorAddonDependency, historyRecorder: OnRecordHistory, sensor?: SensorConfig): SensorAddon | undefined {
 
     if (sensor) {
 
@@ -57,7 +57,7 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
         return;
       }
 
-      return new SensorAccessory(sensor, dependency, historyRecorder);
+      return new SensorAddon(sensor, dependency, historyRecorder);
     }
 
     const homekit = dependency.getHomeKit();
@@ -65,7 +65,7 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
       throw new Error(`${dependency.caller} sensor unable to get fetch HomeKit`);
     }
 
-    SensorAccessory.removeUnwantedServices(homekit.Service, homekit.accessory);
+    SensorAddon.removeUnwantedServices(homekit.Service, homekit.accessory);
 
     return;
   }
@@ -85,7 +85,7 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
 
   private Characteristic: CharacteristicType;
 
-  private constructor(private readonly config: SensorConfig, dependency: SensorAccessoryDependency, private readonly historyRecorder: OnRecordHistory) {
+  private constructor(private readonly config: SensorConfig, dependency: SensorAddonDependency, private readonly historyRecorder: OnRecordHistory) {
     super(dependency);
 
     const homekit = dependency.getHomeKit();
@@ -106,7 +106,7 @@ export class SensorAccessory extends Timeout implements EveCharacteristicHost {
       setupTimesOpened(this);
     }
 
-    SensorAccessory.removeUnwantedServices(homekit.Service, homekit.accessory, config.type);
+    SensorAddon.removeUnwantedServices(homekit.Service, homekit.accessory, config.type);
   }
 
   private async onGet(): Promise<CharacteristicValue> {

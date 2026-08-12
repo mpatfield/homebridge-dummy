@@ -4,7 +4,7 @@ import { promisify } from 'util';
 
 import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
 
-import { SensorAccessory } from './sensor/sensor.js';
+import { SensorAddon } from './sensor/addon.js';
 
 import { strings } from '../i18n/i18n.js';
 
@@ -60,7 +60,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
   public readonly serialNumber: string;
   public readonly softwareVersion: string = getVersion();
 
-  protected sensor?: SensorAccessory;
+  protected sensor?: SensorAddon;
 
   public static identifier(config: DummyConfig): string {
     return config.id ?? `${PLATFORM_NAME}:${config.type}:${config.name.replace(/\s+/g,'')}`;
@@ -87,7 +87,7 @@ export abstract class DummyAccessory<C extends DummyConfig> implements MatterAcc
 
     if (dependency.protocol === Protocol.HomeKit) {
       const sensorDependency = { ...this.addonDependency, getHomeKit: dependency.getHomeKit };
-      this.sensor = SensorAccessory.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
+      this.sensor = SensorAddon.new(sensorDependency, this.recordHistory.bind(this), dependency.config.sensor);
     }
 
     this._schedule = Schedule.new(this.addonDependency, dependency.config.schedule, strings.schedule, 'Schedule', this.trigger.bind(this));
