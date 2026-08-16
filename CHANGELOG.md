@@ -2,10 +2,11 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.0-beta.0 ()
+## 2.1.0-beta.1 ()
 
 ### Added
-- [Top-level sensor](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories) accessories (CO2, CO, Contact, Leak, Motion, Occupancy, Smoke) controlled via [Webhooks](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks)
+- [Top-level sensor](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories) accessories: CO2, CO, Contact, Leak, Motion, Occupancy, Smoke
+    - Can only be activated via [Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Schedule) or [Webhooks](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks)
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)

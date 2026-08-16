@@ -4,6 +4,8 @@ import { incrementTimesOpened } from '../characteristic/eve.js';
 
 import { DummyAccessory, DummyAccessoryDependency } from '../base.js';
 
+import { strings } from '../../i18n/i18n.js';
+
 import { HistoryType } from '../../model/history.js';
 import { HomeKitType, SensorCharacteristicKey, SensorType } from '../../model/homekit.js';
 import { sensorInfoForType } from '../../model/sensor.js';
@@ -12,16 +14,19 @@ import { Values, Webhook } from '../../model/webhook.js';
 
 export class SensorAccessory extends DummyAccessory<SensorConfig> {
 
-  private active: CharacteristicValue = 0;
+  private active: CharacteristicValue;
 
   constructor(dependency: DummyAccessoryDependency<SensorConfig>) {
-    dependency.config.enableWebhook = true;
     super(dependency);
+
+    if (this.config.schedule === undefined && this.config.enableWebhook !== true) {
+      this.log.warning(strings.sensor.doa, this.displayName);
+    }
 
     this.service.getCharacteristic(this.sensorCharacteristic)
       .onGet(this.getActive.bind(this));
 
-    this.active = (this.isStateful ? this.getProperty(this.sensorInfo.characteristic) : 0) ?? 0;
+    this.active = (this.isStateful ? this.getProperty(this.sensorInfo.characteristic) : this.defaultState) ?? this.defaultState;
   }
 
   private get sensorCharacteristic() {
@@ -30,6 +35,14 @@ export class SensorAccessory extends DummyAccessory<SensorConfig> {
 
   private get sensorInfo() {
     return sensorInfoForType(this.config.type as SensorType);
+  }
+
+  private get defaultState() {
+    return this.config.type === SensorType.MotionSensor ? false : 0;
+  }
+
+  private get activeState() {
+    return this.config.type === SensorType.MotionSensor ? true : 1;
   }
 
   override getHomeKitType(): HomeKitType {
@@ -58,7 +71,8 @@ export class SensorAccessory extends DummyAccessory<SensorConfig> {
 
   private async setActive(active: CharacteristicValue, syncOnly: boolean = false) {
 
-    if (this.active !== active) {
+    const stateChanged = this.active !== active;
+    if (stateChanged) {
       this.logIfDesired(active ? this.sensorInfo.strings.active :this.sensorInfo.strings.inactive);
 
       this.setProperty(this.sensorInfo.characteristic, active);
@@ -83,14 +97,22 @@ export class SensorAccessory extends DummyAccessory<SensorConfig> {
 
     this.active = active;
 
+    if (this.active !== this.defaultState) {
+      this.onTriggered(stateChanged);
+    } else {
+      this.onReset(stateChanged);
+    }
+
     this.service.updateCharacteristic(this.sensorCharacteristic, this.active);
   }
 
   override async trigger(): Promise<void> {
-    throw new Error(`${this.trigger.name} is unsupported for ${SensorAccessory.name}`);
+    await this.setActive(this.activeState);
   }
 
   override async reset(): Promise<void> {
-    throw new Error(`${this.reset.name} is unsupported for ${SensorAccessory.name}`);
+    if (this.active !== this.defaultState) {
+      await this.setActive(this.defaultState);
+    }
   }
 }
