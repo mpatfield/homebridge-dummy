@@ -130,7 +130,7 @@ const es = {
       operatorOr: 'Se cumple CUALQUIERA de las condiciones',
       outlet: 'Enchufe',
       ping: 'Accesibilidad',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       secondly: 'Cada segundo',
       seconds: 'Segundos',

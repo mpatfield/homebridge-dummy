@@ -95,7 +95,7 @@ const de = {
       operatorAnd: 'ALL conditions are met', // proceeded by "Trigger when…"
       operatorOr: 'ANY conditions are met', // proceeded by "Trigger when…"
       ping: 'Reachability',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       sensorMirror: 'Mirror Accessory',
       sensorTimer: 'Timer Controlled',

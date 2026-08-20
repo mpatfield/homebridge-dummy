@@ -137,7 +137,7 @@ const en = {
       operatorOr: 'ANY conditions are met', // proceeded by "Trigger when…"
       outlet: 'Outlet',
       ping: 'Reachability',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       secondly: 'Every Second',
       seconds: 'Seconds',

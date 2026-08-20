@@ -46,7 +46,7 @@ Visit the [Wiki](https://github.com/mpatfield/homebridge-dummy/wiki) to learn mo
 
 [Keryan Belahcene](https://www.instagram.com/keryan.me) for creating the [Flume](https://github.com/homebridge-plugins/homebridge-flume) banner image which was adapted for use with this plugin
 
-Push Notifications feature uses [Notify!](https://notify.pingie.com/) by [@simplytoast1](https://github.com/sponsors/simplytoast1)
+Push Notifications feature uses [Notify!](https://getnotifyapp.com/) by [@simplytoast1](https://github.com/sponsors/simplytoast1)
 
 [fakegato-history](https://github.com/simont77/fakegato-history) by [@simont77](https://github.com/sponsors/simont77) *Copyright © 2017*
 

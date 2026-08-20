@@ -130,7 +130,7 @@ const vi = {
       operatorOr: 'BẤT KỲ điều kiện nào được đáp ứng',
       outlet: 'Ổ cắm',
       ping: 'Kiểm tra kết nối',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       secondly: 'Mỗi giây',
       seconds: 'Giây',

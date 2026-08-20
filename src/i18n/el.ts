@@ -130,7 +130,7 @@ const el = {
       operatorOr: 'ΟΠΟΙΑΔΗΠΟΤΕ συνθήκη πληρούται',
       outlet: 'Πρίζα',
       ping: 'Προσβασιμότητα',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       secondly: 'Κάθε δευτερόλεπτο',
       seconds: 'Δευτερόλεπτα',

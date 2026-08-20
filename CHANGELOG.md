@@ -5,8 +5,9 @@ All notable changes to homebridge-dummy will be documented in this file.
 ## 2.1.0-beta.1 ()
 
 ### Added
-- [Top-level sensor](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories) accessories: CO2, CO, Contact, Leak, Motion, Occupancy, Smoke
-    - Can only be activated via [Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Schedule) or [Webhooks](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks)
+- Top-level [sensor accessories](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories): CO2, CO, Contact, Leak, Motion, Occupancy, Smoke
+    - No manual control — can only be activated via [Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Schedule) or [Webhooks](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks)
+- Notifications [in your browser or on Android](https://getnotifyapp.com/#webapp) via the updated and improved [Notify!](https://getnotifyapp.com/)
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
@@ -158,7 +159,7 @@ Would you like to see Homebridge Dummy in your language? Please consider [gettin
 ## 1.6.0 (2026-01-25)
 
 ### Added
-- Customizable [push notifications](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification) using the [Notify!](https://notify.pingie.com/) app (Thank you for the inspiration, [@simplytoast1](https://github.com/sponsors/simplytoast1)!)
+- Customizable [push notifications](https://github.com/mpatfield/homebridge-dummy/wiki/Push-Notification) using the [Notify!](https://getnotifyapp.com/) app (Thank you for the inspiration, [@simplytoast1](https://github.com/sponsors/simplytoast1)!)
 - [Eve App Support](https://github.com/mpatfield/homebridge-dummy/wiki/Eve-App-Support), including history and additional characteristics — choose "Enable History" in the config UI
     - `ContactSensor` opened/closed history and times opened count with option to reset
     - `MotionSensor` history

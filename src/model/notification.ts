@@ -11,7 +11,7 @@ import { strings } from '../i18n/i18n.js';
 
 import { assert, isValid, printableValues } from '../tools/validation.js';
 
-const DEFAULT_PUSH_ICON_URL = 'https://notifyicons.pingie.com/icons/mkpu3s46-6e8wy7gh.png';
+const DEFAULT_PUSH_ICON_URL = 'https://icons.getnotifyapp.com/icons/mt1lwzhb-coo64058.png';
 
 const P1 = [0x53, 0x10, 0x10, 0x13, 0x02, 0x14, 0x5A, 0x12, 0x13, 0x5E];
 const P2 = [0x09, 0x0A, 0x1E, 0x15, 0x00, 0x04, 0x07, 0x06, 0x0F, 0x0A];
@@ -81,7 +81,7 @@ export class NotificationManager {
   private async pingieNotify(type: NotificationType) {
     try {
 
-      const endpoint = `https://notifypush.pingie.com/notify-json/${this.notification.id}`;
+      const endpoint = `https://push.getnotifyapp.com/notify-json/${this.notification.id}`;
 
       const payload: Record<string, string | undefined> = {
         text: type === NotificationType.RESET ? this.notification.resetText : this.notification.text,

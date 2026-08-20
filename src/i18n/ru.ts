@@ -130,7 +130,7 @@ const ru = {
       operatorOr: 'ЛЮБОЕ условие выполнено',
       outlet: 'Розетка',
       ping: 'Доступность',
-      pingieNotify: 'Notify! (notify.pingie.com)',
+      pingieNotify: 'Notify! (getnotifyapp.com)',
       pushover: 'Pushover (pushover.net)',
       secondly: 'Ежесекундно',
       seconds: 'Секунды',
