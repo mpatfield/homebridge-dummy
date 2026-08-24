@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.0-beta.1 ()
+## 2.1.0 (2026-08-24)
 
 ### Added
 - Top-level [sensor accessories](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories): CO2, CO, Contact, Leak, Motion, Occupancy, Smoke
