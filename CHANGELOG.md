@@ -2,6 +2,14 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
+## 2.1.1-beta.0 ()
+
+### PSA
+- There is [a bug in tvOS 27 beta 4+](https://github.com/mpatfield/homebridge-dummy/issues/483) that breaks webhooks — if you use this feature, it is recommended that you hold off off updating your Apple TV until the bug is fixed
+
+### Fixed
+- Swapped [tail-file](https://www.npmjs.com/package/tail-file) library with [tail](https://www.npmjs.com/package/tail) to fix the broken [Log Watcher](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions#log-watcher) feature
+
 ## 2.1.0 (2026-08-24)
 
 ### Added

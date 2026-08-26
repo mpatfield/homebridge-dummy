@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import TailFile from 'tail-file';
+import { Tail } from 'tail';
 
 import { Log } from '../tools/log.js';
 import { strings } from '../i18n/i18n.js';
@@ -9,7 +9,7 @@ type ListenerCallback = () => (void);
 
 export class LogWatcher {
 
-  private tailFile?: TailFile;
+  private tailFile?: Tail;
 
   private readonly matchers = new Map<RegExp, ListenerCallback[]>();
 
@@ -29,7 +29,7 @@ export class LogWatcher {
       return;
     }
 
-    this.tailFile = new TailFile(logFilePath, { startPos: 'end' });
+    this.tailFile = new Tail(logFilePath);
 
     this.tailFile.on('line', (line: string) => {
       for (const [matcher, callbacks] of this.matchers.entries()) {
@@ -41,11 +41,12 @@ export class LogWatcher {
 
     this.tailFile.on('error', (err: Error) => this.log.error(strings.logWatcher.error, String(err)));
 
-    this.tailFile.start();
+    this.tailFile.watch();
   }
 
   public teardown() {
-    this.tailFile?.stop();
+    this.tailFile?.unwatch();
+    this.tailFile = undefined;
   }
 
   public registerPattern(pattern: string, callback: ListenerCallback) {
