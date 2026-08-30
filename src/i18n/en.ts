@@ -401,7 +401,6 @@ const en = {
     removeMatterAccessory: 'Removing Matter accessory:',
     restoringHomeKitAccessory: 'Restoring HomeKit accessory:',
     restoringMatterAccessory: 'Restoring Matter accessory:',
-    setupComplete: '✓ Setup complete',
     unsupportedProtocol: 'Unsupported protocol %s. Must be one of: %s', // protocol, list of protocols
     unsupportedType: 'Unsupported accessory type %s', // accessory type
   },

@@ -370,7 +370,6 @@ const el = {
     removeMatterAccessory: 'Αφαίρεση αξεσουάρ Matter:',
     restoringHomeKitAccessory: 'Επαναφορά αξεσουάρ HomeKit:',
     restoringMatterAccessory: 'Επαναφορά αξεσουάρ Matter:',
-    setupComplete: '✓ Η εγκατάσταση ολοκληρώθηκε',
     unsupportedProtocol: 'Μη υποστηριζόμενο πρωτόκολλο %s. Πρέπει να είναι ένα από: %s',
     unsupportedType: 'Μη υποστηριζόμενος τύπος αξεσουάρ %s',
   },

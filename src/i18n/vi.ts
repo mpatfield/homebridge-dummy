@@ -370,7 +370,6 @@ const vi = {
     removeMatterAccessory: 'Đang xóa phụ kiện Matter:',
     restoringHomeKitAccessory: 'Đang khôi phục phụ kiện HomeKit:',
     restoringMatterAccessory: 'Đang khôi phục phụ kiện Matter:',
-    setupComplete: '✓ Thiết lập hoàn tất',
     unsupportedProtocol: 'Giao thức %s không được hỗ trợ. Chỉ chấp nhận một trong các giao thức sau: %s',
     unsupportedType: 'Loại phụ kiện không được hỗ trợ %s',
   },

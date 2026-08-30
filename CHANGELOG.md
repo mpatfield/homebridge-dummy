@@ -2,13 +2,18 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.1-beta.0 ()
+## 2.1.1-beta.1 ()
 
 ### PSA
-- There is [a bug in tvOS 27 beta 4+](https://github.com/mpatfield/homebridge-dummy/issues/483) that breaks webhooks — if you use this feature, it is recommended that you hold off off updating your Apple TV until the bug is fixed
+- There is [a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) in tvOS and HomePod OS 27 beta 4+ that breaks Apple Shortcuts that call a Dummy webhook — it is therefore recommended that you wait to update your Apple TV and HomePod until Apple fixes the bug
 
 ### Fixed
 - Swapped [tail-file](https://www.npmjs.com/package/tail-file) library with [tail](https://www.npmjs.com/package/tail) to fix the broken [Log Watcher](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions#log-watcher) feature
+- Fail gracefully when accessory is missing name ([#486](https://github.com/mpatfield/homebridge-dummy/issues/486))
+
+### Notes
+- ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
+- Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
 
 ## 2.1.0 (2026-08-24)
 
@@ -16,10 +21,6 @@ All notable changes to homebridge-dummy will be documented in this file.
 - Top-level [sensor accessories](https://github.com/mpatfield/homebridge-dummy/wiki/Sensors#top-level-accessories): CO2, CO, Contact, Leak, Motion, Occupancy, Smoke
     - No manual control — can only be activated via [Schedule](https://github.com/mpatfield/homebridge-dummy/wiki/Schedule) or [Webhooks](https://github.com/mpatfield/homebridge-dummy/wiki/Webhooks)
 - Notifications [in your browser or on Android](https://getnotifyapp.com/#webapp) via the updated and improved [Notify!](https://getnotifyapp.com/)
-
-### Notes
-- ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
-- Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
 
 ## 2.0.2 (2026-08-11)
 

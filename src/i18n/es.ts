@@ -370,7 +370,6 @@ const es = {
     removeMatterAccessory: 'Eliminando accesorio Matter:',
     restoringHomeKitAccessory: 'Recuperando accesorio HomeKit:',
     restoringMatterAccessory: 'Recuperando accesorio Matter:',
-    setupComplete: '✓ Configuración completa',
     unsupportedProtocol: 'Protocolo no compatible %s. Debe ser uno de: %s',
     unsupportedType: 'Tipo de accesorio no compatible %s',
   },

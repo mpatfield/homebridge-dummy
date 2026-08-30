@@ -370,7 +370,6 @@ const ru = {
     removeMatterAccessory: 'Удаление аксессуара Matter:',
     restoringHomeKitAccessory: 'Восстановление аксессуара HomeKit:',
     restoringMatterAccessory: 'Восстановление аксессуара Matter:',
-    setupComplete: '✓ Настройка завершена',
     unsupportedProtocol: 'Неподдерживаемый протокол %s. Допустимые значения: %s',
     unsupportedType: 'Тип аксессуара %s не поддерживается',
   },

@@ -36,7 +36,7 @@ const vi = {
       labelInactive: 'Detected / Closed',
     },
 
-    doa: '%s will never be triggered as currently configured. Did you mean to enable webhooks or add a schedule?',
+    doa: '%s will never be triggered as currently configured. Did you forget to enable webhooks or add a trigger schedule?',
 
     leak: {
       labelActive: 'Detected',

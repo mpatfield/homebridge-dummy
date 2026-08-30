@@ -186,7 +186,6 @@ const de = {
   },
 
   startup: {
-    setupComplete: '✓ Einrichtung abgeschlossen',
     unsupportedType: 'Nicht unterstützter Gerätetyp %s',
   },
 

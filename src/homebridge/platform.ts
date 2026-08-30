@@ -95,6 +95,10 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
     for (const accessoryConfig of accessories) {
 
+      if (accessoryConfig.name === undefined) {
+        continue;
+      }
+
       if (accessoryConfig.protocol === undefined) {
         accessoryConfig.protocol = Protocol.HomeKit;
       }
@@ -224,8 +228,6 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     });
 
     this.webhookManager.startServer();
-
-    this.log.always(strings.startup.setupComplete);
   }
 
   private createHomeKitAccessory(id: string, name: string): HomeKitAccessory {
