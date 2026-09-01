@@ -1,7 +1,8 @@
 import { DummyAccessory, DummyAccessoryDependency, GetHomeKit, GetMatter } from './base.js';
 import { createDummyAccessory } from './helpers.js';
 
-import { ConditionManager } from '../model/conditions.js';
+import { ConditionManager } from '../conditions/conditions.js';
+
 import { Protocol } from '../model/enums.js';
 import { History } from '../model/history.js';
 import { DummyConfig, GroupConfig } from '../model/types.js';

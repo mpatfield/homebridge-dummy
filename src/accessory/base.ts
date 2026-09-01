@@ -6,9 +6,10 @@ import { PLATFORM_NAME, PLUGIN_ALIAS } from '../homebridge/settings.js';
 
 import { SensorAddon } from './sensor/addon.js';
 
+import { ConditionManager } from '../conditions/conditions.js';
+
 import { strings } from '../i18n/i18n.js';
 
-import { ConditionManager } from '../model/conditions.js';
 import { AccessoryState, Protocol, TimeUnits } from '../model/enums.js';
 import { CharacteristicKey, HomeKitType } from '../model/homekit.js';
 import { History, HistoryEntry, HistoryType } from '../model/history.js';

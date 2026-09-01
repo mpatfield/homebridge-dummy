@@ -1,11 +1,12 @@
-import { AccessoryState, ConditionOperator, getStateType, OperandType, PingAvailability } from './enums.js';
-import { ConditionsConfig } from './types.js';
+import { LogWatcher } from './logWatcher.js';
+import { Reachability } from './reachability.js';
+
+import { AccessoryState, ConditionOperator, getStateType, OperandType, PingAvailability } from '../model/enums.js';
+import { ConditionsConfig } from '../model/types.js';
 
 import { strings } from '../i18n/i18n.js';
 
 import { Log } from '../tools/log.js';
-import { LogWatcher } from '../tools/logWatcher.js';
-import { Reachability } from '../tools/reachability.js';
 import { assert } from '../tools/validation.js';
 
 type Target = {

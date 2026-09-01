@@ -7,9 +7,10 @@ import { initEveCharacteristics } from '../accessory/characteristic/eve.js';
 import { createDummyAccessory } from '../accessory/helpers.js';
 import { GroupAccessory, GroupAccessoryDependency } from '../accessory/group.js';
 
+import { ConditionManager } from '../conditions/conditions.js';
+
 import { setLanguage, strings } from '../i18n/i18n.js';
 
-import { ConditionManager } from '../model/conditions.js';
 import { Protocol } from '../model/enums.js';
 import { History } from '../model/history.js';
 import { DummyConfig, DummyPlatformConfig, GroupConfig, HomeKitAccessory } from '../model/types.js';
