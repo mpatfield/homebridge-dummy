@@ -108,10 +108,18 @@ export type Operand = Assertable & {
   type: OperandType,
   accessoryId?: string,
   accessoryState?: AccessoryState,
+  checkInterval?: number,
+  checkUnits?: TimeUnits,
   pattern?: string,
   pingHost?: string,
   pingAvailability?: PingAvailability,
+  /**
+   * @deprecated
+   */
   pingInterval?: number,
+  /**
+   * @deprecated
+   */
   pingUnits?: TimeUnits,
 }
 

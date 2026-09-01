@@ -101,7 +101,9 @@ export class ConditionManager {
         this.logWatcher.registerPattern(operand.pattern!, () => this.onPatternMatch(target));
         break;
       case OperandType.PING:
-        this.reachabilityInstances.push(new Reachability(this.log, operand.pingHost!, operand.pingInterval, operand.pingUnits, (reachable) => {
+        operand.checkInterval = operand.checkInterval ?? operand.pingInterval;
+        operand.checkUnits = operand.checkUnits ?? operand.pingUnits;
+        this.reachabilityInstances.push(new Reachability(this.log, operand.pingHost!, operand.checkInterval, operand.checkUnits, (reachable) => {
           this.onReachabilityChange(target, operand.pingHost!, reachable);
         }));
         break;

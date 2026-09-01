@@ -344,6 +344,14 @@
             "enum": [ "on", "off", "open", "closed", "locked", "unlocked" ],
             "enumNames": [ "${config.enumNames.on}", "${config.enumNames.off}", "${config.enumNames.open}", "${config.enumNames.closed}", "${config.enumNames.secured}", "${config.enumNames.unsecured}" ]
           },
+         "checkInterval": {
+            "type": "integer",
+            "title": "${config.title.checkInterval}",
+            "minimum": 1
+          },
+          "checkUnits": {
+            "$ref": "#/definitions/units"
+          },
           "pattern": {
             "type": "string",
             "title": "${config.title.pattern}"
@@ -357,14 +365,6 @@
             "title": "${config.title.pingAvailability}",
             "enum": [ "AVAILABLE",  "NOT_AVAILABLE"],
             "enumNames": [ "${config.enumNames.available}", "${config.enumNames.notAvailable}" ]
-          },
-          "pingInterval": {
-            "type": "integer",
-            "title": "${config.title.pingInterval}",
-            "minimum": 1
-          },
-          "pingUnits": {
-            "$ref": "#/definitions/units"
           }
         },
         "allOf": [
@@ -404,7 +404,7 @@
               "required": ["type"]
             },
             "then": {
-                "required": ["pingHost", "pingAvailability", "pingInterval", "pingUnits"]
+                "required": ["pingHost", "pingAvailability", "checkInterval", "checkUnits"]
             }
           }
         ]
@@ -1390,14 +1390,14 @@
                       }
                     },
                     {
-                      "key": "accessories[].conditions.operands[].pingInterval",
+                      "key": "accessories[].conditions.operands[].checkInterval",
                       "flex": "0 0 10%",
                       "condition": {
                         "functionBody": "return model.accessories?.[arguments[1][0]]?.conditions?.operands?.[arguments[1][1]]?.type === 'PING';"
                       }
                     },
                     {
-                      "key": "accessories[].conditions.operands[].pingUnits",
+                      "key": "accessories[].conditions.operands[].checkUnits",
                       "flex": "0 0 20%",
                       "condition": {
                         "functionBody": "return model.accessories?.[arguments[1][0]]?.conditions?.operands?.[arguments[1][1]]?.type === 'PING';"
