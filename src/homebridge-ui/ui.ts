@@ -152,7 +152,14 @@ async function updateConditionDropdowns(configs?: DummyPlatformConfig[]) {
   for (const config of configs) {
     const populated = (config.accessories ?? []).filter( (accessory) => accessory.id && accessory.name &&
     ![
+      HomeKitType.CarbonDioxideSensor,
+      HomeKitType.CarbonMonoxideSensor,
+      HomeKitType.ContactSensor,
       HomeKitType.HumiditySensor,
+      HomeKitType.LeakSensor,
+      HomeKitType.MotionSensor,
+      HomeKitType.OccupancySensor,
+      HomeKitType.SmokeSensor,
       HomeKitType.StatelessProgrammableSwitch,
       HomeKitType.TemperatureSensor,
       HomeKitType.Thermostat,
