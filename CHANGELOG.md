@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.1-beta.1 ()
+## 2.1.1-beta.2 ()
 
 ### PSA
 - There is [a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) in tvOS and HomePod OS 27 beta 4+ that breaks Apple Shortcuts that call a Dummy webhook — it is therefore recommended that you wait to update your Apple TV and HomePod until Apple fixes the bug
@@ -10,6 +10,9 @@ All notable changes to homebridge-dummy will be documented in this file.
 ### Fixed
 - Swapped [tail-file](https://www.npmjs.com/package/tail-file) library with [tail](https://www.npmjs.com/package/tail) to fix the broken [Log Watcher](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions#log-watcher) feature
 - Fail gracefully when accessory is missing name ([#486](https://github.com/mpatfield/homebridge-dummy/issues/486))
+
+### Changed
+- Updated dependencies
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
