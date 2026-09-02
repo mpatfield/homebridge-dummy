@@ -357,20 +357,18 @@ async function migrateDeprecatedFields(configs: DummyPlatformConfig[]) {
         changed = true;
       }
 
-      if (accessoryConfig.conditions?.operands !== undefined) {
-        accessoryConfig.conditions.operands.forEach( (operand) => {
+      accessoryConfig.conditions?.operands?.forEach( (operand) => {
 
-          if (operand.pingInterval !== undefined && operand.checkInterval === undefined) {
-            operand.checkInterval = operand.pingInterval;
-            changed = true;
-          }
+        if (operand.pingInterval !== undefined && operand.checkInterval === undefined) {
+          operand.checkInterval = operand.pingInterval;
+          changed = true;
+        }
 
-          if (operand.pingUnits !== undefined && operand.checkUnits === undefined) {
-            operand.checkUnits = operand.pingUnits;
-            changed = true;
-          }
-        });
-      }
+        if (operand.pingUnits !== undefined && operand.checkUnits === undefined) {
+          operand.checkUnits = operand.pingUnits;
+          changed = true;
+        }
+      });
     });
   });
 
