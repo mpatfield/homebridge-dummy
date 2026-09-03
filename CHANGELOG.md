@@ -12,6 +12,7 @@ All notable changes to homebridge-dummy will be documented in this file.
 - Fail gracefully when accessory is missing name ([#486](https://github.com/mpatfield/homebridge-dummy/issues/486))
 
 ### Changed
+- Deprecated `pingInterval`/`pingUnits` in favor of [`checkInterval/checkUnits`](https://github.com/mpatfield/homebridge-dummy/wiki/Trigger-Conditions#reachabilitypresence)
 - Updated dependencies
 
 ### Notes
