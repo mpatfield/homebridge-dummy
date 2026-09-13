@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import merge from 'lodash.merge';
 
 import de from './de.js';
@@ -38,16 +37,9 @@ export function getStrings(language: Language): Translation {
 
 export let strings: Translation = en;
 
-export function setLanguage(configPath: string) {
+export function setLanguage(language?: string) {
 
-  let isoLang: string | undefined;
-  try {
-    const systemConfig = readFileSync(configPath, { encoding: 'utf8' });
-    isoLang = JSON.parse(systemConfig).platforms.filter( (c: Record<string, unknown>) => c.platform === 'config')[0].lang;
-  } catch {
-    // nothing
-  }
-
+  let isoLang = language;
   if (isoLang === undefined || isoLang.trim().length === 0 || isoLang === 'auto') {
     isoLang = Intl.DateTimeFormat().resolvedOptions().locale.split('-')[0];
   }

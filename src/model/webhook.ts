@@ -3,7 +3,6 @@ import { readFileSync } from 'fs';
 import { CharacteristicValue } from 'homebridge';
 import { Server } from 'http';
 import { createServer, ServerOptions } from 'https';
-import path from 'path';
 
 import { DummyAccessory } from '../accessory/base.js';
 
@@ -12,6 +11,7 @@ import { DummyConfig, WebhookConfig } from './types.js';
 
 import { strings } from '../i18n/i18n.js';
 
+import { ConfigUiSsl, resolveConfigUiSsl } from '../tools/config-ui.js';
 import { Log } from '../tools/log.js';
 import { toPrimitive } from '../tools/primitive.js';
 import { assert } from '../tools/validation.js';
@@ -70,24 +70,12 @@ export class WebhookManager {
     private readonly log: Log,
     configPath: string,
     private readonly config: WebhookConfig = {},
+    configUiSsl?: ConfigUiSsl,
   ) {
 
-    try {
-      const systemConfig = readFileSync(configPath, { encoding: 'utf8' });
-      const systemSSLConfig = JSON.parse(systemConfig).platforms.filter( (c: Record<string, string>) => c.platform === 'config')[0].ssl;
-
-      if (systemSSLConfig !== undefined) {
-
-        if (systemSSLConfig.selfSigned === true) {
-          systemSSLConfig.key = systemSSLConfig.key ?? path.join(configPath, '../ssl-certs/private-key.pem');
-          systemSSLConfig.cert = systemSSLConfig.cert ?? path.join(configPath, '../ssl-certs/certificate.pem');
-        }
-
-        this.config = { ...systemSSLConfig , ...this.config };
-      }
-
-    } catch {
-      // Nothing
+    const inheritedSsl = resolveConfigUiSsl(configUiSsl, configPath);
+    if (inheritedSsl !== undefined) {
+      this.config = { ...inheritedSsl, ...this.config };
     }
 
     this.config.port = this.config.port ?? DEFAULT_PORT;
