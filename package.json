@@ -37,6 +37,7 @@
     "i18n:merge": "node --import tsx ./scripts/i18n-merge.ts",
     "i18n:missing": "node --import tsx ./scripts/i18n-missing.ts",
     "lint": "eslint . --fix --max-warnings=0",
+    "test": "node --import tsx --test src/tools/config-ui.test.ts",
     "postinstall": "patch-package",
     "prepublishOnly": "npm run lint && npm run build"
   },

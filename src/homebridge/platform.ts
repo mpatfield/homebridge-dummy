@@ -16,6 +16,7 @@ import { History } from '../model/history.js';
 import { DummyConfig, DummyPlatformConfig, GroupConfig, HomeKitAccessory } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
+import { readConfigUiSettings } from '../tools/config-ui.js';
 import { Log } from '../tools/log.js';
 import { Storage } from '../tools/storage.js';
 import { printableValues } from '../tools/validation.js';
@@ -38,10 +39,17 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     private readonly api: API,
   ) {
 
-    setLanguage(api.user.configPath());
+    const configPath = api.user.configPath();
+    const configUi = readConfigUiSettings(configPath);
+    setLanguage(configUi.language);
 
     this.log = new Log(logger, config.verbose === true);
-    this.webhookManager = new WebhookManager(this.log, this.api.user.configPath(), { port: config.webhookPort, ...config.webhookConfig });
+    this.webhookManager = new WebhookManager(
+      this.log,
+      configPath,
+      { port: config.webhookPort, ...config.webhookConfig },
+      configUi.ssl,
+    );
     this.conditionManager = new ConditionManager(this.log, api.user.storagePath());
 
     this.log.ifVerbose(
