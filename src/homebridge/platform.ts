@@ -9,13 +9,14 @@ import { GroupAccessory, GroupAccessoryDependency } from '../accessory/group.js'
 
 import { ConditionManager } from '../conditions/conditions.js';
 
-import { setLanguage, strings } from '../i18n/i18n.js';
+import { initLanguage, strings } from '../i18n/i18n.js';
 
 import { Protocol } from '../model/enums.js';
 import { History } from '../model/history.js';
 import { DummyConfig, DummyPlatformConfig, GroupConfig, HomeKitAccessory } from '../model/types.js';
 import { WebhookManager } from '../model/webhook.js';
 
+import { HBUIConfig } from '../tools/config.js';
 import { Log } from '../tools/log.js';
 import { Storage } from '../tools/storage.js';
 import { printableValues } from '../tools/validation.js';
@@ -38,10 +39,12 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
     private readonly api: API,
   ) {
 
-    setLanguage(api.user.configPath());
-
     this.log = new Log(logger, config.verbose === true);
-    this.webhookManager = new WebhookManager(this.log, this.api.user.configPath(), { port: config.webhookPort, ...config.webhookConfig });
+
+    HBUIConfig.init(this.log, api.user.configPath());
+    initLanguage();
+
+    this.webhookManager = new WebhookManager(this.log, { port: config.webhookPort, ...config.webhookConfig });
     this.conditionManager = new ConditionManager(this.log, api.user.storagePath());
 
     this.log.ifVerbose(
