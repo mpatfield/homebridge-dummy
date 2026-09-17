@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.2-beta.0 ()
+## 2.1.2-beta.1 ()
 
 ### PSA
 - There is [a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) in tvOS and HomePod OS 27 that breaks Apple Shortcuts that call a Dummy webhook — it is therefore recommended that you wait to update your Apple TV and HomePod until Apple fixes the bug if you rely heavily on this ability

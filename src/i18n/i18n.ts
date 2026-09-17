@@ -42,7 +42,7 @@ export let strings: Translation = en;
 export function initLanguage() {
 
   let isoLang = HBUIConfig.lang;
-  if (isoLang === undefined || isoLang.trim().length === 0 || isoLang === 'auto') {
+  if (typeof isoLang !== 'string' || isoLang.trim().length === 0 || isoLang === 'auto') {
     isoLang = Intl.DateTimeFormat().resolvedOptions().locale.split('-')[0];
   }
 

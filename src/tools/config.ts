@@ -46,6 +46,10 @@ export class HBUIConfig {
     try {
       parsed = JSON.parse(readFileSync(configPath, { encoding: 'utf8' }), (key: string, value: unknown) => {
 
+        if (key === 'bridge' || key === 'accessories' || key === 'disabledPlugins') {
+          return undefined;
+        }
+
         if (key === 'platforms' && Array.isArray(value)) {
           const configPlatform = (value as HBPlatformConfig[]).find(v => v?.platform === 'config');
           return configPlatform ? { lang: configPlatform.lang, ssl: configPlatform.ssl } : undefined;
