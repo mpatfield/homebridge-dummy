@@ -33,6 +33,8 @@ export type WebhookConfig = {
 }
 
 export type DummyPlatformConfig = PlatformConfig & {
+  /** Homebridge log prefix. Shown in Config UI as Platform Name. */
+  name?: string,
   accessories?: DummyConfig[],
   webhookConfig?: WebhookConfig,
   /**

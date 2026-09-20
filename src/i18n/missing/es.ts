@@ -2,6 +2,10 @@ const es = {
 
   config: {
 
+    description: {
+      platformName: 'Shown in the Homebridge log.',
+    },
+
     enumNames: {
       carbonDioxideSensor:'Carbon Dioxide Sensor',
       carbonMonoxideSensor: 'Carbon Monoxide Sensor',
@@ -15,6 +19,7 @@ const es = {
     title: {
       commandActive: 'Active Command',
       commandInactive: 'Inactive Command',
+      platformName: 'Platform Name',
     },
 
   },

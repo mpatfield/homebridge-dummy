@@ -511,6 +511,8 @@
     "properties": {
       "name": {
         "type": "string",
+        "title": "${config.title.platformName}",
+        "description": "${config.description.platformName}",
         "default": "Homebridge Dummy"
       },
       "accessories": {
@@ -718,6 +720,11 @@
     }
   },
   "layout": [
+    {
+      "key": "name",
+      "title": "${config.title.platformName}",
+      "description": "${config.description.platformName}"
+    },
     {
       "type": "array",
       "key": "accessories",
