@@ -2,17 +2,15 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.2-beta.1 ()
-
-### PSA
-- There is [a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) in tvOS and HomePod OS 27 that breaks Apple Shortcuts that call a Dummy webhook — it is therefore recommended that you wait to update your Apple TV and HomePod until Apple fixes the bug if you rely heavily on this ability
+## 2.1.2 (2026-09-23)
 
 ### Changed
-- More efficient/secure fetching of language and webhook ssl settings from Homebridge UI Config — thank you, [@tbaur](https://github.com/sponsors/tbaur)!
+- More efficient/secure fetching of language and webhook SSL settings from Homebridge UI Config — thank you, [@tbaur](https://github.com/sponsors/tbaur)!
 - Updated dependencies
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
+- ⚠️ There is [a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) in tvOS and HomePod OS 27 that breaks Apple Shortcuts that call a Dummy webhook — it is therefore recommended that you wait to update your Apple TV and HomePod until Apple fixes the bug if you rely heavily on this ability
 - Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
 
 ## 2.1.1 (2026-09-08)
