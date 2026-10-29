@@ -2,7 +2,7 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.4-beta. (2026-??-??)
+## 2.1.4 (2026-10-29)
 
 ### Changed
 - Updated dependencies
