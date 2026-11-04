@@ -29,9 +29,10 @@
   },
   "main": "dist/homebridge/index.js",
   "scripts": {
-    "build": "rimraf ./dist ./schemas ./config.schema.json && tsc && npm run build:html && npm run build:schemas",
+    "build": "npm run cleanup && tsc && npm run build:html && npm run build:schemas",
     "build:html": "node --import tsx ./scripts/build-html.ts",
     "build:schemas": "node --import tsx ./scripts/build-schemas.ts",
+    "cleanup": "node -e \"for (const path of ['./dist', './schemas', './config.schema.json']) require('fs').rmSync(path, { recursive: true, force: true });\"",
     "i18n": "npm run i18n:merge && npm run i18n:clean && npm run i18n:missing",
     "i18n:clean": "node --import tsx ./scripts/i18n-clean.ts",
     "i18n:merge": "node --import tsx ./scripts/i18n-merge.ts",
@@ -104,7 +105,6 @@
     "@types/tail": "^2.2.3",
     "homebridge": "^2.0.0",
     "jiti": "^2.5.1",
-    "rimraf": "^6.0.1",
     "tsx": "^4.21.0",
     "typescript-eslint": "^8.46.4"
   },
