@@ -57,7 +57,7 @@ export class GroupAccessory {
         continue;
       }
 
-      if (dummyConfig.enableWebhook === true || dummyConfig.enableWebook === true) {
+      if (dummyConfig.enableWebhook === true) {
         webhookManager.registerWebhooks(dummyAccessory.webhooks);
       }
 

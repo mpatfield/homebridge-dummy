@@ -69,7 +69,7 @@ export default class Limiter extends Timeout {
       return;
     }
 
-    const cache = Storage.get(this.identifier, Limiter.name) ?? Storage.get(this.config.id ?? this.caller, Limiter.name);
+    const cache = Storage.get(this.identifier, Limiter.name);
     if (cache === undefined) {
       return;
     }

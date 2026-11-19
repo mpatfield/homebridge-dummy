@@ -2,9 +2,9 @@ import { IHomebridgePluginUi } from '@homebridge/plugin-ui-utils/ui.interface';
 
 import { PLUGIN_ALIAS } from '../homebridge/settings.js';
 
-import { FadeOutType, OnState, ScheduleType, SensorBehavior } from '../model/enums.js';
+import { OnState } from '../model/enums.js';
 import { HomeKitType } from '../model/homekit.js';
-import { DummyConfig, DummyPlatformConfig, LightbulbConfig, OnOffConfig } from '../model/types.js';
+import { DummyConfig, DummyPlatformConfig, OnOffConfig } from '../model/types.js';
 
 declare const homebridge: IHomebridgePluginUi;
 
@@ -305,57 +305,7 @@ async function migrateDeprecatedFields(configs: DummyPlatformConfig[]) {
 
   configs.forEach( (config) => {
 
-    if (config.webhookPort !== undefined) {
-      config.webhookConfig = config.webhookConfig ?? {};
-      config.webhookConfig.port = config.webhookConfig.port ?? config.webhookPort;
-      config.webhookPort = undefined;
-      changed = true;
-    }
-
     config.accessories?.forEach( (accessoryConfig) => {
-
-      if ('defaultOn' in accessoryConfig) {
-        (accessoryConfig as OnOffConfig).defaultState = accessoryConfig.defaultOn ? OnState.ON : OnState.OFF;
-        accessoryConfig.defaultOn = undefined;
-        changed = true;
-      }
-
-      const currentSensor = accessoryConfig.sensor;
-      if (currentSensor?.timerControlled !== undefined) {
-        if (currentSensor.behavior === undefined) {
-          currentSensor.behavior = currentSensor.timerControlled ? SensorBehavior.TIMER : SensorBehavior.MIRROR;
-        }
-        currentSensor.timerControlled = undefined;
-        changed = true;
-      }
-
-      if (accessoryConfig.enableWebook !== undefined) {
-        accessoryConfig.enableWebhook = accessoryConfig.enableWebook;
-        accessoryConfig.enableWebook = undefined;
-        changed = true;
-      }
-
-      const lightbulbConfig = accessoryConfig as LightbulbConfig;
-      if (lightbulbConfig.defaultBrightness !== undefined) {
-        lightbulbConfig.isDimmer = true;
-        lightbulbConfig.defaultBrightness = undefined;
-        changed = true;
-      }
-
-      if (typeof lightbulbConfig.fadeOut === 'boolean' && lightbulbConfig.fadeOut === true) {
-        const autoReset = lightbulbConfig.autoReset;
-        if (autoReset?.type === ScheduleType.TIMEOUT && autoReset?.time !== undefined && autoReset.units !== undefined) {
-          lightbulbConfig.fadeOut = {
-            type: FadeOutType.FIXED,
-            time: autoReset.time,
-            units: autoReset.units,
-          };
-          lightbulbConfig.autoReset = undefined;
-        } else {
-          lightbulbConfig.fadeOut = undefined;
-        }
-        changed = true;
-      }
 
       accessoryConfig.conditions?.operands?.forEach( (operand) => {
 

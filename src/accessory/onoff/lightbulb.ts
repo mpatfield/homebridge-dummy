@@ -78,7 +78,7 @@ export class LightbulbAccessory extends OnOffAccessory<LightbulbConfig> {
   }
 
   private get isDimmer(): boolean {
-    return this.config.isDimmer ?? this.config.defaultBrightness !== undefined;
+    return this.config.isDimmer === true;
   }
 
   override getHomeKitType(): HomeKitType {

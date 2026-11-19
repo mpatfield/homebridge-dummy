@@ -106,11 +106,6 @@ export class SensorAddon extends Timeout implements EveCharacteristicHost {
   }
 
   public get behavior(): SensorBehavior {
-
-    if (this.config.timerControlled === true) {
-      return SensorBehavior.TIMER;
-    }
-
     return this.config.behavior ?? SensorBehavior.MIRROR;
   }
 

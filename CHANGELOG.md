@@ -2,14 +2,21 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.5 (2026-11-10)
+## 2.1.6-beta.0 ()
 
 ### Changed
+- Cleanup old deprecated code
+    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure: webhook config, timer controlled sensors, and dimmers
 - Updated dependencies
 
 ### Notes
 - ‼️ If upgrading from v0.9.2 or earlier, [READ THIS FIRST](https://github.com/mpatfield/homebridge-dummy/wiki/Migration)
 - Please consider giving this plugin a ⭐️ on [GitHub](https://github.com/mpatfield/homebridge-dummy) if you're finding it useful!
+
+## 2.1.5 (2026-11-10)
+
+### Changed
+- Updated dependencies
 
 ## 2.1.4 (2026-10-29)
 

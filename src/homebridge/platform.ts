@@ -143,7 +143,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
           continue;
         }
 
-        if (accessoryConfig.enableWebhook === true || accessoryConfig.enableWebook === true) {
+        if (accessoryConfig.enableWebhook === true) {
           this.webhookManager.registerWebhooks(dummyAccessory.webhooks);
         }
 
@@ -186,7 +186,7 @@ export class HomebridgeDummyPlatform implements DynamicPlatformPlugin {
 
         await this.registerMatterAccessory(dummyAccessory.toMatterAccessory());
 
-        if (accessoryConfig.enableWebhook === true || accessoryConfig.enableWebook === true) {
+        if (accessoryConfig.enableWebhook === true) {
           this.webhookManager.registerWebhooks(dummyAccessory.webhooks);
         }
 

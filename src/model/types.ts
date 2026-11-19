@@ -1,4 +1,4 @@
-import { AccessoryConfig, CharacteristicValue, PlatformAccessory, PlatformConfig } from 'homebridge';
+import { AccessoryConfig, PlatformAccessory, PlatformConfig } from 'homebridge';
 
 export type HomeKitAccessory = PlatformAccessory;
 
@@ -35,10 +35,6 @@ export type WebhookConfig = {
 export type DummyPlatformConfig = PlatformConfig & {
   accessories?: DummyConfig[],
   webhookConfig?: WebhookConfig,
-  /**
-   * @deprecated
-   */
-  webhookPort?: number,
   verbose?: boolean,
 }
 
@@ -60,10 +56,6 @@ export type ScheduleConfig = Assertable & {
 
 export type SensorAddonConfig = Assertable & {
   type: SensorType,
-  /**
-   * @deprecated
-   */
-  timerControlled?: boolean,
   behavior?: SensorBehavior,
 }
 
@@ -94,10 +86,6 @@ export type Notification = Assertable & {
 }
 
 export type LimiterConfig = Assertable & {
-  /**
-   * @deprecated
-   */
-  id?: string,
   limit: number,
   units: TimeUnits,
   period: TimePeriod,
@@ -154,10 +142,6 @@ export type DummyConfig = {
   conditions?: ConditionsConfig,
   simulation?: SimulationConfig,
   resetOnRestart?: boolean,
-  /**
-   * @deprecated
-   */
-  enableWebook?: boolean
   enableWebhook?: boolean,
   enableHistory?: boolean,
   disableLogging?: boolean,
@@ -175,10 +159,6 @@ export type OutletConfig = OnOffConfig & {
 }
 
 export type LightbulbConfig = OnOffConfig & {
-  /**
-   * @deprecated
-   */
-  defaultBrightness?: CharacteristicValue,
   isDimmer?: boolean,
   fadeOut?: FadeOutConfig,
 }
