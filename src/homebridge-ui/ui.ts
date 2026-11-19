@@ -2,9 +2,8 @@ import { IHomebridgePluginUi } from '@homebridge/plugin-ui-utils/ui.interface';
 
 import { PLUGIN_ALIAS } from '../homebridge/settings.js';
 
-import { OnState } from '../model/enums.js';
 import { HomeKitType } from '../model/homekit.js';
-import { DummyConfig, DummyPlatformConfig, OnOffConfig } from '../model/types.js';
+import { DummyConfig, DummyPlatformConfig } from '../model/types.js';
 
 declare const homebridge: IHomebridgePluginUi;
 
