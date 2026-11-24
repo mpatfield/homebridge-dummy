@@ -2,11 +2,11 @@
 
 All notable changes to homebridge-dummy will be documented in this file.
 
-## 2.1.6-beta.0 ()
+## 2.1.6 (2026-11-24)
 
 ### Changed
-- Cleanup old deprecated code
-    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure: webhook config, timer controlled sensors, and dimmers
+- Cleaned up old deprecated code
+    - ⚠️ If it has been longer than 6 months since you last updated, you may need to reconfigure: webhook config, timer-controlled sensors, and dimmers
 - Updated dependencies
 
 ### Notes
